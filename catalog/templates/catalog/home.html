@@ -1,3 +1,5 @@
+{% load static %}
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -22,25 +24,26 @@
         продать</p>
 </div>
 
-<div class="container">
-    <div class="row text-center">
+<div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-3 g-5">
+        {% for obj in products %}
         <div class="col-3">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+            <div class="card mb-4 box-shadow text-center h-100">
+                <img src="{% static 'images/'|add:obj.image %}" alt="{{ obj.name }}"
+                         class="card-img-top img-fluid rounded-top">
+                 <div class="card-header text-white text-center py-2 rounded-0">
+                    <h4 class="my-0 font-weight-normal">{{ obj.name }}</h4>
                 </div>
                 <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$ 140</h1>
+                    <h1 class="card-title pricing-card-title">{{ obj.price }} $</h1>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                        <li>- Неограниченная лицензия</li>
-                        <li>- Поддержка</li>
-                        <li>- Установка на сервер</li>
-                        <li>- Получение обновлений</li>
+                        <li>{{ obj.description }}</li>
                     </ul>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
