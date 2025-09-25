@@ -27,7 +27,7 @@
 <div class="container my-5">
     <div class="row row-cols-1 row-cols-md-3 g-5">
         {% for obj in products %}
-        <div class="col-3">
+        <div class="col">
             <div class="card mb-4 box-shadow text-center h-100">
                 <img src="{% static 'images/'|add:obj.image %}" alt="{{ obj.name }}"
                          class="card-img-top img-fluid rounded-top">
