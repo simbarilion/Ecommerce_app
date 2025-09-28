@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Contacts
+from .models import Category, Product, Contacts, MessageFeedback
 
 
 @admin.register(Category)
@@ -14,6 +14,12 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ("name", "description", "category__name", "price", "created_at", "updated_at",)
 
 @admin.register(Contacts)
-class BookAdmin(admin.ModelAdmin):
+class ContactInfoAdmin(admin.ModelAdmin):
     list_display = ("id", "country", "address", "email",)
     search_fields = ("id", "email",)
+
+@admin.register(MessageFeedback)
+class MessageFeedbackAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "phone", "message", "created_at",)
+    list_filter = ("name", "phone", "created_at",)
+    search_fields = ("name", "phone",)

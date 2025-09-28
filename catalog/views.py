@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Product, Contacts
+from django.urls import reverse
+
+from .models import Product, Contacts, MessageFeedback
 
 
 def home(request):
@@ -10,8 +13,24 @@ def home(request):
 
 def contacts(request):
     contacts = Contacts.objects.last()
-    if request.method == "POST":
-        name = request.POST.get("name")
-        message = request.POST.get("message")
-        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
     return render(request, "catalog/contacts.html", {"contacts": contacts})
+
+
+def feedback(request):
+    post_data = request.POST
+    if post_data:
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
+        if not name or not phone or not message:
+            messages.error(request, "Пожалуйста, заполните все поля")
+            return redirect(reverse("catalog:contacts"))
+        message_feedback = MessageFeedback.objects.get_or_create(
+            name=name,
+            phone=phone,
+            message=message
+        )
+        print(message_feedback, name, phone, message)
+        messages.success(request, f"Спасибо, {name}! Ваше сообщение получено")
+        return redirect(reverse("catalog:contacts"))
+    return redirect(reverse("catalog:contacts"))

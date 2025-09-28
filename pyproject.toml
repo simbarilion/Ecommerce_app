@@ -1,23 +1,23 @@
-[project]
+[tool.poetry]
 name = "ecommerce-app"
 version = "0.1.0"
 description = "Study project for creating django web application"
 authors = [
-    {name = "Nadezhda_Popova",email = "nadezhdapopova13@yandex.ru"}
+    "Nadezhda_Popova <nadezhdapopova13@yandex.ru>"
 ]
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "django (>=5.2.6,<6.0.0)",
-    "python-dotenv (>=1.1.1,<2.0.0)",
-    "psycopg2-binary (>=2.9.10,<3.0.0)",
-    "pillow (>=11.3.0,<12.0.0)",
-    "ipython (>=9.5.0,<10.0.0)"
-]
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+django = ">=5.2.6,<6.0.0"
+python-dotenv = ">=1.1.1,<2.0.0"
+psycopg2-binary = ">=2.9.10,<3.0.0"
+pillow = ">=11.3.0,<12.0.0"
+ipython = ">=9.5.0,<10.0.0"
 
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = "poetry-core>=2.0.0,<3.0.0"
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.lint.dependencies]
