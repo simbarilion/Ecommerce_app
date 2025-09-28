@@ -45,10 +45,10 @@
         <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Свяжитесь с нами</h4>
+                    <h4 class="my-0 font-weight-normal text-center">Свяжитесь с нами</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="" class="form-floating">
+                    <form method="post" action="{% url 'catalog:feedback' %}" class="form-floating">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="name">Имя</label>
@@ -104,5 +104,31 @@
     </footer>
 </div>
 <script src="/static/js/bootstrap.bundle.min.js"></script>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="modal fade show" id="autoCloseModal" tabindex="-1" aria-hidden="true"
+         style="display: block; background: rgba(0,0,0,0.5);">
+      <div class="modal-dialog modal-dialog-centered modal-lg" id="customModal">
+        <div class="modal-content border-{{ message.tags }}">
+          <div class="modal-body d-flex justify-content-center align-items-center text-center">
+            {{ message }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      setTimeout(() => {
+        const modal = document.getElementById("autoCloseModal");
+        if (modal) {
+          modal.classList.remove("show");
+          modal.style.opacity = "0";
+          setTimeout(() => modal.remove(), 500);
+        }
+      }, 2000);
+    </script>
+  {% endfor %}
+{% endif %}
+
 </body>
 </html>

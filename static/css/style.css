@@ -118,7 +118,18 @@ form .btn-block {
     transition: 0.3s;
 }
 
-form .btn-block:hover {
-    background: #27ae60;
-    color: #fff;
+#customModal {
+    width: 400px;
+    height: 400px;
+    max-width: 90vw;
+}
+
+#customModal .modal-content {
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
 }

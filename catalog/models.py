@@ -67,3 +67,18 @@ class Contacts(models.Model):
         verbose_name = "контакты"
         verbose_name_plural = "контакты"
         ordering = ["country", "address", ]
+
+
+class MessageFeedback(models.Model):
+    name = models.CharField(max_length=150, verbose_name="Имя пользователя")
+    phone = models.CharField(max_length=20, verbose_name="Номер телефона пользователя")
+    message = models.TextField(verbose_name="Сообщение пользователя")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+
+    def __str__(self):
+        return f"{self.name} {self.phone} {self.message}"
+
+    class Meta:
+        verbose_name = "обратная связь"
+        verbose_name_plural = "обратная связь"
+        ordering = ["name", "phone", "created_at",]
