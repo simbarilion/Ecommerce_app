@@ -20,17 +20,19 @@ class Command(BaseCommand):
              "description": "Набор интерактивных графиков на D3.js",
              "image": "products/images/Data_Visualization_Kit.jpg",
              "category": category_1,
-             "price": 31.00},
-            {"name": "SaaS Billing System (Laravel)",
-             "description": "Готовая система подписок и биллинга для SaaS",
-             "image": "products/images/SaaS_Billing_System.jpg",
-             "category": category_2,
-             "price": 59.00},
+             "price": 2499.0},
             {"name": "Node.js Payment Gateway",
              "description": "Готовая интеграция Stripe/PayPal для Node.js проектов",
              "image": "products/images/Node_js_Payment_Gateway.jpg",
              "category": category_2,
-             "price": 31.00},
+             "price": 2499.0},
+            {
+            "name": "SaaS Billing System (Laravel)",
+            "description": "Готовая система подписок и биллинга для SaaS",
+            "image": "products/images/SaaS_Billing_System.png",
+            "category": category_2,
+            "price": 4800.0
+            }
         ]
 
         for prod in products:

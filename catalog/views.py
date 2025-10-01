@@ -7,7 +7,7 @@ from .models import Product, Contacts, MessageFeedback
 
 
 def home(request):
-    products = Product.objects.order_by("created_at")[:5]
+    products = Product.objects.order_by("created_at")
     return render(request, "catalog/home.html", {"products": products})
 
 

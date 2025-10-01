@@ -47,7 +47,7 @@
         "description": "Набор готовых компонентов на React с TailwindCSS",
         "image": "products/images/React_UI_Kit.png",
         "category": 2,
-        "price": 28.0,
+        "price": 2300.0,
         "created_at": "2025-09-24T19:04:09.207Z",
         "updated_at": "2025-09-24T19:23:54.789Z"
     }
@@ -60,7 +60,7 @@
         "description": "Набор готовых CSS-стилей для тёмной темы сайта",
         "image": "products/images/Dark_Mode_CSS.jpg",
         "category": 2,
-        "price": 7.5,
+        "price": 599.0,
         "created_at": "2025-09-24T19:04:16.395Z",
         "updated_at": "2025-09-24T19:04:16.395Z"
     }
@@ -73,7 +73,7 @@
         "description": "Адаптивная админка на Vue.js с графиками и таблицами",
         "image": "products/images/Vue_js_Admin_Dashboard.png",
         "category": 2,
-        "price": 35.0,
+        "price": 2899.0,
         "created_at": "2025-09-24T19:04:23.971Z",
         "updated_at": "2025-09-24T19:04:23.971Z"
     }
@@ -86,7 +86,7 @@
         "description": "Готовый шаблон интернет-магазина на Flutter",
         "image": "products/images/Flutter_E_commerce_Template.jpg",
         "category": 3,
-        "price": 49.0,
+        "price": 3999.0,
         "created_at": "2025-09-25T06:56:11.981Z",
         "updated_at": "2025-09-25T06:56:11.981Z"
     }
@@ -99,7 +99,7 @@
         "description": "Готовый шаблон для быстрого запуска REST API на FastAPI",
         "image": "products/images/Python_API_Boilerplate.jpg",
         "category": 4,
-        "price": 19.0,
+        "price": 1499.0,
         "created_at": "2025-09-25T07:15:30.115Z",
         "updated_at": "2025-09-25T07:15:30.115Z"
     }
@@ -112,7 +112,7 @@
         "description": "Плагин для форматирования и валидации JSON прямо в браузере",
         "image": "products/images/JSON_Formatter_Pro.png",
         "category": 4,
-        "price": 9.99,
+        "price": 899.0,
         "created_at": "2025-09-25T07:18:43.611Z",
         "updated_at": "2025-09-25T07:18:43.611Z"
     }
@@ -125,7 +125,7 @@
         "description": "Плагин для анализа и оптимизации SQL-запросов",
         "image": "products/images/SQL_Query_Optimizer.png",
         "category": 4,
-        "price": 14.99,
+        "price": 1300.0,
         "created_at": "2025-09-25T07:24:46.107Z",
         "updated_at": "2025-09-25T07:24:46.107Z"
     }
@@ -138,7 +138,7 @@
         "description": "Виджет чата для сайтов с готовыми API-интеграциями",
         "image": "products/images/Chatbot_Widget_JS.png",
         "category": 2,
-        "price": 22.0,
+        "price": 1799.0,
         "created_at": "2025-09-25T07:35:52.473Z",
         "updated_at": "2025-09-25T07:35:52.473Z"
     }
@@ -151,7 +151,7 @@
         "description": "Плагин для краткого резюмирования текста с помощью ИИ",
         "image": "products/images/AI_Text_Summarizer_Plugin.jpg",
         "category": 5,
-        "price": 24.99,
+        "price": 1999.0,
         "created_at": "2025-09-25T07:44:55.316Z",
         "updated_at": "2025-09-25T07:44:55.316Z"
     }
@@ -164,7 +164,7 @@
         "description": "Скрипт для анализа SEO сайта (ключевые слова, мета-теги)",
         "image": "products/images/SEO_Analyzer_Script.jpg",
         "category": 5,
-        "price": 15.0,
+        "price": 1200.0,
         "created_at": "2025-09-25T08:16:54.236Z",
         "updated_at": "2025-09-25T08:16:54.236Z"
     }
