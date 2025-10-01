@@ -9,7 +9,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "category", "price", "created_at", "updated_at",)
+    list_display = ("id", "name", "image", "category", "price", "created_at", "updated_at",)
     list_filter = ("category", "price", "created_at", "updated_at",)
     search_fields = ("name", "description", "category__name", "price", "created_at", "updated_at",)
 

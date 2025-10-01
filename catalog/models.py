@@ -33,7 +33,10 @@ class Product(models.Model):
     description = models.TextField(null=True,
                                    blank=True,
                                    verbose_name="Описание товара")
-    image = models.FilePathField(path="static/images")
+    image = models.ImageField(upload_to="products/images/",
+                              null=True,
+                              blank=True,
+                              verbose_name="Изображение")
     category = models.ForeignKey(to=Category,
                                  on_delete=models.CASCADE,
                                  related_name="products",

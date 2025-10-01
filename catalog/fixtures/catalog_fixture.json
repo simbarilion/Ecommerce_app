@@ -45,7 +45,7 @@
     "fields": {
         "name": "React UI Components Kit",
         "description": "Набор готовых компонентов на React с TailwindCSS",
-        "image": "React_UI_Kit.png",
+        "image": "products/images/React_UI_Kit.png",
         "category": 2,
         "price": 28.0,
         "created_at": "2025-09-24T19:04:09.207Z",
@@ -58,7 +58,7 @@
     "fields": {
         "name": "Dark Mode CSS Pack",
         "description": "Набор готовых CSS-стилей для тёмной темы сайта",
-        "image": "Dark_Mode_CSS.jpg",
+        "image": "products/images/Dark_Mode_CSS.jpg",
         "category": 2,
         "price": 7.5,
         "created_at": "2025-09-24T19:04:16.395Z",
@@ -71,7 +71,7 @@
     "fields": {
         "name": "Vue.js Admin Dashboard",
         "description": "Адаптивная админка на Vue.js с графиками и таблицами",
-        "image": "Vue_js_Admin_Dashboard.png",
+        "image": "products/images/Vue_js_Admin_Dashboard.png",
         "category": 2,
         "price": 35.0,
         "created_at": "2025-09-24T19:04:23.971Z",
@@ -84,7 +84,7 @@
     "fields": {
         "name": "Flutter E-commerce Template",
         "description": "Готовый шаблон интернет-магазина на Flutter",
-        "image": "Flutter_E_commerce_Template.jpg",
+        "image": "products/images/Flutter_E_commerce_Template.jpg",
         "category": 3,
         "price": 49.0,
         "created_at": "2025-09-25T06:56:11.981Z",
@@ -97,7 +97,7 @@
     "fields": {
         "name": "Python API Boilerplate",
         "description": "Готовый шаблон для быстрого запуска REST API на FastAPI",
-        "image": "Python_API_Boilerplate.jpg",
+        "image": "products/images/Python_API_Boilerplate.jpg",
         "category": 4,
         "price": 19.0,
         "created_at": "2025-09-25T07:15:30.115Z",
@@ -110,7 +110,7 @@
     "fields": {
         "name": "JSON Formatter Pro",
         "description": "Плагин для форматирования и валидации JSON прямо в браузере",
-        "image": "JSON_Formatter_Pro.png",
+        "image": "products/images/JSON_Formatter_Pro.png",
         "category": 4,
         "price": 9.99,
         "created_at": "2025-09-25T07:18:43.611Z",
@@ -123,7 +123,7 @@
     "fields": {
         "name": "SQL Query Optimizer",
         "description": "Плагин для анализа и оптимизации SQL-запросов",
-        "image": "SQL_Query_Optimizer.png",
+        "image": "products/images/SQL_Query_Optimizer.png",
         "category": 4,
         "price": 14.99,
         "created_at": "2025-09-25T07:24:46.107Z",
@@ -136,7 +136,7 @@
     "fields": {
         "name": "Chatbot Widget JS",
         "description": "Виджет чата для сайтов с готовыми API-интеграциями",
-        "image": "Chatbot_Widget_JS.png",
+        "image": "products/images/Chatbot_Widget_JS.png",
         "category": 2,
         "price": 22.0,
         "created_at": "2025-09-25T07:35:52.473Z",
@@ -149,7 +149,7 @@
     "fields": {
         "name": "AI Text Summarizer Plugin",
         "description": "Плагин для краткого резюмирования текста с помощью ИИ",
-        "image": "AI_Text_Summarizer_Plugin.jpg",
+        "image": "products/images/AI_Text_Summarizer_Plugin.jpg",
         "category": 5,
         "price": 24.99,
         "created_at": "2025-09-25T07:44:55.316Z",
@@ -162,7 +162,7 @@
     "fields": {
         "name": "SEO Analyzer Script",
         "description": "Скрипт для анализа SEO сайта (ключевые слова, мета-теги)",
-        "image": "SEO_Analyzer_Script.jpg",
+        "image": "products/images/SEO_Analyzer_Script.jpg",
         "category": 5,
         "price": 15.0,
         "created_at": "2025-09-25T08:16:54.236Z",
