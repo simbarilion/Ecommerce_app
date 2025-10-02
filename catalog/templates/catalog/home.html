@@ -4,8 +4,6 @@
 
 {% block content %}
 
-{% include "includes/main_menu.html" %}
-
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4 fw-normal">Skystore</h1>
     <p class="lead">Skystore - это отличный вариант хранения ваших плагинов и примеров кода, который вы бы хотели
@@ -33,6 +31,34 @@
         </div>
         {% endfor %}
     </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center mt-4">
+            {% if products.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ products.previous_page_number }}">Назад</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">Назад</span></li>
+            {% endif %}
+
+            {% for num in products.paginator.page_range %}
+                {% if products.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ products.next_page_number }}">Вперед</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">Вперед</span></li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 
 {% endblock %}

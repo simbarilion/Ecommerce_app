@@ -132,6 +132,11 @@ body {
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
+.card-img-top {
+    height: 400px;
+    object-fit: cover;
+}
+
 .card-header {
     background: #27ae60;
     color: white;
@@ -187,6 +192,47 @@ footer a:hover {
     color: #fff !important;
 }
 
+/* Пагинация */
+.pagination .page-link {
+    color: #000;
+    background-color: #fff;
+    border: 2px solid #27ae60;
+    border-radius: 12px;
+    padding: 6px 12px;
+    margin: 0 3px;
+    transition: all 0.3s ease;
+}
+
+/* Пагинация при наведении */
+.pagination .page-link:hover {
+    background-color: #27ae60;
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+/* Пагинация: активная страница */
+.pagination .page-item.active .page-link {
+    background-color: #27ae60;
+    color: #fff;
+    border-color: #27ae60;
+}
+
+/* Пагинация: отключенные кнопки */
+.pagination .page-item.disabled .page-link {
+    color: #000;
+    background-color: #fff;
+    border-color: #ddd;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Пагинация: расположение */
+.pagination {
+    justify-content: center;
+    margin-top: 30px;
+}
+
 /* Кнопка формы */
 form .btn-block {
     display: block;
@@ -216,6 +262,11 @@ form .btn-block {
 }
 
 /* Полная карточка товара*/
+
+.card-text {
+    text-align: justify;
+}
+
 /* Кнопка Купить */
 .btn-buy {
     display: inline-block;
