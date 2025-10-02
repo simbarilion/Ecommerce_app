@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Домашняя страница{% endblock %}
+
+{% block content %}
+
+{% include "includes/main_menu.html" %}
+
+<div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-3 g-5">
+        <div class="col">
+            <div class="card mb-4 box-shadow text-center h-100">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                     class="card-img-top img-fluid rounded-top">
+                <div class="card-header text-white text-center py-2 rounded-0">
+                    <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{ product.price }} ₽</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>{{ product.description|truncatechars:100 }}</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Подробнее</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
