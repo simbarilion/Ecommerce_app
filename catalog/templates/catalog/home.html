@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">{{ obj.price }} ₽</h1>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                        <li>{{ obj.description|truncatechars:100 }}</li>
+                        <li>{{ obj.brief_description|truncatechars:100 }}</li>
                     </ul>
                     <a href="{% url 'catalog:product_detail' pk=obj.pk %}" class="btn-link">Подробнее</a>
                 </div>

@@ -234,17 +234,19 @@ form .btn-block {
 }
 
 /* Кнопка Назад */
-.btn-back {
-    padding: 8px 20px;
-    border-radius: 8px;
+.btn-link {
     border: 2px solid #27ae60;
-    background: transparent;
+    border-radius: 8px;
+    padding: 8px 20px;
     color: #27ae60;
+    text-decoration: none;
     transition: 0.3s;
+    margin-right: 16px; /* 🔹 Отступ справа */
 }
-.btn-back:hover {
-    background: #27ae60;
+.btn-link:hover {
+    background-color: #27ae60;
     color: #fff;
+    text-decoration: none;
 }
 
 /* Контейнер правой колонки */
@@ -256,7 +258,7 @@ form .btn-block {
 /* Текст "Последнее обновление" */
 .product-updated {
     position: absolute;
-    right: 16px;
+    right: 24px;
     bottom: 16px;
     font-size: 0.85rem;
     color: #777;
