@@ -234,7 +234,7 @@ footer a:hover {
 }
 
 /* Кнопка формы */
-form .btn-block {
+form .btn-outline-primary {
     display: block;
     margin: 20px auto 0 auto;
     width: 60%;
@@ -243,6 +243,11 @@ form .btn-block {
     color: #27ae60;
     background: transparent;
     transition: 0.3s;
+}
+
+.btn-outline-primary:hover {
+    background: #1e8449;
+    border-color: #1e8449;
 }
 
 #customModal {
@@ -279,6 +284,7 @@ form .btn-block {
     font-weight: 500;
     transition: 0.3s;
 }
+
 .btn-buy:hover {
     background: #1e8449;
     border-color: #1e8449;
