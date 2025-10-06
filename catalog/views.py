@@ -1,14 +1,17 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.core.paginator import Paginator
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from .models import Product, Contacts, MessageFeedback
 
 
 def home(request):
-    products = Product.objects.order_by("created_at")[:5]
-    return render(request, "catalog/home.html", {"products": products})
+    products = Product.objects.all()
+    paginator = Paginator(products, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, "catalog/home.html", {"products": page_obj})
 
 
 def contacts(request):
@@ -34,3 +37,8 @@ def feedback(request):
         messages.success(request, f"Спасибо, {name}! Ваше сообщение получено")
         return redirect(reverse("catalog:contacts"))
     return redirect(reverse("catalog:contacts"))
+
+
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, "catalog/product_detail.html", {"product": product})

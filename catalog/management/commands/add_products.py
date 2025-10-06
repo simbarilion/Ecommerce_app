@@ -17,20 +17,25 @@ class Command(BaseCommand):
 
         products = [
             {"name": "Data Visualization Kit (D3.js)",
-             "description": "Набор интерактивных графиков на D3.js",
-             "image": "Data_Visualization_Kit.jpg",
+             "brief_description": "Набор интерактивных графиков на D3.js",
+             "description": "Набор интерактивных графиков на D3.js делает данные наглядными. Вы можете создавать диаграммы, карты и динамические визуализации. Это помогает лучше понять аналитику и презентовать её пользователям. Инструмент подходит для дашбордов и отчетов",
+             "image": "products/images/Data_Visualization_Kit.jpg",
              "category": category_1,
-             "price": 31.00},
-            {"name": "SaaS Billing System (Laravel)",
-             "description": "Готовая система подписок и биллинга для SaaS",
-             "image": "SaaS_Billing_System.jpg",
-             "category": category_2,
-             "price": 59.00},
+             "price": 2499.0},
             {"name": "Node.js Payment Gateway",
-             "description": "Готовая интеграция Stripe/PayPal для Node.js проектов",
-             "image": "Node_js_Payment_Gateway.jpg",
+             "brief_description": "Готовая интеграция Stripe/PayPal для Node.js проектов",
+             "description": "Готовая интеграция Stripe и PayPal для проектов на Node.js. Вы сможете быстро подключить онлайн-оплаты в свое приложение. Код написан с учетом безопасности и удобства. Поддерживает популярные платежные сценарии",
+             "image": "products/images/Node_js_Payment_Gateway.jpg",
              "category": category_2,
-             "price": 31.00},
+             "price": 2499.0},
+            {
+            "name": "SaaS Billing System (Laravel)",
+            "brief_description": "Готовая система подписок и биллинга для SaaS",
+            "description": "Готовая система подписок и биллинга на Laravel экономит месяцы разработки. В ней реализованы тарифные планы, платежи и управление пользователями. Подходит для SaaS-проектов любого масштаба. Вы получаете надёжное решение для монетизации бизнеса",
+            "image": "products/images/SaaS_Billing_System.png",
+            "category": category_2,
+            "price": 4800.0
+            }
         ]
 
         for prod in products:

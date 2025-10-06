@@ -7,20 +7,115 @@ body {
 
 /* Шапка */
 .box-shadow {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.95); /* белый с прозрачностью */
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
     border: 1px solid rgba(39, 174, 96, 0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12),
+                4px 0 15px rgba(0,0,0,0.08),
+               -4px 0 15px rgba(0,0,0,0.08);
+    padding: 10px 20px;
+    position: relative;
+    z-index: 1000;
 }
 
-.btn-outline-primary {
-    border-color: #27ae60;
+/* Меню */
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #27ae60;
+    padding: 8px 12px;
+    border: 1px solid #27ae60;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.nav-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: #27ae60;
+    color: #fff;
+}
+
+/* Кнопка гамбургера */
+.nav-toggle {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
     color: #27ae60;
 }
 
-.btn-outline-primary:hover {
+/* Мобильное меню */
+@media (max-width: 768px) {
+    .nav-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        border: 1px solid rgba(39, 174, 96, 0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.12),
+                    4px 0 15px rgba(0,0,0,0.08),
+                   -4px 0 15px rgba(0,0,0,0.08);
+        padding: 10px;
+        overflow: hidden;
+        z-index: 9999;
+    }
+    .nav-container.show {
+        display: flex;
+        animation: slideDown 0.3s ease-in-out;
+    }
+    .nav-menu {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Анимация появления мобильного меню */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Войти */
+.btn-login {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #27ae60;
+    padding: 8px 12px;
+    border: 1px solid #27ae60;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.btn-login:hover {
     background-color: #27ae60;
     color: #fff;
+}
+
+@media (max-width: 768px) {
+    .btn-login {
+        margin-top: 10px;
+        width: 100%;
+    }
 }
 
 /* Заголовок */
@@ -37,6 +132,11 @@ body {
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
+.card-img-top {
+    height: 400px;
+    object-fit: cover;
+}
+
 .card-header {
     background: #27ae60;
     color: white;
@@ -50,34 +150,20 @@ body {
 }
 
 /* Кнопки внутри карточек */
-.btn-block {
-    border-radius: 6px;
-    border: 2px solid #27ae60;
+.btn-link {
+    display: inline-block;
     color: #27ae60;
+    text-decoration: none;
+    border: 2px solid #27ae60;
+    border-radius: 8px;
+    padding: 8px 16px;
     transition: 0.3s;
 }
 
-.btn-block:hover {
-    background: #27ae60;
+.btn-link:hover {
+    background-color: #27ae60;
     color: white;
-}
-
-.icon-wrapper {
-    width: 60px;
-    height: 60px;
-    background: #f1fdf6;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    margin: 0 auto 10px;
-}
-
-.icon-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    text-decoration: none;
 }
 
 /* Футер */
@@ -106,8 +192,49 @@ footer a:hover {
     color: #fff !important;
 }
 
+/* Пагинация */
+.pagination .page-link {
+    color: #000;
+    background-color: #fff;
+    border: 2px solid #27ae60;
+    border-radius: 12px;
+    padding: 6px 12px;
+    margin: 0 3px;
+    transition: all 0.3s ease;
+}
+
+/* Пагинация при наведении */
+.pagination .page-link:hover {
+    background-color: #27ae60;
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+/* Пагинация: активная страница */
+.pagination .page-item.active .page-link {
+    background-color: #27ae60;
+    color: #fff;
+    border-color: #27ae60;
+}
+
+/* Пагинация: отключенные кнопки */
+.pagination .page-item.disabled .page-link {
+    color: #000;
+    background-color: #fff;
+    border-color: #ddd;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Пагинация: расположение */
+.pagination {
+    justify-content: center;
+    margin-top: 30px;
+}
+
 /* Кнопка формы */
-form .btn-block {
+form .btn-outline-primary {
     display: block;
     margin: 20px auto 0 auto;
     width: 60%;
@@ -116,6 +243,11 @@ form .btn-block {
     color: #27ae60;
     background: transparent;
     transition: 0.3s;
+}
+
+.btn-outline-primary:hover {
+    background: #1e8449;
+    border-color: #1e8449;
 }
 
 #customModal {
@@ -132,4 +264,64 @@ form .btn-block {
     text-align: center;
     padding: 20px;
     border-radius: 10px;
+}
+
+/* Полная карточка товара*/
+
+.card-text {
+    text-align: justify;
+}
+
+/* Кнопка Купить */
+.btn-buy {
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 8px;
+    border: 2px solid #27ae60;
+    background-color: #27ae60;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-buy:hover {
+    background: #1e8449;
+    border-color: #1e8449;
+}
+
+/* Кнопка Назад */
+.btn-link {
+    border: 2px solid #27ae60;
+    border-radius: 8px;
+    padding: 8px 20px;
+    color: #27ae60;
+    text-decoration: none;
+    transition: 0.3s;
+    margin-right: 16px; /* 🔹 Отступ справа */
+}
+.btn-link:hover {
+    background-color: #27ae60;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Контейнер правой колонки */
+.product-col {
+    position: relative;
+    padding-bottom: 64px; /* оставляем место под подпись */
+}
+
+/* Текст "Последнее обновление" */
+.product-updated {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    font-size: 0.85rem;
+    color: #777;
+}
+
+/* Отступ между кнопками и подписью */
+.buttons-block {
+    margin-bottom: 1px;
 }

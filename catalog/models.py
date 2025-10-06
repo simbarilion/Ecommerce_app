@@ -30,10 +30,16 @@ class Product(models.Model):
     name = models.CharField(max_length=150,
                             unique=True,
                             verbose_name="Наименование товара")
+    brief_description = models.TextField(null=True,
+                                         blank=True,
+                                         verbose_name="Краткое описание товара")
     description = models.TextField(null=True,
                                    blank=True,
-                                   verbose_name="Описание товара")
-    image = models.FilePathField(path="static/images")
+                                   verbose_name="Полное описание товара")
+    image = models.ImageField(upload_to="products/images/",
+                              null=True,
+                              blank=True,
+                              verbose_name="Изображение")
     category = models.ForeignKey(to=Category,
                                  on_delete=models.CASCADE,
                                  related_name="products",

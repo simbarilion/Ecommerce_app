@@ -1,22 +1,8 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Домашняя страница</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Skystore</h5>
-    <nav class="ms-5">
-        <a class="p-2 btn btn-outline-primary" href="/catalog/home/">Каталог</a>
-        <a class="p-2 btn btn-outline-primary" href="/catalog/contacts/">Контакты</a>
-    </nav>
-</div>
+{% block title %}Домашняя страница{% endblock %}
+
+{% block content %}
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4 fw-normal">Skystore</h1>
@@ -29,54 +15,50 @@
         {% for obj in products %}
         <div class="col">
             <div class="card mb-4 box-shadow text-center h-100">
-                <img src="{% static 'images/'|add:obj.image %}" alt="{{ obj.name }}"
-                         class="card-img-top img-fluid rounded-top">
-                 <div class="card-header text-white text-center py-2 rounded-0">
+                <img src="{{ obj.image.url }}" alt="{{ obj.name }}"
+                     class="card-img-top img-fluid rounded-top">
+                <div class="card-header text-white text-center py-2 rounded-0">
                     <h4 class="my-0 font-weight-normal">{{ obj.name }}</h4>
                 </div>
                 <div class="card-body">
-                    <h1 class="card-title pricing-card-title">{{ obj.price }} $</h1>
+                    <h1 class="card-title pricing-card-title">{{ obj.price }} ₽</h1>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                        <li>{{ obj.description }}</li>
+                        <li>{{ obj.brief_description|truncatechars:100 }}</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                    <a href="{% url 'catalog:product_detail' pk=obj.pk %}" class="btn-link">Подробнее</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 
-    <footer class="pt-4 my-md-5 pt-md-5 border-top">
-        <div class="row">
-            <div class="col-12 col-md">
-                Skystore
-                <small class="d-block mb-3 text-muted">&copy; 2023</small>
-            </div>
-            <div class="col-6 col-md">
-                <h5>Категории</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Рассылки</a></li>
-                    <li><a class="text-muted" href="#">Телеграм боты</a></li>
-                    <li><a class="text-muted" href="#">Полезные утилиты</a></li>
-                    <li><a class="text-muted" href="#">Веб-приложения</a></li>
-                    <li><a class="text-muted" href="#">Микросервисы</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>Дополнительно</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Мы пишем</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>О нас</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="/catalog/contacts/">Контакты</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center mt-4">
+            {% if products.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ products.previous_page_number }}">Назад</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">Назад</span></li>
+            {% endif %}
+
+            {% for num in products.paginator.page_range %}
+                {% if products.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ products.next_page_number }}">Вперед</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">Вперед</span></li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
-<script src="/static/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+{% endblock %}

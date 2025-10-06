@@ -1,0 +1,30 @@
+{% load static %}
+<div class="header d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 box-shadow">
+    <h5 class="my-0 font-weight-normal">Skystore</h5>
+
+    <button class="nav-toggle d-md-none ms-auto" onclick="toggleMenu()">☰</button>
+
+    <div class="d-flex align-items-center ms-md-5 w-100">
+        <nav class="nav-container">
+            <ul class="nav-menu">
+                <li><a class="nav-link" href="{% url 'catalog:home' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
+                        <path d="M6.5 14.5v-5h3v5a1 1 0 0 0 1 1h2.5v-7h1L8 1 0 8.5h1v7H3a1 1 0 0 0 1-1z"/>
+                    </svg>
+                    Главная</a></li>
+                <li><a class="nav-link" href="{% url 'catalog:contacts' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
+                        <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm5 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-4 10v-1h8v1H4z"/>
+                    </svg>
+                Контакты</a></li>
+            </ul>
+        </nav>
+
+        <a href="#" class="btn-login ms-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM1 14s1-1 7-1 7 1 7 1-1 1-7 1-7-1-7-1z"/>
+            </svg>
+            Войти
+        </a>
+    </div>
+</div>
