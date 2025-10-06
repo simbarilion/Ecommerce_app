@@ -1,21 +1,25 @@
 /* Фон */
 body {
     background: linear-gradient(to bottom, #ffffff, #e8f8f5, #1e8449);
-    color: #333;
+    color: #2c3e50;
     min-height: 100vh;
 }
 
 /* Шапка */
 .box-shadow {
-    background: rgba(255, 255, 255, 0.95); /* белый с прозрачностью */
-    border-radius: 12px;
-    border: 1px solid rgba(39, 174, 96, 0.2);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.12),
-                4px 0 15px rgba(0,0,0,0.08),
-               -4px 0 15px rgba(0,0,0,0.08);
-    padding: 10px 20px;
-    position: relative;
-    z-index: 1000;
+    background: linear-gradient(145deg, rgba(255,255,255,0.8), rgba(245,247,247,0.6));
+    backdrop-filter: blur(12px) saturate(180%);
+    border-radius: 16px;
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    padding: 12px 24px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
 }
 
 /* Меню */
@@ -30,24 +34,30 @@ body {
 .nav-link {
     display: inline-flex;
     align-items: center;
+    color: var(--text-dark);
     text-decoration: none;
-    color: #27ae60;
-    padding: 8px 12px;
-    border: 1px solid #27ae60;
-    border-radius: 8px;
-    transition: all 0.3s;
+    padding: 10px 16px;
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    background: linear-gradient(135deg, #ffffff, #f4fef8);
+    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.15);
+    font-weight: 500;
 }
 
 .nav-icon {
     width: 16px;
     height: 16px;
-    margin-right: 5px;
+    margin-right: 6px;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    background-color: #27ae60;
-    color: #fff;
+    background: var(--accent);
+    color: var(--text-dark);
+    border-color: rgba(46, 204, 113, 0.35);
+    box-shadow: 0 5px 14px rgba(46, 204, 113, 0.25);
+    transform: translateY(-2px);
 }
 
 /* Кнопка гамбургера */
@@ -56,7 +66,12 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    color: #27ae60;
+    color: var(--accent);
+    transition: color 0.3s ease;
+}
+
+.nav-toggle:hover {
+    color: var(--accent-hover);
 }
 
 /* Мобильное меню */
@@ -68,7 +83,7 @@ body {
         left: 0;
         right: 0;
         flex-direction: column;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.8);
         border-radius: 12px;
         border: 1px solid rgba(39, 174, 96, 0.2);
         box-shadow: 0 4px 15px rgba(0,0,0,0.12),
@@ -98,17 +113,23 @@ body {
 .btn-login {
     display: inline-flex;
     align-items: center;
+    color: var(--text-dark);
     text-decoration: none;
-    color: #27ae60;
-    padding: 8px 12px;
-    border: 1px solid #27ae60;
-    border-radius: 8px;
-    transition: all 0.3s;
+    padding: 10px 16px;
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.15);
+    font-weight: 500;
 }
 
 .btn-login:hover {
-    background-color: #27ae60;
-    color: #fff;
+    background-color: var(--accent);
+    color: var(--text-dark);
+    border-color: rgba(46, 204, 113, 0.35);
+    box-shadow: 0 5px 14px rgba(46, 204, 113, 0.25);
+    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
@@ -234,6 +255,11 @@ footer a:hover {
 }
 
 /* Кнопка формы */
+
+.card-header {
+    border-radius: 6px;
+}
+
 form .btn-outline-primary {
     display: block;
     margin: 20px auto 0 auto;
