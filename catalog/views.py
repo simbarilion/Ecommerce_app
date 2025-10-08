@@ -1,8 +1,10 @@
 from django.contrib import messages
-from django.core.paginator import Paginator
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormView
+
+from .forms import FeedbackForm
 
 from .models import Product, Contacts, MessageFeedback
 
@@ -22,31 +24,23 @@ class ProductDetailView(DetailView):
     slug_url_kwarg = "slug"
 
 
-def contacts(request):
-    contacts = Contacts.objects.last()
-    return render(request, "catalog/contacts.html", {"contacts": contacts})
+class ContactsView(FormView):
+    # model = Contacts
+    form_class = FeedbackForm
+    template_name = "catalog/contacts.html"
+    success_url = reverse_lazy("catalog:contacts")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-def feedback(request):
-    post_data = request.POST
-    if post_data:
-        name = request.POST.get("name")
-        phone = request.POST.get("phone")
-        message = request.POST.get("message")
-        if not name or not phone or not message:
-            messages.error(request, "Пожалуйста, заполните все поля")
-            return redirect(reverse("catalog:contacts"))
-        message_feedback = MessageFeedback.objects.get_or_create(
-            name=name,
-            phone=phone,
-            message=message
-        )
-        print(message_feedback, name, phone, message)
-        messages.success(request, f"Спасибо, {name}! Ваше сообщение получено")
-        return redirect(reverse("catalog:contacts"))
-    return redirect(reverse("catalog:contacts"))
+        context["contacts"] = Contacts.objects.last()
+        return context
 
+    def form_valid(self, form):
+        feedback = form.save()
+        messages.success(self.request, f"Спасибо, {feedback.name}! Ваше сообщение получено")
+        return super().form_valid(form)
 
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    return render(request, "catalog/product_detail.html", {"product": product})
+    def form_invalid(self, form):
+        messages.error(self.request, "Пожалуйста, заполните все поля")
+        return super().form_invalid(form)
