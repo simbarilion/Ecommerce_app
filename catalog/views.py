@@ -1,12 +1,11 @@
 from django.contrib import messages
-from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 
 from .forms import FeedbackForm
 
-from .models import Product, Contacts, MessageFeedback
+from .models import Product, Contacts
 
 
 class HomeView(ListView):
@@ -25,7 +24,6 @@ class ProductDetailView(DetailView):
 
 
 class ContactsView(FormView):
-    # model = Contacts
     form_class = FeedbackForm
     template_name = "catalog/contacts.html"
     success_url = reverse_lazy("catalog:contacts")
