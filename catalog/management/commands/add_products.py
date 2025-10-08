@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from django.utils.text import slugify
+
 from catalog.models import Category, Product
 
 class Command(BaseCommand):
@@ -11,6 +13,12 @@ class Command(BaseCommand):
 
         call_command("loaddata", "catalog/fixtures/catalog_fixture.json")
         self.stdout.write(self.style.SUCCESS("Successfully loaded data from fixture"))
+
+        for product in Product.objects.all():
+            if not product.slug:
+                product.slug = slugify(product.name)
+                product.save()
+        self.stdout.write(self.style.SUCCESS("Slugs successfully generated for fixture products"))
 
         category_1, _ = Category.objects.get_or_create(name="Frontend & UI")
         category_2, _ = Category.objects.get_or_create(name="Backend & Dev Tools")

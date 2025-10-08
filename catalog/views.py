@@ -2,16 +2,24 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.views.generic import ListView, DetailView
 
 from .models import Product, Contacts, MessageFeedback
 
 
-def home(request):
-    products = Product.objects.all()
-    paginator = Paginator(products, 6)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    return render(request, "catalog/home.html", {"products": page_obj})
+class HomeView(ListView):
+    model = Product
+    template_name = "catalog/home.html"
+    context_object_name = "products"
+    paginate_by = 6
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "catalog/product_detail.html"
+    context_object_name = "product"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
 
 
 def contacts(request):

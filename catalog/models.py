@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 
 class Category(models.Model):
@@ -30,6 +31,7 @@ class Product(models.Model):
     name = models.CharField(max_length=150,
                             unique=True,
                             verbose_name="Наименование товара")
+    slug = models.SlugField(unique=True, blank=True)
     brief_description = models.TextField(null=True,
                                          blank=True,
                                          verbose_name="Краткое описание товара")
@@ -52,8 +54,14 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True,
                                       verbose_name="Дата последнего изменения")
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.name}: {self.price}"
+
 
     class Meta:
         verbose_name = "товар"
