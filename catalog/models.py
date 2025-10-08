@@ -80,7 +80,7 @@ class Contacts(models.Model):
     class Meta:
         verbose_name = "контакты"
         verbose_name_plural = "контакты"
-        ordering = ["country", "address", ]
+        ordering = ["country", "address",]
 
 
 class MessageFeedback(models.Model):
