@@ -361,3 +361,13 @@ form .btn-outline-primary {
 .buttons-block {
     margin-bottom: 1px;
 }
+
+/* Блог главная баннер */
+.glass-banner {
+    background: rgba(255, 255, 255, 0.15);  /* полупрозрачный белый фон */
+    backdrop-filter: blur(12px);            /* эффект запотевшего стекла */
+    -webkit-backdrop-filter: blur(12px);    /* поддержка Safari */
+    border-radius: 20px;                    /* закруглённые углы */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* мягкая тень */
+    border: 1px solid rgba(255, 255, 255, 0.25); /* лёгкая граница */
+}

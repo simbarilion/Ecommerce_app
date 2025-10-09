@@ -17,7 +17,7 @@ class BlogpostsView(ListView):
     model = Blogpost
     template_name = "blog/blogposts.html"
     context_object_name = "blogposts"
-    paginate_by = 6
+    paginate_by = 12
 
     def get_queryset(self):
         return Blogpost.objects.filter(is_published=True).order_by("created_at")

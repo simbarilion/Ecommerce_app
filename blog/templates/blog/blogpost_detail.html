@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Статья{% endblock %}
+
+{% block content %}
+
+    <section class="container mx-auto p-6">
+
+        {% include "blog/includes/banner.html" %}
+
+        <div class="container my-5">
+            <div class="card mx-4 my-4 p-4">
+                <div class="row g-4">
+                    <div class="col-5 col-sm-4">
+                        <img src="{{ blogpost.image.url }}" alt="{{ blogpost.title }}" class="card-img-top img-fluid rounded-top">
+                    </div>
+
+                    <div class="col-7 col-sm-8 d-flex flex-column product-col">
+                        <div class="card-body">
+                            <h1 class="font-weight-normal py-2">{{ blogpost.title }}</h1>
+                            <h1 class="card-title pricing-card-title">{{ blogpost.author }} ₽</h1>
+                            <p class="card-text text-justify">{{ blogpost.content }}</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3 buttons-block">
+                            <div class="flex-grow-1 text-center">
+                                <button type="button" class="btn btn-buy">Эта статья полезна</button>
+                            </div>
+                            <div class="text-end ms-3">
+                                <a href="{% url 'blog:blogposts' %}" class="btn-link">Назад</a>
+                            </div>
+                        </div>
+                        <div class="product-updated text-end">
+                            <small class="text-muted">Дата создания: {{ blogpost.updated_at|date:"j b Y G:i" }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+{% endblock %}
