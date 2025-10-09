@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Удалить статью{% endblock %}
+
+{% block content %}
+    <section class="container mx-auto p-6">
+
+        <div class="header">
+            <h1>Редактор статей</h1>
+        </div>
+
+        <h2>Удалить статью</h2>
+        <p>Вы уверены, что хотите удалить "{{ ???? }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Удалить</button>
+            <a href="{% url 'blog:blogposts_editor_list' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+
+    </section>
+{% endblock %}

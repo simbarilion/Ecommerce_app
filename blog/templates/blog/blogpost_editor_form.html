@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Форма статьи{% endblock %}
+
+{% block content %}
+    <section class="container mx-auto p-6">
+
+        <div class="header">
+            <h1>Редактор статей</h1>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal text-center">Форма статьи</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" class="form-floating">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-lg w-100 btn-outline-primary">Сохранить</button>
+                        <a href="{% url 'blog:blogposts_editor_list' %}" class="btn btn-secondary">Отмена</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

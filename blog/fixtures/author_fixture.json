@@ -1,0 +1,101 @@
+[
+{
+    "model": "blog.author",
+    "pk": 1,
+    "fields": {
+        "first_name": "greenleaf",
+        "last_name": null,
+        "email": "greenleaf@gmail.com"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 2,
+    "fields": {
+        "first_name": "artem_coder",
+        "last_name": null,
+        "email": "artem.coder@mail.ru"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 3,
+    "fields": {
+        "first_name": "sunny_writer",
+        "last_name": null,
+        "email": "sunny.writer@yandex.ru"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 4,
+    "fields": {
+        "first_name": "midnightowl",
+        "last_name": null,
+        "email": "midnightowl@gmail.com"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 5,
+    "fields": {
+        "first_name": "technofox",
+        "last_name": null,
+        "email": "technofox@gmail.com"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 6,
+    "fields": {
+        "first_name": "bookwanderer",
+        "last_name": null,
+        "email": "book.wanderer@mail.ru"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 7,
+    "fields": {
+        "first_name": "silvermoon",
+        "last_name": null,
+        "email": "silvermoon@yandex.com"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 8,
+    "fields": {
+        "first_name": "happy_panda",
+        "last_name": null,
+        "email": "happy.panda@outlook.com"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 9,
+    "fields": {
+        "first_name": "dreamcatcher",
+        "last_name": null,
+        "email": "dreamcatcher@gmail.com"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 10,
+    "fields": {
+        "first_name": "pixelstory",
+        "last_name": null,
+        "email": "pixelstory@mail.ru"
+    }
+},
+{
+    "model": "blog.author",
+    "pk": 11,
+    "fields": {
+        "first_name": "Nadezhda",
+        "last_name": "Popova",
+        "email": "nadezhdapopova13@yandex.ru"
+    }
+}
+]

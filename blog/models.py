@@ -1,11 +1,32 @@
 from django.db import models
 
 
+class Author(models.Model):
+    first_name = models.CharField(max_length=100,
+                                  verbose_name="Имя")
+    last_name = models.CharField(max_length=100,
+                                 null=True,
+                                 blank=True,
+                                 verbose_name="Фамилия")
+    email = models.EmailField(max_length=254,
+                              verbose_name="Адрес электронной почты")
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}" if self.last_name else self.first_name
+
+    class Meta:
+        verbose_name = "автор"
+        verbose_name_plural = "авторы"
+        ordering = ["last_name", "first_name",]
+
+
 class Blogpost(models.Model):
     title = models.CharField(max_length=100,
                              verbose_name="Заголовок")
-    author = models.CharField(max_length=100,
-                              verbose_name="Автор")
+    author = models.ForeignKey(Author,
+                               on_delete=models.CASCADE,
+                               related_name="posts",
+                               verbose_name="Автор")
     content = models.TextField(verbose_name="Контент",)
     preview = models.ImageField(upload_to="blog/images/",
                                 null=True,

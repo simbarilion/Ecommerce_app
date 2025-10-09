@@ -30,28 +30,53 @@ class BlogpostDetailView(DetailView):
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
-        if not obj.is_published:
+        if obj.is_published:
             obj.number_of_views += 1
             obj.save()
         return obj
 
 
+class BlogpostsListView(ListView):
+    model = Blogpost
+    template_name = "blog/blogposts_editor.html"
+    context_object_name = "blogposts_list"
+    paginate_by = 50
+
+    def get_queryset(self):
+        return Blogpost.objects.filter(is_published=True).order_by("created_at")
+
+
+class BlogpostEditDetailView(DetailView):
+    model = Blogpost
+    template_name = "blog/blogposts_editor_detail.html"
+    context_object_name = "blogpost"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["author_posts_count"] = Blogpost.objects.filter(author=self.object.author).count()
+        return context
+
+
 class BlogpostCreateView(CreateView):
     model = Blogpost
-    fields = ["title", "author", "content", "preview", "is_published",]
-    template_name = "blog/blogpost_form.html"
-    success_url = reverse_lazy("blog:main")
+    fields = ["title", "author", "content", "preview",]
+    template_name = "blog/blogpost_editor_form.html"
+
+    def get_success_url(self):
+        return reverse_lazy("blog:blogpost_editor_detail", kwargs={"pk": self.object.pk})
 
 
 class BlogpostUpdateView(UpdateView):
     model = Blogpost
     fields = ["title", "author", "content", "preview", "is_published",]
-    template_name = "blog/blogpost_form.html"
+    template_name = "blog/blogpost_editor_form.html"
     success_url = reverse_lazy("blog:blogpost_detail")
+
+    def get_success_url(self):
+        return reverse_lazy("blog:blogpost_editor_detail", kwargs={"pk": self.object.pk})
 
 
 class BlogpostDeleteView(DeleteView):
     model = Blogpost
-    template_name = "blog/blogpost_confirm_delete.html"
-    success_url = reverse_lazy("blog:blogpost_main")
-
+    template_name = "blog/blogpost_editor_delete.html"
+    success_url = reverse_lazy("blog:blogposts_editor_list")
