@@ -5,10 +5,7 @@
 
 {% block content %}
     <section class="container mx-auto p-6">
-
-        <div class="header">
-            <h1>Редактор статей</h1>
-        </div>
+        {% include "blog/includes/blogpost_editor_header.html" %}
 
         <h2>{{ post.title }}</h2>
         <p class="mt-4">Автор: {{ post.author.first_name }} {{ post.author.last_name }}</p>
