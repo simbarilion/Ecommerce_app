@@ -23,9 +23,9 @@ class BlogpostsView(ListView):
         return Blogpost.objects.filter(is_published=True).order_by("created_at")
 
 
-class BlogpostDetailView(DetailView):
+class BlogpostsDetailView(DetailView):
     model = Blogpost
-    template_name = "blog/blogpost_detail.html"
+    template_name = "blog/blogposts_detail.html"
     context_object_name = "blogpost"
 
     def get_object(self, queryset=None):
@@ -36,20 +36,20 @@ class BlogpostDetailView(DetailView):
         return obj
 
 
-class BlogpostsListView(ListView):
+class BlogpostListView(ListView):
     model = Blogpost
-    template_name = "blog/blogposts_editor.html"
-    context_object_name = "blogposts_list"
+    template_name = "blog/blogpost_list.html"
+    context_object_name = "post_list"
     paginate_by = 50
 
     def get_queryset(self):
         return Blogpost.objects.filter(is_published=True).order_by("created_at")
 
 
-class BlogpostEditDetailView(DetailView):
+class BlogpostListDetailView(DetailView):
     model = Blogpost
-    template_name = "blog/blogposts_editor_detail.html"
-    context_object_name = "blogpost"
+    template_name = "blog/blogpost_list_detail.html"
+    context_object_name = "post"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,23 +60,22 @@ class BlogpostEditDetailView(DetailView):
 class BlogpostCreateView(CreateView):
     model = Blogpost
     fields = ["title", "author", "content", "preview",]
-    template_name = "blog/blogpost_editor_form.html"
+    template_name = "blog/blogpost_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("blog:blogpost_editor_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("blog:blogpost_list")
 
 
 class BlogpostUpdateView(UpdateView):
     model = Blogpost
     fields = ["title", "author", "content", "preview", "is_published",]
-    template_name = "blog/blogpost_editor_form.html"
-    success_url = reverse_lazy("blog:blogpost_detail")
+    template_name = "blog/blogpost_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("blog:blogpost_editor_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("blog:blogpost_list_detail", kwargs={"pk": self.object.pk})
 
 
 class BlogpostDeleteView(DeleteView):
     model = Blogpost
-    template_name = "blog/blogpost_editor_delete.html"
-    success_url = reverse_lazy("blog:blogposts_editor_list")
+    template_name = "blog/blogpost_delete.html"
+    success_url = reverse_lazy("blog:blogpost_list")

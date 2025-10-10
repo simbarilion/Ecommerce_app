@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Редактор статьи{% endblock %}
+
+{% block content %}
+    <section class="container mx-auto p-6">
+
+        <div class="header">
+            <h1>Редактор статей</h1>
+        </div>
+
+        <h2>{{ post.title }}</h2>
+        <p class="mt-4">Автор: {{ post.author.first_name }} {{ post.author.last_name }}</p>
+        <p>Количество статей автора: {{ author_posts_count }}</p>
+        <p>Дата публикации: {{ post.created_at }}</p>
+        <p>Последнее обновление: {{ post.updated_at }}</p>
+        <p>Содержание: {{ post.content }}</p>
+        <p>Количество просмотров: {{ post.number_of_views }}</p>
+        <p>Изображение:</p>
+        {% if post.preview %}
+            <p class="mb-5"><img src="{{ post.preview.url }}" alt="Превью статьи" style="width: 200px; height: auto;"></p>
+        {% else %}
+            <p><img src="{% static 'images/default.png' %}" alt="Нет изображения" style="width: 200px; height: auto;"></p>
+        {% endif %}
+
+        <a href="{% url 'blog:blogpost_update' post.pk %}" class="btn btn-primary">Редактировать</a>
+        <a href="{% url 'blog:blogpost_delete' post.pk %}" class="btn btn-danger mx-3">Удалить</a>
+        <a href="{% url 'blog:blogpost_list' %}" class="btn btn-secondary">Вернуться к списку</a>
+
+    </section>
+{% endblock %}

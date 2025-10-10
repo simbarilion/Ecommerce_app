@@ -24,7 +24,7 @@
                             <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                                 <li>{{ obj.content|truncatechars:100 }}</li>
                             </ul>
-                            <a href="{% url 'blog:blogpost_detail' pk=obj.pk %}" class="btn-link">Читать</a>
+                            <a href="{% url 'blog:blogposts_detail' pk=obj.pk %}" class="btn-link">Читать</a>
                         </div>
                     </div>
                 </div>

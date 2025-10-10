@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Редактор статей{% endblock %}
+
+{% block content %}
+    <section class="container mx-auto p-6">
+        {% include "blog/includes/blogpost_editor_header.html" %}
+        <div class="text-center">
+            <a href="{% url 'blog:blogpost_create' %}" class="btn-link inline-block bg-blue-600 px-4 py-2 fs-5 rounded-lg mt-2 mb-4">
+                Добавить новую статью
+            </a>
+        </div>
+
+        <h2 class="mt-4 mb-2">Изменить / удалить статью:</h2>
+        <h4 class="mt-2 mb-4">Выберите вашу статью</h4>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle shadow-sm">
+                <thead>
+                    <tr class="text-center table-success">
+                        <th scope="col">Заголовок</th>
+                        <th scope="col">Автор</th>
+                        <th scope="col">Создана</th>
+                        <th scope="col">Обновлена</th>
+                        <th scope="col">Просмотры</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in post_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'blog:blogpost_list_detail' post.pk %}" class="fw-semibold text-decoration-none text-primary">
+                                    {{ post.title }}
+                                </a>
+                            </td>
+                            <td class="text-center">{{ post.author }}</td>
+                            <td class="text-center">{{ post.created_at|date:"d.m.Y H:i" }}</td>
+                            <td class="text-center">{{ post.updated_at|date:"d.m.Y H:i" }}</td>
+                            <td class="text-center">{{ post.number_of_views }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">Пока нет опубликованных статей</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+{% endblock %}

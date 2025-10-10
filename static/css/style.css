@@ -419,6 +419,7 @@ form .btn-outline-primary {
     -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     color: #fff;
+    min-height: 110px;
 }
 
 .blog-main-page .card-header h4 {
@@ -426,6 +427,12 @@ form .btn-outline-primary {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 500;
+    line-height: 1.2em;
+    height: 3.6em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .blog-main-page .card-header p {
@@ -437,6 +444,9 @@ form .btn-outline-primary {
 
 .blog-main-page .card-body li {
     text-align: justify;
+    line-height: 1.5em;
+    height: 6em;
+    overflow: hidden;
 }
 
 
@@ -451,3 +461,86 @@ form .btn-outline-primary {
     font-size: 1.1rem;
 }
 
+
+/* Карточка Создать/Редактировать статью Блога */
+.blog-form {
+    border-radius: 0.5rem;
+    transition: all 0.25s ease;
+}
+
+.blog-form:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.blog-form .card-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    background: linear-gradient(10deg, #a3cfbb, #e8f8f5, #1e8449);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.blog-form .card-header h4 {
+    color: #1a1d20;
+}
+
+.blog-form .card-body {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    background-color: #fff;
+}
+
+/* Поля ввода */
+.blog-form form input,
+.blog-form form textarea,
+.blog-form form select {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.blog-form form input:focus,
+.blog-form form textarea:focus,
+.blog-form form select:focus {
+    outline: none;
+    border-color: #198754;
+    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.25);
+}
+
+/* Отступы между полями */
+.blog-form form p {
+    margin-bottom: 1.25rem;
+}
+
+/* Кнопки */
+.blog-form button.btn,
+.blog-form a.btn {
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+/* Кнопка “Сохранить” */
+.blog-form button.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.blog-form button.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+/* Кнопка “Отмена” */
+.blog-form a.btn-outline-secondary:hover {
+    background-color: #777;
+}
+
+.blog-form .d-flex.justify-content-center {
+    gap: 1rem;
+}

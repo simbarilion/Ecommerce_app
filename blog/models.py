@@ -36,10 +36,10 @@ class Blogpost(models.Model):
                                       verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True,
                                       verbose_name="Дата последнего изменения")
-    is_published = models.BooleanField(default=False,
+    is_published = models.BooleanField(default=True,
                                        verbose_name="Опубликовано")
-    number_of_views = models.IntegerField(default=0,
-                                          verbose_name="Количество просмотров")
+    number_of_views = models.PositiveIntegerField(default=0,
+                                                  verbose_name="Количество просмотров")
 
     def __str__(self):
         return self.title
