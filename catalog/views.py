@@ -9,6 +9,7 @@ from .models import Product, Contacts
 
 
 class HomeView(ListView):
+    """Представление для домашней страницы"""
     model = Product
     template_name = "catalog/home.html"
     context_object_name = "products"
@@ -16,6 +17,7 @@ class HomeView(ListView):
 
 
 class ProductDetailView(DetailView):
+    """Представление для отдельного товара"""
     model = Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
@@ -24,6 +26,7 @@ class ProductDetailView(DetailView):
 
 
 class ContactsView(FormView):
+    """Представление для страницы Контакты"""
     form_class = FeedbackForm
     template_name = "catalog/contacts.html"
     success_url = reverse_lazy("catalog:contacts")
