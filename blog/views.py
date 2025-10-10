@@ -12,6 +12,14 @@ class BlogMainView(ListView):
     def get_queryset(self):
         return Blogpost.objects.filter(is_published=True).order_by("created_at")[:6]
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["total_posts"] = Blogpost.objects.filter(is_published=True).count()
+        context["total_authors"] = Blogpost.objects.filter(is_published=True).values("author").distinct().count()
+
+        return context
+
 
 class BlogpostsView(ListView):
     model = Blogpost
