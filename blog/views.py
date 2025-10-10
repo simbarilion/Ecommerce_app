@@ -4,7 +4,17 @@ from django.urls import reverse_lazy
 from .models import Blogpost
 
 
-class BlogMainView(ListView):
+class BlogContextMixin:
+    """Добавляет total_posts и total_authors в context."""
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_posts"] = Blogpost.objects.filter(is_published=True).count()
+        context["total_authors"] = Blogpost.objects.filter(is_published=True).values("author").distinct().count()
+        return context
+
+
+class BlogMainView(BlogContextMixin, ListView):
+    """Представление для домашней страницы Блога"""
     model = Blogpost
     template_name = "blog/main.html"
     context_object_name = "latest_posts"
@@ -12,16 +22,9 @@ class BlogMainView(ListView):
     def get_queryset(self):
         return Blogpost.objects.filter(is_published=True).order_by("created_at")[:6]
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
 
-        context["total_posts"] = Blogpost.objects.filter(is_published=True).count()
-        context["total_authors"] = Blogpost.objects.filter(is_published=True).values("author").distinct().count()
-
-        return context
-
-
-class BlogpostsView(ListView):
+class BlogpostsView(BlogContextMixin, ListView):
+    """Представление для страницы Наши статьи Блога"""
     model = Blogpost
     template_name = "blog/blogposts.html"
     context_object_name = "blogposts"
@@ -31,7 +34,8 @@ class BlogpostsView(ListView):
         return Blogpost.objects.filter(is_published=True).order_by("created_at")
 
 
-class BlogpostsDetailView(DetailView):
+class BlogpostsDetailView(BlogContextMixin, DetailView):
+    """Представление для просмотра статьи Блога"""
     model = Blogpost
     template_name = "blog/blogposts_detail.html"
     context_object_name = "blogpost"
@@ -45,6 +49,7 @@ class BlogpostsDetailView(DetailView):
 
 
 class BlogpostListView(ListView):
+    """Представление для редактора статей Блога"""
     model = Blogpost
     template_name = "blog/blogpost_list.html"
     context_object_name = "post_list"
@@ -55,6 +60,7 @@ class BlogpostListView(ListView):
 
 
 class BlogpostListDetailView(DetailView):
+    """Представление для редактора статьи Блога"""
     model = Blogpost
     template_name = "blog/blogpost_list_detail.html"
     context_object_name = "post"
@@ -66,6 +72,7 @@ class BlogpostListDetailView(DetailView):
 
 
 class BlogpostCreateView(CreateView):
+    """Представление для создания статьи Блога"""
     model = Blogpost
     fields = ["title", "author", "content", "preview",]
     template_name = "blog/blogpost_form.html"
@@ -75,6 +82,7 @@ class BlogpostCreateView(CreateView):
 
 
 class BlogpostUpdateView(UpdateView):
+    """Представление для редактирования статьи Блога"""
     model = Blogpost
     fields = ["title", "author", "content", "preview", "is_published",]
     template_name = "blog/blogpost_form.html"
@@ -84,6 +92,7 @@ class BlogpostUpdateView(UpdateView):
 
 
 class BlogpostDeleteView(DeleteView):
+    """Представление для удаления статьи Блога"""
     model = Blogpost
     template_name = "blog/blogpost_delete.html"
     success_url = reverse_lazy("blog:blogpost_list")
