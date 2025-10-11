@@ -4,16 +4,7 @@ from django.urls import reverse_lazy
 from .models import Blogpost
 
 
-class BlogContextMixin:
-    """Добавляет total_posts и total_authors в context."""
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["total_posts"] = Blogpost.objects.filter(is_published=True).count()
-        context["total_authors"] = Blogpost.objects.filter(is_published=True).values("author").distinct().count()
-        return context
-
-
-class BlogpostListView(BlogContextMixin, ListView):
+class BlogpostListView(ListView):
     """Представление для отображения статей Блога"""
     model = Blogpost
     context_object_name = "blogposts"
@@ -23,9 +14,15 @@ class BlogpostListView(BlogContextMixin, ListView):
         queryset = Blogpost.objects.filter(is_published=True).order_by("created_at")
         return queryset[:self.limit] if self.limit else queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_posts"] = Blogpost.objects.filter(is_published=True).count()
+        context["total_authors"] = Blogpost.objects.filter(is_published=True).values("author").distinct().count()
+        return context
 
-class BlogpostDetailView(BlogContextMixin, DetailView):
-    """Представление для редактора статьи Блога"""
+
+class BlogpostDetailView(DetailView):
+    """Представление для отображения статьи Блога"""
     model = Blogpost
     context_object_name = "post"
 
