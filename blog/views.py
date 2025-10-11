@@ -13,6 +13,7 @@ class BlogContextMixin:
         return context
 
 
+# Публичные представления
 class BlogMainView(BlogContextMixin, ListView):
     """Представление для домашней страницы Блога"""
     model = Blogpost
@@ -48,6 +49,7 @@ class BlogpostsDetailView(BlogContextMixin, DetailView):
         return obj
 
 
+# Представления для редактора
 class BlogpostListView(ListView):
     """Представление для редактора статей Блога"""
     model = Blogpost
