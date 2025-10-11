@@ -1,8 +1,10 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
-
+from django.utils.text import slugify
 
 from blog.models import Author, Blogpost
+from catalog.models import Product
+
 
 class Command(BaseCommand):
     help = "Загружает тестовые данные из фикстур blog/fixtures/"
@@ -13,10 +15,10 @@ class Command(BaseCommand):
 
         try:
             call_command("loaddata", "blog/fixtures/author_fixture.json")
-            self.stdout.write(self.style.SUCCESS("Загружены авторы"))
+            self.stdout.write(self.style.SUCCESS("Загружены авторы из фикстуры"))
 
             call_command("loaddata", "blog/fixtures/blogpost_fixture.json")
-            self.stdout.write(self.style.SUCCESS("Загружены статьи"))
+            self.stdout.write(self.style.SUCCESS("Загружены статьи из фикстуры"))
         except Exception as e:
             raise CommandError(f"Ошибка при загрузке фикстур: {e}")
 
