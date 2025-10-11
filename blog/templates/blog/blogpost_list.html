@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for post in post_list %}
+                    {% for post in blogposts %}
                         <tr>
                             <td>
                                 <a href="{% url 'blog:blogpost_list_detail' post.pk %}" class="fw-semibold text-decoration-none text-primary">

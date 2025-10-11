@@ -11,7 +11,7 @@
 
         <div class="container my-5 blog-main-page">
             <div class="row row-cols-1 row-cols-md-3 g-5 align-items-stretch">
-                {% for obj in latest_posts %}
+                {% for obj in blogposts %}
                 <div class="col h-100 d-flex">
                     <div class="card mb-4 box-shadow text-center h-100 d-flex flex-column">
                         <img src="{{ obj.preview.url }}" alt="{{ obj.title }}"

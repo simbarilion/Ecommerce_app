@@ -13,33 +13,26 @@ class BlogContextMixin:
         return context
 
 
-# Публичные представления
-class BlogMainView(BlogContextMixin, ListView):
-    """Представление для домашней страницы Блога"""
+class BlogpostListView(BlogContextMixin, ListView):
+    """Представление для отображения статей Блога"""
     model = Blogpost
-    template_name = "blog/main.html"
-    context_object_name = "latest_posts"
-
-    def get_queryset(self):
-        return Blogpost.objects.filter(is_published=True).order_by("created_at")[:6]
-
-
-class BlogpostsView(BlogContextMixin, ListView):
-    """Представление для страницы Наши статьи Блога"""
-    model = Blogpost
-    template_name = "blog/blogposts.html"
     context_object_name = "blogposts"
-    paginate_by = 12
+    limit = None
 
     def get_queryset(self):
-        return Blogpost.objects.filter(is_published=True).order_by("created_at")
+        queryset = Blogpost.objects.filter(is_published=True).order_by("created_at")
+        return queryset[:self.limit] if self.limit else queryset
 
 
-class BlogpostsDetailView(BlogContextMixin, DetailView):
-    """Представление для просмотра статьи Блога"""
+class BlogpostDetailView(BlogContextMixin, DetailView):
+    """Представление для редактора статьи Блога"""
     model = Blogpost
-    template_name = "blog/blogposts_detail.html"
-    context_object_name = "blogpost"
+    context_object_name = "post"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["author_posts_count"] = Blogpost.objects.filter(author=self.object.author).count()
+        return context
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -47,30 +40,6 @@ class BlogpostsDetailView(BlogContextMixin, DetailView):
             obj.number_of_views += 1
             obj.save()
         return obj
-
-
-# Представления для редактора
-class BlogpostListView(ListView):
-    """Представление для редактора статей Блога"""
-    model = Blogpost
-    template_name = "blog/blogpost_list.html"
-    context_object_name = "post_list"
-    paginate_by = 50
-
-    def get_queryset(self):
-        return Blogpost.objects.filter(is_published=True).order_by("created_at")
-
-
-class BlogpostListDetailView(DetailView):
-    """Представление для редактора статьи Блога"""
-    model = Blogpost
-    template_name = "blog/blogpost_list_detail.html"
-    context_object_name = "post"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["author_posts_count"] = Blogpost.objects.filter(author=self.object.author).count()
-        return context
 
 
 class BlogpostCreateView(CreateView):

@@ -12,14 +12,14 @@
             <div class="card mx-6 my-4 p-5">
                 <div class="row g-4">
                     <div class="col-5 col-sm-4">
-                        <img src="{{ blogpost.preview.url }}" alt="{{ blogpost.title }}" class="card-img-top img-fluid rounded-top mt-4">
+                        <img src="{{ post.preview.url }}" alt="{{ post.title }}" class="card-img-top img-fluid rounded-top mt-4">
                     </div>
 
                     <div class="col-7 col-sm-8 d-flex flex-column product-col">
                         <div class="card-body">
-                            <h1 class="font-weight-normal py-2">{{ blogpost.title }}</h1>
-                            <p class="card-title pricing-card-title mb-4">Автор: {{ blogpost.author }}</p>
-                            <p class="card-text text-justify mt-2 mb-3">{{ blogpost.content }}</p>
+                            <h1 class="font-weight-normal py-2">{{ post.title }}</h1>
+                            <p class="card-title pricing-card-title mb-4">Автор: {{ post.author }}</p>
+                            <p class="card-text text-justify mt-2 mb-3">{{ post.content }}</p>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center mt-3 buttons-block">
@@ -31,8 +31,8 @@
                             </div>
                         </div>
                         <div class="product-updated text-end">
-                            <small class="text-muted">Дата создания: {{ blogpost.updated_at|date:"j b Y G:i" }}</small>
-                            <small class="text-muted">Просмотров: {{ blogpost.number_of_views }}</small>
+                            <small class="text-muted">Дата создания: {{ post.updated_at|date:"j b Y G:i" }}</small>
+                            <small class="text-muted">Просмотров: {{ post.number_of_views }}</small>
                         </div>
                     </div>
                 </div>
