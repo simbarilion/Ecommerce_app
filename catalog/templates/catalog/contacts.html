@@ -36,23 +36,9 @@
                     <h4 class="my-0 font-weight-normal text-center">Свяжитесь с нами</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{% url 'catalog:feedback' %}" class="form-floating">
+                    <form method="post" action="{% url 'catalog:contacts' %}" class="form-floating">
                         {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="name">Имя</label>
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя"
-                                   required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone">Телефон</label>
-                            <input type="text" name="phone" class="form-control" id="phone"
-                                   placeholder="Контактный телефон" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="message">Сообщение</label>
-                            <textarea type="text" name="message" class="form-control" id="message"
-                                      placeholder="Сообщение" required></textarea>
-                        </div>
+                        {{ form.as_p }}
                         <button type="submit" class="btn btn-lg w-100 btn-outline-primary">Отправить</button>
                     </form>
                 </div>

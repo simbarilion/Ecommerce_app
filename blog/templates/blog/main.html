@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Блог{% endblock %}
+
+{% block content %}
+
+    <section class="container mx-auto p-6">
+        {% include "blog/includes/banner.html" %}
+
+        {% include "blog/includes/search_bar.html" %}
+
+        <div class="container my-5 blog-main-page">
+            <div class="row row-cols-1 row-cols-md-3 g-5 align-items-stretch">
+                {% for obj in blogposts %}
+                <div class="col h-100 d-flex">
+                    <div class="card mb-4 box-shadow text-center h-100 d-flex flex-column">
+                        <img src="{{ obj.preview.url }}" alt="{{ obj.title }}"
+                             class="card-img-top img-fluid rounded-top">
+                        <div class="card-header text-white text-center py-2 rounded-0">
+                            <h4 class="my-0 font-weight-normal mb-2">{{ obj.title }}</h4>
+                            <p class="text-gray-600">Автор: {{ obj.author }}</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mt-3 mb-4 text-start m-3 flex-grow-1">
+                                <li>{{ obj.content|truncatechars:100 }}</li>
+                            </ul>
+                            <a href="{% url 'blog:blogposts_detail' pk=obj.pk %}" class="btn-link mt-auto">Читать</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-3 text-center">
+            <a href="{% url 'blog:blogposts' %}" class="btn btn-success">Смотреть все</a>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,21 +1,36 @@
 /* Фон */
 body {
     background: linear-gradient(to bottom, #ffffff, #e8f8f5, #1e8449);
-    color: #333;
+    color: #2c3e50;
     min-height: 100vh;
 }
 
 /* Шапка */
 .box-shadow {
-    background: rgba(255, 255, 255, 0.95); /* белый с прозрачностью */
-    border-radius: 12px;
-    border: 1px solid rgba(39, 174, 96, 0.2);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.12),
-                4px 0 15px rgba(0,0,0,0.08),
-               -4px 0 15px rgba(0,0,0,0.08);
-    padding: 10px 20px;
-    position: relative;
-    z-index: 1000;
+    background: linear-gradient(
+        135deg,
+        rgba(170, 250, 216, 0.15),
+        rgba(200, 255, 220, 0.15)
+    );
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border-radius: 16px;
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    box-shadow:
+        0 10px 28px rgba(30, 150, 100, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    padding: 12px 24px;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+}
+/*.box-shadow:hover {*/
+/*    box-shadow: 0 10px 28px rgba(30, 150, 100, 0.25);*/
+/*    transform: translateY(-2px);*/
+/*}*/
+
+.title {
+  display: flex;
+  align-items: center;
 }
 
 /* Меню */
@@ -30,24 +45,30 @@ body {
 .nav-link {
     display: inline-flex;
     align-items: center;
+    color: var(--text-dark);
     text-decoration: none;
-    color: #27ae60;
-    padding: 8px 12px;
-    border: 1px solid #27ae60;
-    border-radius: 8px;
-    transition: all 0.3s;
+    padding: 10px 16px;
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    background: linear-gradient(135deg, #ffffff, #f4fef8);
+    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.15);
+    font-weight: 500;
 }
 
 .nav-icon {
     width: 16px;
     height: 16px;
-    margin-right: 5px;
+    margin-right: 6px;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    background-color: #27ae60;
-    color: #fff;
+    background: var(--accent);
+    color: var(--text-dark);
+    border-color: rgba(46, 204, 113, 0.35);
+    box-shadow: 0 5px 14px rgba(46, 204, 113, 0.25);
+    transform: translateY(-2px);
 }
 
 /* Кнопка гамбургера */
@@ -56,7 +77,12 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    color: #27ae60;
+    color: var(--accent);
+    transition: color 0.3s ease;
+}
+
+.nav-toggle:hover {
+    color: var(--accent-hover);
 }
 
 /* Мобильное меню */
@@ -68,7 +94,7 @@ body {
         left: 0;
         right: 0;
         flex-direction: column;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.8);
         border-radius: 12px;
         border: 1px solid rgba(39, 174, 96, 0.2);
         box-shadow: 0 4px 15px rgba(0,0,0,0.12),
@@ -98,17 +124,23 @@ body {
 .btn-login {
     display: inline-flex;
     align-items: center;
+    color: var(--text-dark);
     text-decoration: none;
-    color: #27ae60;
-    padding: 8px 12px;
-    border: 1px solid #27ae60;
-    border-radius: 8px;
-    transition: all 0.3s;
+    padding: 10px 16px;
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.15);
+    font-weight: 500;
 }
 
 .btn-login:hover {
-    background-color: #27ae60;
-    color: #fff;
+    background-color: var(--accent);
+    color: var(--text-dark);
+    border-color: rgba(46, 204, 113, 0.35);
+    box-shadow: 0 5px 14px rgba(46, 204, 113, 0.25);
+    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
@@ -234,6 +266,10 @@ footer a:hover {
 }
 
 /* Кнопка формы */
+.card-header {
+    border-radius: 6px;
+}
+
 form .btn-outline-primary {
     display: block;
     margin: 20px auto 0 auto;
@@ -298,7 +334,7 @@ form .btn-outline-primary {
     color: #27ae60;
     text-decoration: none;
     transition: 0.3s;
-    margin-right: 16px; /* 🔹 Отступ справа */
+    margin-right: 16px;
 }
 .btn-link:hover {
     background-color: #27ae60;
@@ -309,7 +345,7 @@ form .btn-outline-primary {
 /* Контейнер правой колонки */
 .product-col {
     position: relative;
-    padding-bottom: 64px; /* оставляем место под подпись */
+    padding-bottom: 64px;
 }
 
 /* Текст "Последнее обновление" */
@@ -324,4 +360,187 @@ form .btn-outline-primary {
 /* Отступ между кнопками и подписью */
 .buttons-block {
     margin-bottom: 1px;
+}
+
+/* Блог главная баннер */
+.glass-banner {
+    position: relative;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.35),
+        rgba(180, 255, 210, 0.45)
+    );
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border-radius: 20px;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+}
+
+.glass-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 25% 30%, rgba(46, 204, 113, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(0, 180, 100, 0.2), transparent 45%);
+    z-index: 0;
+}
+
+.glass-banner > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Поисковая строка */
+.search-input {
+    border: 2px solid #27ae60;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #1e8449;
+    box-shadow: 0 0 6px rgba(46, 204, 113, 0.4);
+}
+
+/* Карточки Блога */
+.blog-main-page .card-header {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.45),
+        rgba(180, 255, 210, 0.65)
+    );
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    min-height: 110px;
+}
+
+.blog-main-page .card-header h4 {
+    color: #000000;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2em;
+    height: 3.6em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.blog-main-page .card-header p {
+    color: #000000;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 300;
+}
+
+.blog-main-page .card-body li {
+    text-align: justify;
+    line-height: 1.5em;
+    height: 6em;
+    overflow: hidden;
+}
+
+
+/* Карточка статьи Блога */
+.blog-card .card-body .card-title {
+    font-size: 0.95rem;
+    color: #161719;
+    font-weight: 400;
+}
+
+.blog-card .card-body .card-text {
+    font-size: 1.1rem;
+}
+
+
+/* Карточка Создать/Редактировать статью Блога */
+.blog-form {
+    border-radius: 0.5rem;
+    transition: all 0.25s ease;
+}
+
+.blog-form:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.blog-form .card-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    background: linear-gradient(10deg, #a3cfbb, #e8f8f5, #1e8449);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.blog-form .card-header h4 {
+    color: #1a1d20;
+}
+
+.blog-form .card-body {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    background-color: #fff;
+}
+
+/* Поля ввода */
+.blog-form form input,
+.blog-form form textarea,
+.blog-form form select {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.blog-form form input:focus,
+.blog-form form textarea:focus,
+.blog-form form select:focus {
+    outline: none;
+    border-color: #198754;
+    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.25);
+}
+
+/* Отступы между полями */
+.blog-form form p {
+    margin-bottom: 1.25rem;
+}
+
+/* Кнопки */
+.blog-form button.btn,
+.blog-form a.btn {
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+/* Кнопка “Сохранить” */
+.blog-form button.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.blog-form button.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+/* Кнопка “Отмена” */
+.blog-form a.btn-outline-secondary:hover {
+    background-color: #777;
+}
+
+.blog-form .d-flex.justify-content-center {
+    gap: 1rem;
 }
