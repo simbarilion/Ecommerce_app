@@ -25,7 +25,6 @@ class ProductForm(forms.ModelForm):
             "brief_description": forms.TextInput(attrs={"class": "form-control"}),
             "description": forms.Textarea(attrs={"class": "form-control", "rows": 10}),
             "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
-            "category": forms.CheckboxInput(attrs={"class": "form-control"}),
             "price": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
@@ -50,8 +49,18 @@ class ProductForm(forms.ModelForm):
                 raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
         return description
 
-    def clean_price(self):  # метод для валидации поля email
+    def clean_price(self):
         price = self.cleaned_data.get("price")
         if price <= 0:
             raise forms.ValidationError("Цена не может быть отрицательной или равной нулю")
         return price
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        if hasattr(image, 'content_type'):
+            if image.content_type not in ["image/jpeg", "image/png"]:
+                raise forms.ValidationError("Файл должен быть в формате JPEG или PNG")
+            max_size_mb = 5
+            if image.size > max_size_mb * 1024 * 1024:
+                raise forms.ValidationError(f"Размер файла не должен превышать {max_size_mb} МБ")
+        return image

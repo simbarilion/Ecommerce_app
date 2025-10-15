@@ -84,7 +84,7 @@ class BlogpostUpdateView(UpdateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.status = "moderation"
-        messages.success(self.request, f"Статья «{form.instance.name}» обновлена и отправлена на модерацию")
+        messages.success(self.request, f"Статья «{form.instance.title}» обновлена и отправлена на модерацию")
         return super().form_valid(form)
 
 

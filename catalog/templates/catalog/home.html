@@ -26,6 +26,10 @@
                         <li>{{ obj.brief_description|truncatechars:100 }}</li>
                     </ul>
                     <a href="{% url 'catalog:product_detail' slug=obj.slug %}" class="btn-link">Подробнее</a>
+                    <div class="btn-group">
+                        <a href="{% url 'catalog:product_update' slug=obj.slug %}" class="btn-link btn-blue mt-4">Редактировать</a>
+                        <a href="{% url 'catalog:product_delete' slug=obj.slug %}" class="btn-link btn-red mt-4">Удалить</a>
+                    </div>
                 </div>
             </div>
         </div>
