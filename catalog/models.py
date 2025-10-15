@@ -28,6 +28,8 @@ def get_default_category():
 
 
 class Product(models.Model):
+
+
     name = models.CharField(max_length=150,
                             unique=True,
                             verbose_name="Наименование товара")

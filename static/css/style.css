@@ -544,3 +544,9 @@ form .btn-outline-primary {
 .blog-form .d-flex.justify-content-center {
     gap: 1rem;
 }
+
+
+.small-padding th,
+.small-padding td {
+    padding: 0.6rem 0.9rem; /* вертикальные и горизонтальные отступы */
+}

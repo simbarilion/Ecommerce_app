@@ -10,3 +10,6 @@ class FeedbackForm(forms.ModelForm):
             "email": forms.TextInput(attrs={"class": "form-control"}),
             "message": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
         }
+
+
+

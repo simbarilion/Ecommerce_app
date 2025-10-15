@@ -10,17 +10,17 @@ class Blogpost(models.Model):
         ("archived", "В архиве"),
     ]
 
-    title = models.CharField(max_length=100,
-                             verbose_name="Заголовок")
+    title = models.CharField(max_length=150,
+                             verbose_name="Заголовок статьи")
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name="posts",
                                verbose_name="Автор")
-    content = models.TextField(verbose_name="Контент",)
+    content = models.TextField(verbose_name="Содержание статьи",)
     preview = models.ImageField(upload_to="blog/images/",
                                 null=True,
                                 blank=True,
-                                verbose_name="Превью")
+                                verbose_name="Изображение")
     created_at = models.DateTimeField(auto_now_add=True,
                                       verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True,

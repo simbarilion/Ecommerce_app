@@ -1,6 +1,8 @@
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+
+from .forms import BlogpostForm
 from .models import Blogpost
 
 
@@ -11,13 +13,16 @@ class BlogpostListView(ListView):
     limit = None
 
     def get_queryset(self):
-        queryset = Blogpost.objects.filter(is_published=True).order_by("created_at")
+        if self.template_name == "blog/blogpost_list.html":  # шаблон редактора
+            queryset = Blogpost.objects.filter(status__in=["published", "moderation"]).order_by("created_at")
+        else:
+            queryset = Blogpost.objects.filter(status="published").order_by("created_at")
         return queryset[:self.limit] if self.limit else queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["total_posts"] = Blogpost.objects.filter(is_published=True).count()
-        context["total_authors"] = Blogpost.objects.filter(is_published=True).values("author").distinct().count()
+        context["total_posts"] = Blogpost.objects.filter(status="published").count()
+        context["total_authors"] = Blogpost.objects.filter(status="published").values("author").distinct().count()
         return context
 
 
@@ -33,7 +38,7 @@ class BlogpostDetailView(DetailView):
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
-        if obj.is_published:
+        if obj.status == "published":
             obj.number_of_views += 1
             obj.save()
         return obj
@@ -42,8 +47,13 @@ class BlogpostDetailView(DetailView):
 class BlogpostCreateView(CreateView):
     """Представление для создания статьи Блога"""
     model = Blogpost
-    fields = ["title", "author", "content", "preview",]
     template_name = "blog/blogpost_form.html"
+    form_class = BlogpostForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.status = "moderation"
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("blog:blogpost_list")
@@ -52,11 +62,16 @@ class BlogpostCreateView(CreateView):
 class BlogpostUpdateView(UpdateView):
     """Представление для редактирования статьи Блога"""
     model = Blogpost
-    fields = ["title", "author", "content", "preview", "is_published",]
     template_name = "blog/blogpost_form.html"
+    form_class = BlogpostForm
 
     def get_success_url(self):
         return reverse_lazy("blog:blogpost_list_detail", kwargs={"pk": self.object.pk})
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.status = "moderation"
+        return super().form_valid(form)
 
 
 class BlogpostDeleteView(DeleteView):
@@ -64,3 +79,8 @@ class BlogpostDeleteView(DeleteView):
     model = Blogpost
     template_name = "blog/blogpost_delete.html"
     success_url = reverse_lazy("blog:blogpost_list")
+    form_class = BlogpostForm
+
+    def test_func(self):
+        blogpost = self.get_object()
+        return self.request.user == blogpost.author

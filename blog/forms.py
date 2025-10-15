@@ -1,12 +1,25 @@
-# from django import forms
-# from .models import
-#
-# class FeedbackForm(forms.ModelForm):
-#     class Meta:
-#         model = MessageFeedback
-#         fields = ["name", "email", "message"]
-#         widgets = {
-#             "name": forms.TextInput(attrs={"class": "form-control"}),
-#             "email": forms.TextInput(attrs={"class": "form-control"}),
-#             "message": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
-#         }
+from django import forms
+from django.forms import ClearableFileInput
+
+from .models import Blogpost
+
+
+SPAM_WORDS = ["казино", "биржа", "обман", "криптовалюта", "дешево", "полиция", "крипта", "бесплатно", "радар"]
+
+
+class BlogpostForm(forms.ModelForm):
+    class Meta:
+        model = Blogpost
+        fields = ["title", "content", "preview"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "content": forms.Textarea(attrs={"class": "form-control", "rows": 20}),
+            "preview": forms.ClearableFileInput(attrs={"class": "form-control"}),
+        }
+
+    def clean_title(self):
+        title = self.cleaned_data.get("title")
+        for word in SPAM_WORDS:
+            if word in title:
+                raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в названиях")
+        return title
