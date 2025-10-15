@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 
@@ -28,13 +29,12 @@ def get_default_category():
 
 
 class Product(models.Model):
-
-
     name = models.CharField(max_length=150,
                             unique=True,
                             verbose_name="Наименование товара")
     slug = models.SlugField(unique=True, blank=True)
-    brief_description = models.TextField(null=True,
+    brief_description = models.TextField(max_length=100,
+                                         null=True,
                                          blank=True,
                                          verbose_name="Краткое описание товара")
     description = models.TextField(null=True,
@@ -50,11 +50,12 @@ class Product(models.Model):
                                  default=get_default_category)
     price = models.FloatField(null=False,
                               verbose_name="Цена товара",
-                              help_text="Введите число с плавающей точкой")
+                              help_text="Введите цену в формате 00.0")
     created_at = models.DateTimeField(auto_now_add=True,
                                       verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True,
                                       verbose_name="Дата последнего изменения")
+
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -66,7 +67,6 @@ class Product(models.Model):
                 counter += 1
             self.slug = slug
         super().save(*args, **kwargs)
-
 
     def __str__(self):
         return f"{self.name}: {self.price}"
