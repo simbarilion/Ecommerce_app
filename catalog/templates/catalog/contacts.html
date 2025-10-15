@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}Контакты{% endblock %}
 
@@ -38,7 +39,8 @@
                 <div class="card-body">
                     <form method="post" action="{% url 'catalog:contacts' %}" class="form-floating">
                         {% csrf_token %}
-                        {{ form.as_p }}
+                        {{ form.non_field_errors }}
+                        {{ form|crispy }}
                         <button type="submit" class="btn btn-lg w-100 btn-outline-primary">Отправить</button>
                     </form>
                 </div>

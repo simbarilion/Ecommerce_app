@@ -92,14 +92,14 @@ class Contacts(models.Model):
 
 class MessageFeedback(models.Model):
     name = models.CharField(max_length=150, verbose_name="Имя пользователя")
-    phone = models.CharField(max_length=20, verbose_name="Номер телефона пользователя")
-    message = models.TextField(verbose_name="Сообщение пользователя")
+    email = models.EmailField(verbose_name="E-mail пользователя")
+    message = models.TextField(max_length=2000, verbose_name="Сообщение пользователя")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
 
     def __str__(self):
-        return f"{self.name} {self.phone} {self.message}"
+        return f"{self.name} {self.email} {self.message}"
 
     class Meta:
         verbose_name = "обратная связь"
         verbose_name_plural = "обратная связь"
-        ordering = ["name", "phone", "created_at",]
+        ordering = ["name", "email", "created_at",]
