@@ -20,10 +20,11 @@
         {% else %}
             <p><img src="{% static 'images/default.png' %}" alt="Нет изображения" style="width: 200px; height: auto;"></p>
         {% endif %}
-
-        <a href="{% url 'blog:blogpost_update' post.pk %}" class="btn btn-primary">Редактировать</a>
-        <a href="{% url 'blog:blogpost_delete' post.pk %}" class="btn btn-danger mx-3">Удалить</a>
-        <a href="{% url 'blog:blogpost_list' %}" class="btn btn-secondary">Вернуться к списку</a>
+        <div class="flex-grow-1 text-center">
+            <a href="{% url 'blog:blogpost_update' post.pk %}" class="btn btn-primary">Редактировать</a>
+            <a href="{% url 'blog:blogpost_delete' post.pk %}" class="btn btn-danger mx-3">Удалить</a>
+            <a href="{% url 'blog:blogpost_list' %}" class="btn btn-secondary">Назад</a>
+        </div>
 
     </section>
 {% endblock %}

@@ -1,6 +1,3 @@
-from django.contrib import messages
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -71,43 +68,47 @@ class BlogpostUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("blog:blogpost_list_detail", kwargs={"pk": self.object.pk})
 
-    def test_func(self):
-        """Проверка пользователя на авторство"""
-        blogpost = self.get_object()
-        return self.request.user == blogpost.author
+    # def test_func(self):
+    #     """Проверка пользователя на авторство"""
+    #     blogpost = self.get_object()
+    #     return self.request.user == blogpost.author
+    #
+    # def handle_no_permission(self):
+    #     """Вызывается, если пользователь не является автором статьи"""
+    #     messages.error(self.request, "Вы не можете редартировать чужую статью")
+    #     return HttpResponseRedirect(self.success_url)
+    #
+    # def form_valid(self, form):
+    #     form.instance.author = self.request.user
+    #     form.instance.status = "moderation"
+    #     messages.success(self.request, f"Статья «{form.instance.title}» обновлена и отправлена на модерацию")
+    #     return super().form_valid(form)
 
-    def handle_no_permission(self):
-        """Вызывается, если пользователь не является автором статьи"""
-        messages.error(self.request, "Вы не можете удалить чужую статью")
-        return HttpResponseRedirect(self.success_url)
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        form.instance.status = "moderation"
-        messages.success(self.request, f"Статья «{form.instance.title}» обновлена и отправлена на модерацию")
-        return super().form_valid(form)
-
-
-class BlogpostDeleteView(UserPassesTestMixin, DeleteView):
+class BlogpostDeleteView(DeleteView):
     """Представление для удаления статьи Блога"""
     model = Blogpost
     template_name = "blog/blogpost_delete.html"
     success_url = reverse_lazy("blog:blogpost_list")
+    context_object_name = "blogpost"
 
-    def test_func(self):
-        """Проверка пользователя на авторство"""
-        blogpost = self.get_object()
-        return self.request.user == blogpost.author
+    # def test_func(self):
+    #     """Проверка пользователя на авторство"""
+    #     blogpost = self.get_object()
+    #     return self.request.user == blogpost.author
 
-    def handle_no_permission(self):
-        """Вызывается, если пользователь не является автором статьи"""
-        messages.error(self.request, "Вы не можете удалить чужую статью")
-        return HttpResponseRedirect(self.success_url)
-
-    def delete(self, request, *args, **kwargs):
-        """Архивирует статью"""
-        blogpost = self.get_object()
-        blogpost.status = "archived"
-        blogpost.save()
-        messages.success(request, f"Статья «{blogpost.title}» перемещена в архив")
-        return HttpResponseRedirect(self.success_url)
+    # def handle_no_permission(self):
+    #     """Вызывается, если пользователь не является автором статьи"""
+    #     blogpost = self.get_object()
+    #     messages.error(self.request, "Вы не можете удалить чужую статью")
+    #     self.object = blogpost
+    #     context = self.get_context_data()
+    #     return self.render_to_response(context)
+    #
+    # def delete(self, request, *args, **kwargs):
+    #     """Архивирует статью"""
+    #     blogpost = self.get_object()
+    #     blogpost.status = "archived"
+    #     blogpost.save()
+    #     messages.success(request, f"Статья «{blogpost.title}» перемещена в архив")
+    #     return HttpResponseRedirect(self.success_url)

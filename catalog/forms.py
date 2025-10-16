@@ -16,6 +16,10 @@ class FeedbackForm(forms.ModelForm):
         }
 
 
+class CustomClearableFileInput(forms.ClearableFileInput):
+    template_name = "widgets/custom_file_input.html"
+
+
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -24,9 +28,14 @@ class ProductForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "form-control"}),
             "brief_description": forms.TextInput(attrs={"class": "form-control"}),
             "description": forms.Textarea(attrs={"class": "form-control", "rows": 10}),
-            "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
+            "image": CustomClearableFileInput(attrs={"class": "form-control"}),
+            "category": forms.Select(attrs={"class": "form-select"}),
             "price": forms.NumberInput(attrs={"class": "form-control"}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].empty_label = "Нет категории"
 
     def clean_name(self):
         name = self.cleaned_data.get("name")

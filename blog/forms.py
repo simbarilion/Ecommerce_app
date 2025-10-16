@@ -6,6 +6,10 @@ from .models import Blogpost
 SPAM_WORDS = ["казино", "биржа", "обман", "криптовалюта", "дешево", "полиция", "крипта", "бесплатно", "радар"]
 
 
+class CustomClearableFileInput(forms.ClearableFileInput):
+    template_name = "widgets/custom_file_input.html"
+
+
 class BlogpostForm(forms.ModelForm):
     class Meta:
         model = Blogpost
@@ -13,7 +17,7 @@ class BlogpostForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control", "rows": 20}),
-            "preview": forms.ClearableFileInput(attrs={"class": "form-control"}),
+            "preview": CustomClearableFileInput(attrs={"class": "form-control"}),
         }
 
     def clean_title(self):

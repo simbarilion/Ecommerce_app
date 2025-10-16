@@ -363,7 +363,7 @@ form .btn-outline-primary {
     color: #fff;
     font-size: 20px;
     font-weight: 600;
-    width: 160px;
+    min-width: 160px;
     transition: 0.3s;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -502,6 +502,33 @@ form .btn-outline-primary {
     font-size: 1.1rem;
 }
 
+.btn-primary,
+.btn-danger{
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 20px;
+    font-weight: 600;
+    width: 160px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover,
+.btn-danger:hover{
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff;
+    transform: translateY(-2px);
+}
+
+.btn-primary:active,
+.btn-danger:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
 
 /* Карточка Создать/Редактировать статью Блога или карточку товара */
 .edit-form {
@@ -514,6 +541,7 @@ form .btn-outline-primary {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Заголовок карточки */
 .edit-form .card-header {
     font-size: 1.25rem;
     font-weight: 600;
@@ -527,10 +555,21 @@ form .btn-outline-primary {
     color: #1a1d20;
 }
 
+/* Тело формы */
 .edit-form .card-body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
     font-size: 1.05rem;
     line-height: 1.6;
     background-color: #fff;
+    color: #333;
+}
+
+/* Метки (лейблы) */
+.edit-form .form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #222;
 }
 
 /* Поля ввода */
@@ -541,21 +580,49 @@ form .btn-outline-primary {
     font-size: 1rem;
     padding: 0.5rem 0.75rem;
     border: 1px solid #ccc;
+    border-radius: 10px;
     box-sizing: border-box;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.05);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Наведение и фокус */
 .edit-form form input:focus,
 .edit-form form textarea:focus,
 .edit-form form select:focus {
     outline: none;
     border-color: #198754;
-    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+/* Подсказки */
+.edit-form .form-text {
+    font-size: 0.9em;
+    color: #666;
 }
 
 /* Отступы между полями */
 .edit-form form p {
     margin-bottom: 1.25rem;
+}
+
+/* Кастомное поле выбора файла */
+.custom-file-upload {
+    display: inline-block;
+    padding: 8px 14px;
+    cursor: pointer;
+    background-color: #198754;
+    color: white;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+    border: none;
+}
+.custom-file-upload:hover {
+    background-color: #157347;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none; /* скрыть стандартное поле */
 }
 
 /* Кнопки */
