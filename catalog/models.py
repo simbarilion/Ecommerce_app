@@ -43,7 +43,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to="products/images/",
                               null=True,
                               blank=True,
-                              verbose_name="Изображение")
+                              verbose_name="Изображение",
+                              default="images/default.png")
     category = models.ForeignKey(to=Category,
                                  on_delete=models.CASCADE,
                                  related_name="products",

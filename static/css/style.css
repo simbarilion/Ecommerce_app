@@ -147,12 +147,6 @@ body {
 }
 
 /*Баннер главной страницы*/
-.glass-banner {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    color: #f8f9fa;
-}
-
 /* Увеличенный текст */
 .lead-lg-logo{
     color: #212121;

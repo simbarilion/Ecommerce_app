@@ -20,7 +20,8 @@ class Blogpost(models.Model):
     preview = models.ImageField(upload_to="blog/images/",
                                 null=True,
                                 blank=True,
-                                verbose_name="Изображение")
+                                verbose_name="Изображение",
+                                default="images/default.png")
     created_at = models.DateTimeField(auto_now_add=True,
                                       verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True,

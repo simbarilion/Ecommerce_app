@@ -1,8 +1,20 @@
+import re
+
 from django import forms
+from rapidfuzz import fuzz
+
 from .models import MessageFeedback, Product
 
 
-SPAM_WORDS = ["казино", "биржа", "обман", "криптовалюта", "дешево", "полиция", "крипта", "бесплатно", "радар"]
+SPAM_WORDS = [
+    "казино", "биржа", "обман", "криптовалюта", "дешево", "полиция", "крипта", "бесплатно", "радар",
+    "игровые автоматы", "гемблинг", "ставки", "азартные игры", "слоты", "лохотрон", "мошенничество",
+    "scam", "фейк", "крипта", "биткоин", "эфириум", "altcoin", "токен", "blockchain", "низкая цена",
+    "скидка", "акция", "распродажа", "выгодно", "free", "подарок", "без оплаты", "даром", "радар",
+    "отслеживание", "слежка",
+]
+PATTERN = re.compile(r'\b(' + '|'.join(SPAM_WORDS) + r')\b', re.IGNORECASE)
+THRESHOLD = 80
 
 
 class FeedbackForm(forms.ModelForm):
@@ -33,36 +45,51 @@ class ProductForm(forms.ModelForm):
             "price": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['category'].empty_label = "Нет категории"
 
+
     def clean_name(self):
         name = self.cleaned_data.get("name")
-        for word in SPAM_WORDS:
-            if word in name:
+        if PATTERN.search(name):
+            raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в названиях")
+        for spam in SPAM_WORDS:
+            if spam.lower() in name.lower():
+                raise forms.ValidationError("Запрещенные слова!")
+        for spam in SPAM_WORDS:
+            if fuzz.ratio(spam, name) > THRESHOLD:
                 raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в названиях")
         return name
 
+
     def clean_brief_description(self):
         brief_description = self.cleaned_data.get("brief_description")
-        for word in SPAM_WORDS:
-            if word in brief_description:
+        if PATTERN.search(brief_description):
+            raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
+        for spam in SPAM_WORDS:
+            if fuzz.ratio(spam, brief_description) > THRESHOLD:
                 raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
         return brief_description
 
+
     def clean_description(self):
         description = self.cleaned_data.get("description")
-        for word in SPAM_WORDS:
-            if word in description:
+        if PATTERN.search(description):
+            raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
+        for spam in SPAM_WORDS:
+            if fuzz.ratio(spam, description) > THRESHOLD:
                 raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
         return description
+
 
     def clean_price(self):
         price = self.cleaned_data.get("price")
         if price <= 0:
             raise forms.ValidationError("Цена не может быть отрицательной или равной нулю")
         return price
+
 
     def clean_image(self):
         image = self.cleaned_data.get("image")
