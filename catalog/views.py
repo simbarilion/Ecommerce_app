@@ -53,6 +53,7 @@ class ProductDeleteView(DeleteView):
     """Представление для удаления карточки товара"""
     model = Product
     template_name = "catalog/product_delete.html"
+    context_object_name = "product"
     success_url = reverse_lazy("catalog:home")
 
 

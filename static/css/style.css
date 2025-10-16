@@ -184,14 +184,24 @@ body {
     text-decoration: none;
     border: 2px solid #27ae60;
     border-radius: 8px;
-    padding: 8px 16px;
-    transition: 0.3s;
+    padding: 8px 20px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-link:hover {
     background-color: #27ae60;
-    color: white;
+    color: #fff;
     text-decoration: none;
+    box-shadow: 4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff;
+    transform: translateY(-2px);
+}
+
+.btn-link:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Зеленая */
@@ -229,7 +239,7 @@ body {
 .btn-group {
     display: flex;
     flex-wrap: nowrap;
-    gap: 10px;
+    gap: 16px;
 }
 
 
@@ -346,31 +356,27 @@ form .btn-outline-primary {
 /* Кнопка Купить */
 .btn-buy {
     display: inline-block;
-    padding: 10px 30px;
+    padding: 8px 20px;
     border-radius: 8px;
     border: 2px solid #27ae60;
     background-color: #27ae60;
     color: #fff;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
+    width: 160px;
     transition: 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-buy:hover {
     background: #1e8449;
     border-color: #1e8449;
+    text-decoration: none;
+    box-shadow: 4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff;
+    transform: translateY(-2px);
 }
 
-/* Кнопка Назад */
-.btn-link {
-    border: 2px solid #27ae60;
-    border-radius: 8px;
-    padding: 8px 20px;
-    color: #27ae60;
-    text-decoration: none;
-    transition: 0.3s;
-    margin-right: 16px;
-}
 .btn-link:hover {
     background-color: #27ae60;
     color: #fff;
@@ -497,18 +503,18 @@ form .btn-outline-primary {
 }
 
 
-/* Карточка Создать/Редактировать статью Блога */
-.blog-form {
+/* Карточка Создать/Редактировать статью Блога или карточку товара */
+.edit-form {
     border-radius: 0.5rem;
     transition: all 0.25s ease;
 }
 
-.blog-form:hover {
+.edit-form:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-.blog-form .card-header {
+.edit-form .card-header {
     font-size: 1.25rem;
     font-weight: 600;
     letter-spacing: 0.3px;
@@ -517,20 +523,20 @@ form .btn-outline-primary {
     border-top-right-radius: 0.5rem;
 }
 
-.blog-form .card-header h4 {
+.edit-form .card-header h4 {
     color: #1a1d20;
 }
 
-.blog-form .card-body {
+.edit-form .card-body {
     font-size: 1.05rem;
     line-height: 1.6;
     background-color: #fff;
 }
 
 /* Поля ввода */
-.blog-form form input,
-.blog-form form textarea,
-.blog-form form select {
+.edit-form form input,
+.edit-form form textarea,
+.edit-form form select {
     width: 100%;
     font-size: 1rem;
     padding: 0.5rem 0.75rem;
@@ -539,45 +545,64 @@ form .btn-outline-primary {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.blog-form form input:focus,
-.blog-form form textarea:focus,
-.blog-form form select:focus {
+.edit-form form input:focus,
+.edit-form form textarea:focus,
+.edit-form form select:focus {
     outline: none;
     border-color: #198754;
     box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.25);
 }
 
 /* Отступы между полями */
-.blog-form form p {
+.edit-form form p {
     margin-bottom: 1.25rem;
 }
 
 /* Кнопки */
-.blog-form button.btn,
-.blog-form a.btn {
+.edit-form button.btn,
+.edit-form a.btn {
     font-size: 1rem;
     border-radius: 0.25rem;
     transition: all 0.2s ease;
 }
 
 /* Кнопка “Сохранить” */
-.blog-form button.btn-success {
-    background-color: #198754;
-    border-color: #198754;
+.edit-form button,
+a.btn-secondary{
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 20px;
+    font-weight: 600;
+    width: 160px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.blog-form button.btn-success:hover {
+.edit-form button:hover,
+a.btn-secondary:hover{
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff;
+    transform: translateY(-2px);
+}
+
+.edit-form button:active,
+a.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Кнопка “Сохранить” */
+.edit-form button.btn-success:hover {
     background-color: #157347;
     border-color: #146c43;
 }
 
 /* Кнопка “Отмена” */
-.blog-form a.btn-outline-secondary:hover {
+.edit-form a.btn-outline-secondary:hover {
     background-color: #777;
-}
-
-.blog-form .d-flex.justify-content-center {
-    gap: 1rem;
 }
 
 .small-padding th,
