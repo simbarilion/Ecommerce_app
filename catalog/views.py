@@ -9,7 +9,7 @@ from .models import Product, Contacts
 
 
 class HomeView(ListView):
-    """Представление для домашней страницы"""
+    """Представление для домашней страницы и списка товаров"""
     model = Product
     template_name = "catalog/home.html"
     context_object_name = "products"
@@ -21,8 +21,6 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
-    slug_field = "slug"
-    slug_url_kwarg = "slug"
 
 
 class ProductCreateView(CreateView):
@@ -41,12 +39,10 @@ class ProductUpdateView(UpdateView):
     model = Product
     template_name = "catalog/product_form.html"
     form_class = ProductForm
-    slug_field = "slug"
-    slug_url_kwarg = "slug"
     context_object_name = "product"
 
     def get_success_url(self):
-        return reverse_lazy("catalog:product_detail", kwargs={"slug": self.object.slug})
+        return reverse_lazy("catalog:product_detail", kwargs={"pk": self.object.pk})
 
 
 class ProductDeleteView(DeleteView):

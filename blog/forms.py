@@ -1,17 +1,16 @@
-import json
-import re
-
 from django import forms
-from fuzzywuzzy import fuzz
 
+from catalog.utils import SpamValidationMixin
 from .models import Blogpost
 
 
 class CustomClearableFileInput(forms.ClearableFileInput):
+    """Класс для создания кастомного поля формы для загрузки файлов"""
     template_name = "widgets/custom_file_input.html"
 
 
-class BlogpostForm(forms.ModelForm):
+class BlogpostForm(SpamValidationMixin, forms.ModelForm):
+    """Класс формы для создания карточки статьи"""
     class Meta:
         model = Blogpost
         fields = ["title", "content", "preview"]
@@ -22,43 +21,20 @@ class BlogpostForm(forms.ModelForm):
         }
 
 
-    THRESHOLD = 85
-
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.spam_words = self._load_spam_words("catalog/data/spam_words.json")
-        self.pattern = self._build_pattern(self.spam_words)
-
-
-    @staticmethod
-    def _load_spam_words(filepath):
-        with open(filepath, encoding="utf-8") as f:
-            data = json.load(f)
-        return [word.lower() for word in data.get("spam_words", [])]
-
-
-    @staticmethod
-    def _build_pattern(words):
-        """Создание regex-паттерна, который ищет любые из запрещённых слов"""
-        escaped = [re.escape(word) for word in words]
-        return re.compile(r'(' + "|".join(escaped) + r')\w*', re.IGNORECASE)
-
-
-    def _check_spam(self, text):
-        """Проверка текста на запрещенные слова с fuzzy matching"""
-        if not text:
-            return
-        text_lower = text.lower()
-        if self.pattern.search(text_lower):
-            raise forms.ValidationError("Текст содержит запрещенные слова, которые нельзя использовать")
-        for spam in self.spam_words:
-            score = fuzz.partial_ratio(spam, text_lower)
-            if score >= self.THRESHOLD:
-                raise forms.ValidationError(f"Запрещенные слова, которые нельзя использовать: '{spam}'")
-
-
     def clean_title(self):
+        """Метод валидации поля формы 'заголовок' на спам и запрещенные слова"""
         title = self.cleaned_data.get("title")
         self._check_spam(title)
         return title
+
+
+    def clean_image(self):
+        """Метод валидации поля формы 'изображение' на формат и размер файла"""
+        image = self.cleaned_data.get("preview")
+        if hasattr(image, "content_type"):
+            if image.content_type not in ["image/jpeg", "image/png"]:
+                raise forms.ValidationError("Файл должен быть в формате JPEG или PNG")
+            max_size_mb = 5
+            if image.size > max_size_mb * 1024 * 1024:
+                raise forms.ValidationError(f"Размер файла не должен превышать {max_size_mb} МБ")
+        return image

@@ -20,14 +20,14 @@
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>{{ obj.brief_description|truncatechars:100 }}</li>
                     </ul>
-                    {% if obj.slug %}
-                        <a href="{% url 'catalog:product_detail' slug=obj.slug %}" class="btn-link">Подробнее</a>
+                    {% if obj.pk %}
+                        <a href="{% url 'catalog:product_detail' pk=obj.pk %}" class="btn-link">Подробнее</a>
                     {% else %}
                         <span class="text-muted">Ссылка недоступна</span>
                     {% endif %}
                     <div class="btn-group">
-                        <a href="{% url 'catalog:product_update' slug=obj.slug %}" class="btn-link btn-blue mt-4">Редактировать</a>
-                        <a href="{% url 'catalog:product_delete' slug=obj.slug %}" class="btn-link btn-red mt-4">Удалить</a>
+                        <a href="{% url 'catalog:product_update' pk=obj.pk %}" class="btn-link btn-blue mt-4">Редактировать</a>
+                        <a href="{% url 'catalog:product_delete' pk=obj.pk %}" class="btn-link btn-red mt-4">Удалить</a>
                     </div>
                 </div>
             </div>

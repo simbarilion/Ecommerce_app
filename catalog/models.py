@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.text import slugify
 
 
 class Category(models.Model):
+    """Класс категории товаров"""
     name = models.CharField(max_length=100,
                             unique=True,
                             verbose_name="Наименование категории")
@@ -21,6 +21,7 @@ class Category(models.Model):
 
 
 def get_default_category():
+    """Устанавлмвает категорию по кмолчанию 'Без категории'"""
     category, created = Category.objects.get_or_create(
         name="Без категории",
         defaults={"description": "Категория по умолчанию"}
@@ -29,10 +30,10 @@ def get_default_category():
 
 
 class Product(models.Model):
+    """Класс товаров"""
     name = models.CharField(max_length=150,
                             unique=True,
                             verbose_name="Наименование товара")
-    slug = models.SlugField(unique=True, blank=True)
     brief_description = models.TextField(max_length=100,
                                          null=True,
                                          blank=True,
@@ -58,17 +59,6 @@ class Product(models.Model):
                                       verbose_name="Дата последнего изменения")
 
 
-    def save(self, *args, **kwargs):
-        if not self.slug or self.slug.strip() == "":
-            base_slug = slugify(self.name)
-            slug = base_slug
-            counter = 1
-            while Product.objects.filter(slug=slug).exclude(pk=self.pk).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-            self.slug = slug
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f"{self.name}: {self.price}"
 
@@ -80,6 +70,7 @@ class Product(models.Model):
 
 
 class Contacts(models.Model):
+    """Класс контактной информации"""
     country = models.CharField(max_length=20, verbose_name="Страна")
     address = models.CharField(max_length=150, verbose_name="Юридический адрес")
     email = models.EmailField(max_length=50, verbose_name="Адрес электронной почты")
@@ -94,6 +85,7 @@ class Contacts(models.Model):
 
 
 class MessageFeedback(models.Model):
+    """Класс обратной связи пользователей"""
     name = models.CharField(max_length=150, verbose_name="Имя пользователя")
     email = models.EmailField(verbose_name="E-mail пользователя")
     message = models.TextField(max_length=2000, verbose_name="Сообщение пользователя")

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Blogpost(models.Model):
+    """Класс статей блога"""
     STATUS_CHOICES = [
         ("moderation", "На модерации"),
         ("published", "Опубликовано"),

@@ -1,13 +1,11 @@
-import json
-import re
-
 from django import forms
-from fuzzywuzzy import fuzz
 
 from .models import MessageFeedback, Product
+from .utils import SpamValidationMixin
 
 
 class FeedbackForm(forms.ModelForm):
+    """Класс формы обратной связи"""
     class Meta:
         model = MessageFeedback
         fields = ["name", "email", "message"]
@@ -19,10 +17,12 @@ class FeedbackForm(forms.ModelForm):
 
 
 class CustomClearableFileInput(forms.ClearableFileInput):
+    """Класс для создания кастомного поля формы для загрузки файлов"""
     template_name = "widgets/custom_file_input.html"
 
 
-class ProductForm(forms.ModelForm):
+class ProductForm(SpamValidationMixin, forms.ModelForm):
+    """Класс формы для создания карточки товара"""
     class Meta:
         model = Product
         fields = ["name", "brief_description", "description", "image", "category", "price"]
@@ -35,60 +35,36 @@ class ProductForm(forms.ModelForm):
             "price": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
-    THRESHOLD = 85
 
     def __init__(self, *args, **kwargs):
+        """Инициализация атрибутов класса"""
         super().__init__(*args, **kwargs)
         self.fields['category'].empty_label = "Нет категории"
-        self.spam_words = self._load_spam_words("catalog/data/spam_words.json")
-        self.pattern = self._build_pattern(self.spam_words)
-
-
-    @staticmethod
-    def _load_spam_words(filepath):
-        with open(filepath, encoding="utf-8") as f:
-            data = json.load(f)
-        return [word.lower() for word in data.get("spam_words", [])]
-
-    @staticmethod
-    def _build_pattern(words):
-        """Создание regex-паттерна, который ищет любые из запрещённых слов"""
-        escaped = [re.escape(word) for word in words]
-        return re.compile(r'(' + "|".join(escaped) + r')\w*', re.IGNORECASE)
-
-
-    def _check_spam(self, text):
-        """Проверка текста на запрещенные слова с fuzzy matching"""
-        if not text:
-            return
-        text_lower = text.lower()
-        if self.pattern.search(text_lower):
-            raise forms.ValidationError("Текст содержит запрещенные слова, которые нельзя использовать")
-        for spam in self.spam_words:
-            score = fuzz.partial_ratio(spam, text_lower)
-            if score >= self.THRESHOLD:
-                raise forms.ValidationError(f"Запрещенные слова, которые нельзя использовать: '{spam}'")
 
 
     def clean_name(self):
+        """Метод валидации поля формы 'наименование товара' на спам и запрещенные слова"""
         name = self.cleaned_data.get("name")
         self._check_spam(name)
         return name
 
 
     def clean_brief_description(self):
+        """Метод валидации поля формы 'краткое описание товара' на спам и запрещенные слова"""
         brief_description = self.cleaned_data.get("brief_description")
         self._check_spam(brief_description)
         return brief_description
 
 
     def clean_description(self):
+        """Метод валидации поля формы 'описание товара' на спам и запрещенные слова"""
         description = self.cleaned_data.get("description")
         self._check_spam(description)
         return description
 
 
     def clean_price(self):
+        """Метод валидации поля формы 'цена товара'"""
         price = self.cleaned_data.get("price")
         if price <= 0:
             raise forms.ValidationError("Цена не может быть отрицательной или равной нулю")
@@ -96,8 +72,9 @@ class ProductForm(forms.ModelForm):
 
 
     def clean_image(self):
+        """Метод валидации поля формы 'изображение' на формат и размер файла"""
         image = self.cleaned_data.get("image")
-        if hasattr(image, 'content_type'):
+        if hasattr(image, "content_type"):
             if image.content_type not in ["image/jpeg", "image/png"]:
                 raise forms.ValidationError("Файл должен быть в формате JPEG или PNG")
             max_size_mb = 5
