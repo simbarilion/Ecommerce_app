@@ -3,9 +3,20 @@ body {
     background: linear-gradient(to bottom, #ffffff, #e8f8f5, #1e8449);
     color: #2c3e50;
     min-height: 100vh;
+    padding-top: 80px;
 }
 
 /* Шапка */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 .box-shadow {
     background: linear-gradient(
         135deg,

@@ -1,20 +1,10 @@
+import json
 import re
 
 from django import forms
-from rapidfuzz import fuzz
+from fuzzywuzzy import fuzz
 
 from .models import MessageFeedback, Product
-
-
-SPAM_WORDS = [
-    "казино", "биржа", "обман", "криптовалюта", "дешево", "полиция", "крипта", "бесплатно", "радар",
-    "игровые автоматы", "гемблинг", "ставки", "азартные игры", "слоты", "лохотрон", "мошенничество",
-    "scam", "фейк", "крипта", "биткоин", "эфириум", "altcoin", "токен", "blockchain", "низкая цена",
-    "скидка", "акция", "распродажа", "выгодно", "free", "подарок", "без оплаты", "даром", "радар",
-    "отслеживание", "слежка",
-]
-PATTERN = re.compile(r'\b(' + '|'.join(SPAM_WORDS) + r')\b', re.IGNORECASE)
-THRESHOLD = 80
 
 
 class FeedbackForm(forms.ModelForm):
@@ -45,42 +35,56 @@ class ProductForm(forms.ModelForm):
             "price": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
+    THRESHOLD = 85
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['category'].empty_label = "Нет категории"
+        self.spam_words = self._load_spam_words("catalog/data/spam_words.json")
+        self.pattern = self._build_pattern(self.spam_words)
+
+
+    @staticmethod
+    def _load_spam_words(filepath):
+        with open(filepath, encoding="utf-8") as f:
+            data = json.load(f)
+        return [word.lower() for word in data.get("spam_words", [])]
+
+    @staticmethod
+    def _build_pattern(words):
+        """Создание regex-паттерна, который ищет любые из запрещённых слов"""
+        escaped = [re.escape(word) for word in words]
+        return re.compile(r'(' + "|".join(escaped) + r')\w*', re.IGNORECASE)
+
+
+    def _check_spam(self, text):
+        """Проверка текста на запрещенные слова с fuzzy matching"""
+        if not text:
+            return
+        text_lower = text.lower()
+        if self.pattern.search(text_lower):
+            raise forms.ValidationError("Текст содержит запрещенные слова, которые нельзя использовать")
+        for spam in self.spam_words:
+            score = fuzz.partial_ratio(spam, text_lower)
+            if score >= self.THRESHOLD:
+                raise forms.ValidationError(f"Запрещенные слова, которые нельзя использовать: '{spam}'")
 
 
     def clean_name(self):
         name = self.cleaned_data.get("name")
-        if PATTERN.search(name):
-            raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в названиях")
-        for spam in SPAM_WORDS:
-            if spam.lower() in name.lower():
-                raise forms.ValidationError("Запрещенные слова!")
-        for spam in SPAM_WORDS:
-            if fuzz.ratio(spam, name) > THRESHOLD:
-                raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в названиях")
+        self._check_spam(name)
         return name
 
 
     def clean_brief_description(self):
         brief_description = self.cleaned_data.get("brief_description")
-        if PATTERN.search(brief_description):
-            raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
-        for spam in SPAM_WORDS:
-            if fuzz.ratio(spam, brief_description) > THRESHOLD:
-                raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
+        self._check_spam(brief_description)
         return brief_description
 
 
     def clean_description(self):
         description = self.cleaned_data.get("description")
-        if PATTERN.search(description):
-            raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
-        for spam in SPAM_WORDS:
-            if fuzz.ratio(spam, description) > THRESHOLD:
-                raise forms.ValidationError("Запрещенные слова, которые нельзя использовать в описании товара")
+        self._check_spam(description)
         return description
 
 

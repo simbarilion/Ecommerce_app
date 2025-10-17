@@ -21,7 +21,7 @@ class Blogpost(models.Model):
                                 null=True,
                                 blank=True,
                                 verbose_name="Изображение",
-                                default="images/default.png")
+                                default="products/images/default.png")
     created_at = models.DateTimeField(auto_now_add=True,
                                       verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True,

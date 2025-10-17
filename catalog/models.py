@@ -44,7 +44,7 @@ class Product(models.Model):
                               null=True,
                               blank=True,
                               verbose_name="Изображение",
-                              default="images/default.png")
+                              default="products/images/default.png")
     category = models.ForeignKey(to=Category,
                                  on_delete=models.CASCADE,
                                  related_name="products",
@@ -59,11 +59,11 @@ class Product(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if not self.slug or self.slug.strip() == "":
             base_slug = slugify(self.name)
             slug = base_slug
             counter = 1
-            while Product.objects.filter(slug=slug).exists():
+            while Product.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug
