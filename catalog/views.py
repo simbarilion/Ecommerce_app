@@ -10,7 +10,7 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 
 from .forms import FeedbackForm, ProductForm
 
-from .models import Product, Contacts
+from .models import Product, Contacts, Category
 
 
 class ProductListView(ListView):
@@ -18,6 +18,22 @@ class ProductListView(ListView):
     model = Product
     context_object_name = "products"
     paginate_by = 9
+    template_name = "catalog/home.html"
+
+    def get_queryset(self):
+        """Возвращает все товары или товары по категории, если передан параметр category_id"""
+        queryset = super().get_queryset()
+        category_id = self.request.GET.get("category_id")
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+        return queryset
+
+
+    def get_context_data(self, **kwargs):
+        """Добавляет список всех категорий в контекст"""
+        context = super().get_context_data(**kwargs)
+        context["current_category_id"] = self.request.GET.get("category_id")
+        return context
 
 
 class ProductDetailView(DetailView):

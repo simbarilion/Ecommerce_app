@@ -7,7 +7,7 @@ app_name = "catalog"
 
 
 urlpatterns = [
-    path("home/", ProductListView.as_view(template_name="catalog/home.html"), name="home"),
+    path("home/", ProductListView.as_view(), name="home"),
     path("search/", product_search_view, name="product_search"),
     path("product/<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
     path("create/", ProductCreateView.as_view(), name="product_create"),

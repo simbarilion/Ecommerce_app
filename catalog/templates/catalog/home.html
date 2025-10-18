@@ -36,7 +36,11 @@
         {% endfor %}
     </div>
 
-    {% include "includes/pagination.html" %}
+    {% if page_obj.has_other_pages %}
+        <div class="mt-auto">
+            {% include "includes/pagination.html" %}
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}
