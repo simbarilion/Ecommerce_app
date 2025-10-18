@@ -1,6 +1,7 @@
 from django.urls import path
 
-from blog.views import BlogpostListView, BlogpostDetailView, BlogpostCreateView, BlogpostUpdateView, BlogpostDeleteView
+from blog.views import BlogpostListView, BlogpostDetailView, BlogpostCreateView, BlogpostUpdateView, BlogpostDeleteView, \
+    blogpost_search_view
 
 app_name = "blog"
 
@@ -31,4 +32,5 @@ urlpatterns = [
     path("blogposts_editor/<int:pk>/delete/",
          BlogpostDeleteView.as_view(),
          name="blogpost_delete"),
+    path("search/", blogpost_search_view, name="blogpost_search"),
 ]

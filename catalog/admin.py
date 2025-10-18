@@ -24,6 +24,6 @@ class ContactInfoAdmin(admin.ModelAdmin):
 
 @admin.register(MessageFeedback)
 class MessageFeedbackAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "phone", "message", "created_at",)
-    list_filter = ("name", "phone", "created_at",)
-    search_fields = ("name", "phone",)
+    list_display = ("id", "name", "email", "message", "created_at",)
+    list_filter = ("name", "email", "created_at",)
+    search_fields = ("name", "email",)

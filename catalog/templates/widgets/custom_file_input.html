@@ -1,0 +1,24 @@
+<div class="mb-3">
+    <label for="{{ widget.attrs.id }}" class="form-label">Изображение товара</label>
+    <label class="custom-file-upload">
+        <input type="file" name="{{ widget.name }}" id="{{ widget.attrs.id }}" {% include "django/forms/widgets/attrs.html" %}>
+        📁 Выберите файл
+    </label>
+    <span id="file-name" class="form-text mt-2"></span>
+    {% if widget.value %}
+        <p class="form-text mt-2">Текущее изображение: <a href="{{ widget.value.url }}" target="_blank">{{ widget.value.name }}</a></p>
+    {% endif %}
+</div>
+
+<script>
+    const fileInput = document.getElementById('{{ widget.attrs.id }}');
+    const fileNameSpan = document.getElementById('file-name');
+
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            fileNameSpan.textContent = "Выбран файл: " + fileInput.files[0].name;
+        } else {
+            fileNameSpan.textContent = "";
+        }
+    });
+</script>

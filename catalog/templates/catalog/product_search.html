@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load highlight %}
+
+{% block content %}
+<div class="container mt-5">
+    {% include "includes/search_bar.html" %}
+    <div class="container mt-5">
+        <h2 class="fw-normal">Поиск товаров{% if query %} по запросу "{{ query }}"{% endif %}</h2>
+        <hr>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        {% if not query %}
+            <h4 class="fw-normal">Введите ключевое слово для поиска</h4>
+        {% elif not page_obj %}
+            <h4 class="fw-normal">Ничего не найдено</h4>
+        {% else %}
+            <ul class="list-group">
+                {% for product in products %}
+                    <li class="list-group-item py-3">
+                        <a href="{% url "catalog:product_detail" product.id %}"
+                           class="text-dark text-decoration-none fw-semibold">
+                            <u>{{ product.name|highlight:query|safe }}</u>
+                        </a><br>
+                        <small>{{ product.brief_description|highlight:query|safe }}</small><br>
+                        <small>{{ product.description|truncatewords:100|highlight:query|safe }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+
+{% if page_obj.has_other_pages %}
+    <div class="mt-auto">
+        {% include "includes/pagination.html" %}
+    </div>
+{% endif %}
+
+{% endblock %}

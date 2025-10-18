@@ -2,10 +2,21 @@
 body {
     background: linear-gradient(to bottom, #ffffff, #e8f8f5, #1e8449);
     color: #2c3e50;
-    min-height: 100vh;
+    min-height: 200vh;
+    padding-top: 80px;
 }
 
 /* Шапка */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 .box-shadow {
     background: linear-gradient(
         135deg,
@@ -23,10 +34,6 @@ body {
     color: var(--text-dark);
     transition: all 0.3s ease;
 }
-/*.box-shadow:hover {*/
-/*    box-shadow: 0 10px 28px rgba(30, 150, 100, 0.25);*/
-/*    transform: translateY(-2px);*/
-/*}*/
 
 .title {
   display: flex;
@@ -150,9 +157,65 @@ body {
     }
 }
 
+/*Баннер главной страницы*/
+/* Увеличенный текст */
+.lead-lg-logo{
+    color: #212121;
+}
+
+/* Увеличенный текст */
+.lead-lg {
+    color: #212121;
+    font-size: 1.5rem;
+    line-height: 1.0;
+}
+
+/* Цветной текст для карточек */
+.text-success {
+    font-size: 1.2rem;
+    line-height: 1.0;
+}
+
+/* Анимация появления */
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+    animation: fadeInUp 0.6s forwards;
+    opacity: 0;
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }
+.delay-5 { animation-delay: 1s; }
+.delay-6 { animation-delay: 1.2s; }
+
+/* Hover анимация кнопки */
+.cta-btn {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.cta-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Hover эффект для карточек */
+.feature-card {
+    transition: transform 0.3s, background-color 0.3s;
+}
+.feature-card:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Карточки товаров */
 /* Заголовок */
 .pricing-header {
-    color: #000;
+    color: #343a40;
     text-shadow: none;
 }
 
@@ -188,15 +251,64 @@ body {
     text-decoration: none;
     border: 2px solid #27ae60;
     border-radius: 8px;
-    padding: 8px 16px;
-    transition: 0.3s;
+    padding: 8px 20px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-link:hover {
     background-color: #27ae60;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff;
+    transform: translateY(-2px);
+}
+
+.btn-link:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Зеленая */
+.btn-link.btn-green {
+    color: #27ae60;
+    border: 2px solid #27ae60;
+    width: 160px;
+}
+
+/* Синяя */
+.btn-link.btn-blue {
+    color: #0a53be;
+    border: 2px solid #0a53be;
+}
+
+.btn-link.btn-blue:hover {
+    background-color: #0a53be;
     color: white;
     text-decoration: none;
 }
+
+/* Красная */
+.btn-link.btn-red {
+    color: #b02a37;
+    border: 2px solid #b02a37;
+    width: 160px;
+}
+
+.btn-link.btn-red:hover {
+    background-color: #b02a37;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+}
+
 
 /* Футер */
 footer {
@@ -265,6 +377,7 @@ footer a:hover {
     margin-top: 30px;
 }
 
+/*Форма*/
 /* Кнопка формы */
 .card-header {
     border-radius: 6px;
@@ -303,7 +416,6 @@ form .btn-outline-primary {
 }
 
 /* Полная карточка товара*/
-
 .card-text {
     text-align: justify;
 }
@@ -311,31 +423,27 @@ form .btn-outline-primary {
 /* Кнопка Купить */
 .btn-buy {
     display: inline-block;
-    padding: 10px 30px;
+    padding: 8px 20px;
     border-radius: 8px;
     border: 2px solid #27ae60;
     background-color: #27ae60;
     color: #fff;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
+    min-width: 160px;
     transition: 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-buy:hover {
     background: #1e8449;
     border-color: #1e8449;
+    text-decoration: none;
+    box-shadow: 4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff;
+    transform: translateY(-2px);
 }
 
-/* Кнопка Назад */
-.btn-link {
-    border: 2px solid #27ae60;
-    border-radius: 8px;
-    padding: 8px 20px;
-    color: #27ae60;
-    text-decoration: none;
-    transition: 0.3s;
-    margin-right: 16px;
-}
 .btn-link:hover {
     background-color: #27ae60;
     color: #fff;
@@ -397,15 +505,17 @@ form .btn-outline-primary {
 
 /* Поисковая строка */
 .search-input {
-    border: 2px solid #27ae60;
+    border: 2px solid rgba(85, 85, 85, 0.3);
+    background-color: #f8f9fa;
+    color: #222;
     border-radius: 8px;
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .search-input:focus {
-    outline: none;
-    border-color: #1e8449;
-    box-shadow: 0 0 6px rgba(46, 204, 113, 0.4);
+    background-color: #fff;
+    border-color: rgba(85, 85, 85, 0.3);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
 }
 
 /* Карточки Блога */
@@ -461,19 +571,47 @@ form .btn-outline-primary {
     font-size: 1.1rem;
 }
 
+.btn-primary,
+.btn-danger{
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 20px;
+    font-weight: 600;
+    width: 160px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-/* Карточка Создать/Редактировать статью Блога */
-.blog-form {
+.btn-primary:hover,
+.btn-danger:hover{
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff;
+    transform: translateY(-2px);
+}
+
+.btn-primary:active,
+.btn-danger:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Карточка Создать/Редактировать статью Блога или карточку товара */
+.edit-form {
     border-radius: 0.5rem;
     transition: all 0.25s ease;
 }
 
-.blog-form:hover {
+.edit-form:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-.blog-form .card-header {
+/* Заголовок карточки */
+.edit-form .card-header {
     font-size: 1.25rem;
     font-weight: 600;
     letter-spacing: 0.3px;
@@ -482,65 +620,128 @@ form .btn-outline-primary {
     border-top-right-radius: 0.5rem;
 }
 
-.blog-form .card-header h4 {
+.edit-form .card-header h4 {
     color: #1a1d20;
 }
 
-.blog-form .card-body {
+/* Тело формы */
+.edit-form .card-body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
     font-size: 1.05rem;
     line-height: 1.6;
     background-color: #fff;
+    color: #333;
+}
+
+/* Метки (лейблы) */
+.edit-form .form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #222;
 }
 
 /* Поля ввода */
-.blog-form form input,
-.blog-form form textarea,
-.blog-form form select {
+.edit-form form input,
+.edit-form form textarea,
+.edit-form form select {
     width: 100%;
     font-size: 1rem;
     padding: 0.5rem 0.75rem;
     border: 1px solid #ccc;
+    border-radius: 10px;
     box-sizing: border-box;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.05);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.blog-form form input:focus,
-.blog-form form textarea:focus,
-.blog-form form select:focus {
+/* Наведение и фокус */
+.edit-form form input:focus,
+.edit-form form textarea:focus,
+.edit-form form select:focus {
     outline: none;
     border-color: #198754;
-    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+/* Подсказки */
+.edit-form .form-text {
+    font-size: 0.9em;
+    color: #666;
 }
 
 /* Отступы между полями */
-.blog-form form p {
+.edit-form form p {
     margin-bottom: 1.25rem;
 }
 
+/* Кастомное поле выбора файла */
+.custom-file-upload {
+    display: inline-block;
+    padding: 8px 14px;
+    cursor: pointer;
+    background-color: #198754;
+    color: white;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+    border: none;
+}
+.custom-file-upload:hover {
+    background-color: #157347;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none; /* скрыть стандартное поле */
+}
+
 /* Кнопки */
-.blog-form button.btn,
-.blog-form a.btn {
+.edit-form button.btn,
+.edit-form a.btn {
     font-size: 1rem;
     border-radius: 0.25rem;
     transition: all 0.2s ease;
 }
 
 /* Кнопка “Сохранить” */
-.blog-form button.btn-success {
-    background-color: #198754;
-    border-color: #198754;
+.edit-form button,
+a.btn-secondary{
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 20px;
+    font-weight: 600;
+    width: 160px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.blog-form button.btn-success:hover {
+.edit-form button:hover,
+a.btn-secondary:hover{
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff;
+    transform: translateY(-2px);
+}
+
+.edit-form button:active,
+a.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Кнопка “Сохранить” */
+.edit-form button.btn-success:hover {
     background-color: #157347;
     border-color: #146c43;
 }
 
 /* Кнопка “Отмена” */
-.blog-form a.btn-outline-secondary:hover {
+.edit-form a.btn-outline-secondary:hover {
     background-color: #777;
 }
 
-.blog-form .d-flex.justify-content-center {
-    gap: 1rem;
+.small-padding th,
+.small-padding td {
+    padding: 0.6rem 0.9rem;
 }
