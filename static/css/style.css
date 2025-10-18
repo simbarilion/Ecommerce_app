@@ -2,7 +2,7 @@
 body {
     background: linear-gradient(to bottom, #ffffff, #e8f8f5, #1e8449);
     color: #2c3e50;
-    min-height: 100vh;
+    min-height: 200vh;
     padding-top: 80px;
 }
 
@@ -505,15 +505,17 @@ form .btn-outline-primary {
 
 /* Поисковая строка */
 .search-input {
-    border: 2px solid #27ae60;
+    border: 2px solid rgba(85, 85, 85, 0.3);
+    background-color: #f8f9fa;
+    color: #222;
     border-radius: 8px;
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .search-input:focus {
-    outline: none;
-    border-color: #1e8449;
-    box-shadow: 0 0 6px rgba(46, 204, 113, 0.4);
+    background-color: #fff;
+    border-color: rgba(85, 85, 85, 0.3);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
 }
 
 /* Карточки Блога */

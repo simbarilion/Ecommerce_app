@@ -1,3 +1,8 @@
+import re
+
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -112,3 +117,28 @@ class BlogpostDeleteView(DeleteView):
     #     blogpost.save()
     #     messages.success(request, f"Статья «{blogpost.title}» перемещена в архив")
     #     return HttpResponseRedirect(self.success_url)
+
+
+def blogpost_search_view(request):
+    query = request.GET.get("q", "").strip()
+    blogposts = Blogpost.objects.none()
+
+    if query:
+        keywords = re.findall(r'\w+', query)
+
+        q_objects = Q()
+        for word in keywords:
+            q_objects |= (Q(title__icontains=word) | Q(content__icontains=word))
+
+        blogposts = Blogpost.objects.filter(q_objects, status="published").distinct()
+
+    paginator = Paginator(blogposts, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "search_type": "blog",
+        "query": query,
+        "page_obj": page_obj,
+    }
+    return render(request, "blog/blogpost_search.html", context)

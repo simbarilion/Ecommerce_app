@@ -1,4 +1,9 @@
+import re
+
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
@@ -8,12 +13,11 @@ from .forms import FeedbackForm, ProductForm
 from .models import Product, Contacts
 
 
-class HomeView(ListView):
+class ProductListView(ListView):
     """Представление для домашней страницы и списка товаров"""
     model = Product
-    template_name = "catalog/home.html"
     context_object_name = "products"
-    paginate_by = 6
+    paginate_by = 9
 
 
 class ProductDetailView(DetailView):
@@ -72,3 +76,30 @@ class ContactsView(FormView):
     def form_invalid(self, form):
         messages.error(self.request, "Пожалуйста, заполните все поля")
         return super().form_invalid(form)
+
+
+def product_search_view(request):
+    query = request.GET.get("q", "").strip()
+    products = []
+
+    if query:
+        keywords = re.findall(r'\w+', query)
+
+        q_objects = Q()
+        for word in keywords:
+            q_objects &= (Q(name__icontains=word) |
+                          Q(brief_description__icontains=word) |
+                          Q(description__icontains=word))
+
+        products = Product.objects.filter(q_objects)
+
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "search_type": "product",
+        "query": query,
+        "page_obj": page_obj,
+    }
+    return render(request, "catalog/product_search.html", context)

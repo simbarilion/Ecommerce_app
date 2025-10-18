@@ -32,8 +32,8 @@
                     {% for post in blogposts %}
                         <tr>
                             <td>
-                                <a href="{% url 'blog:blogpost_list_detail' post.pk %}" class="fw-semibold text-decoration-none text-primary">
-                                    {{ post.title }}
+                                <a href="{% url 'blog:blogpost_list_detail' post.pk %}" class="text-dark text-decoration-none fw-semibold">
+                                    <u>{{ post.title }}</u>
                                 </a>
                             </td>
                             <td>{{ post.author }}</td>
