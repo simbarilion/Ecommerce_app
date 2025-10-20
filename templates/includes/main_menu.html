@@ -11,22 +11,34 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
                         <path d="M6.5 14.5v-5h3v5a1 1 0 0 0 1 1h2.5v-7h1L8 1 0 8.5h1v7H3a1 1 0 0 0 1-1z"/>
                     </svg>
-                    Главная</a></li>
-                <li><a class="nav-link" href="{% url "catalog:home" %}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
-                        <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm5 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-4 10v-1h8v1H4z"/>
-                    </svg>
-                    Категории</a></li>
+                    Главная</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="{% url "catalog:home" %}" id="navbarDropdownMenuLink"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
+                            <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm5 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-4 10v-1h8v1H4z"/>
+                        </svg>
+                        Категории</a>
+                    <ul class="dropdown-menu">
+                        {% for category in global_categories %}
+                            <li><a class="dropdown-item" href="{% url "catalog:home" %}?category_id={{ category.id }}">{{ category.name }}</a></li>
+                        {% endfor %}
+                        <li><a class="dropdown-item" href="{% url "catalog:home" %}">Все товары</a></li>
+                    </ul>
+                </li>
                 <li><a class="nav-link" href="{% url "catalog:contacts" %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
                         <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm5 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-4 10v-1h8v1H4z"/>
                     </svg>
-                    Контакты</a></li>
+                    Контакты</a>
+                </li>
                 <li><a class="nav-link" href="{% url "blog:blog_main" %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
                         <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm5 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-4 10v-1h8v1H4z"/>
                     </svg>
-                    Блог</a></li>
+                    Блог</a>
+                </li>
             </ul>
         </nav>
 

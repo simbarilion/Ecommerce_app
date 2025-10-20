@@ -28,6 +28,7 @@ class BlogpostListView(ListView):
         context = super().get_context_data(**kwargs)
         context["total_posts"] = Blogpost.objects.filter(status="published").count()
         context["total_authors"] = Blogpost.objects.filter(status="published").values("author").distinct().count()
+        context["search_type"] = "blog"
         return context
 
 
