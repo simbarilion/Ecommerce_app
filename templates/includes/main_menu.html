@@ -19,7 +19,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
                             <path d="M1 3a1 1 0 0 1 1-1h4l2 2h6a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3zm1 0v9h12V5H7L5 3H2z"/>
                         </svg>
-                        Категории</a>
+                        Категории товаров</a>
                     <ul class="dropdown-menu">
                         {% for category in global_categories %}
                             <li><a class="dropdown-item" href="{% url "catalog:home" %}?category_id={{ category.id }}">{{ category.name }}</a></li>
