@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
 
     "catalog",
-    "blog"
+    "blog",
+    "users"
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ["bootstrap5"]
@@ -138,3 +139,8 @@ MESSAGE_TAGS = {
     messages.WARNING: "warning",
     messages.ERROR: "danger",
 }
+
+
+# Users settings
+
+AUTH_USER_MODEL = "users.CustomUser"

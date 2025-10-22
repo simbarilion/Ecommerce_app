@@ -1,6 +1,6 @@
 from django.db import models
 
-from django.contrib.auth.models import User
+from users.models import CustomUser
 
 
 class Blogpost(models.Model):
@@ -13,7 +13,7 @@ class Blogpost(models.Model):
 
     title = models.CharField(max_length=150,
                              verbose_name="Заголовок статьи")
-    author = models.ForeignKey(User,
+    author = models.ForeignKey(CustomUser,
                                on_delete=models.CASCADE,
                                related_name="posts",
                                verbose_name="Автор")
