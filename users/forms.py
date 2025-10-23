@@ -6,6 +6,7 @@ from catalog.forms import CustomClearableFileInput
 
 
 class CustomUserCreationForm(UserCreationForm):
+    """Класс формы для регистрации пользователя"""
     username = forms.CharField(max_length=150, help_text="Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.")
 
 

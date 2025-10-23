@@ -5,6 +5,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class CustomUser(AbstractUser):
+    """Класс модели пользователя"""
     email = models.EmailField(unique=True, verbose_name="Email")
     phone_number = PhoneNumberField(region='RU', blank=True, null=True, verbose_name="Номер телефона", help_text="Необязательное поле")
     avatar = models.ImageField(upload_to="users/avatars/", blank=True, null=True, verbose_name="Аватар", default="products/images/default.png")

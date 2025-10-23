@@ -41,6 +41,7 @@ class Blogpost(models.Model):
 
     @property
     def author_name(self):
+        """Возвращает username автора в качестве имени автора, если его нет - возвращает email"""
         return self.author.username or self.author.email
 
 

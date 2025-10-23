@@ -4,6 +4,7 @@ from django.db import IntegrityError
 
 
 class Command(BaseCommand):
+    help = "Создает суперпользователя, если он не создан"
 
     def handle(self, *args, **options):
         User = get_user_model()

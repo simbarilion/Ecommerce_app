@@ -54,6 +54,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     context_object_name = "product"
 
     def get_success_url(self):
+        """При успешном создании карточки товара возвращает на страницу просмотра товара"""
         return reverse_lazy("catalog:home")
 
 
@@ -65,6 +66,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     context_object_name = "product"
 
     def get_success_url(self):
+        """При успешном редактировании карточки товара возвращает на страницу просмотра товара"""
         return reverse_lazy("catalog:product_detail", kwargs={"pk": self.object.pk})
 
 
@@ -83,21 +85,25 @@ class ContactsView(FormView):
     success_url = reverse_lazy("catalog:contacts")
 
     def get_context_data(self, **kwargs):
+        """Добавляет последнюю сохраненную контактную информацию в контекст"""
         context = super().get_context_data(**kwargs)
         context["contacts"] = Contacts.objects.last()
         return context
 
     def form_valid(self, form):
+        """Сохраняет данные формы в базу данных, добавляет 'флеш-сообщение'"""
         feedback = form.save()
         messages.success(self.request, f"Спасибо, {feedback.name}! Ваше сообщение получено")
         return super().form_valid(form)
 
     def form_invalid(self, form):
+        """Добавляет сообщение об ошибке, возвращает пользователя на страницу с формой и показывает ошибки валидации"""
         messages.error(self.request, "Пожалуйста, заполните все поля")
         return super().form_invalid(form)
 
 
 def product_search_view(request):
+    """Осуществляет поисковый запрос товаров"""
     query = request.GET.get("q", "").strip()
     products = []
 

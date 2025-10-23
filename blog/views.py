@@ -18,14 +18,18 @@ class BlogpostListView(ListView):
     context_object_name = "blogposts"
     limit = None
 
+
     def get_queryset(self):
+        """Возвращает статьи блога - опубликованные или на модерации - по условию"""
         if self.template_name == "blog/blogpost_list.html":
             queryset = Blogpost.objects.filter(status__in=["published", "moderation"]).order_by("-created_at")
         else:
             queryset = Blogpost.objects.filter(status="published").order_by("-created_at")
         return queryset[:self.limit] if self.limit else queryset
 
+
     def get_context_data(self, **kwargs):
+        """Добавляет количество публикаций и авторов в контекст, создает контекст для поискового запроса"""
         context = super().get_context_data(**kwargs)
         context["total_posts"] = Blogpost.objects.filter(status="published").count()
         context["total_authors"] = Blogpost.objects.filter(status="published").values("author").distinct().count()
@@ -39,11 +43,13 @@ class BlogpostDetailView(DetailView):
     context_object_name = "post"
 
     def get_context_data(self, **kwargs):
+        """Добавляет количество публикаций автора в контекст"""
         context = super().get_context_data(**kwargs)
         context["author_posts_count"] = Blogpost.objects.filter(author=self.object.author).count()
         return context
 
     def get_object(self, queryset=None):
+        """Увеличивает счетчик просмотров"""
         obj = super().get_object(queryset)
         if obj.status == "published":
             obj.number_of_views += 1
@@ -58,11 +64,13 @@ class BlogpostCreateView(LoginRequiredMixin, CreateView):
     form_class = BlogpostForm
 
     def form_valid(self, form):
+        """Присваивает текущего авторизованного пользователя как автора статьи, устанавливает статус 'moderation'"""
         form.instance.author = self.request.user
         form.instance.status = "moderation"
         return super().form_valid(form)
 
     def get_success_url(self):
+        """При успешном создании статьи возвращает на страницу редактора статей"""
         return reverse_lazy("blog:blogpost_list")
 
 
@@ -73,6 +81,7 @@ class BlogpostUpdateView(LoginRequiredMixin, UpdateView):
     form_class = BlogpostForm
 
     def get_success_url(self):
+        """При успешном редактировании статьи возвращает на страницу просмотра статьи"""
         return reverse_lazy("blog:blogpost_list_detail", kwargs={"pk": self.object.pk})
 
     # def test_func(self):
@@ -122,6 +131,7 @@ class BlogpostDeleteView(LoginRequiredMixin, DeleteView):
 
 
 def blogpost_search_view(request):
+    """Осуществляет поисковый запрос статей блога"""
     query = request.GET.get("q", "").strip()
     blogposts = Blogpost.objects.none()
 
