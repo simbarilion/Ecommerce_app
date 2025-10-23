@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Статья{% endblock %}
+
+{% block content %}
+
+    <section class="container mx-auto p-6">
+
+        <div class="container my-5 blog-card">
+            <div class="card mx-6 my-4 p-5">
+                <div class="row g-4">
+                    <div class="col-5 col-sm-4">
+                        <img src="{{ post.preview.url }}" alt="{{ post.title }}" class="card-img-top img-fluid rounded-top mt-4">
+                    </div>
+
+                    <div class="col-7 col-sm-8 d-flex flex-column product-col">
+                        <div class="card-body">
+                            <h1 class="font-weight-normal py-2">{{ post.title }}</h1>
+                            <p class="card-title pricing-card-title mb-4">Автор: {{ post.author }}</p>
+                            <p class="card-text text-justify mt-2 mb-3">{{ post.content }}</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3 buttons-block">
+                            <div class="flex-grow-1 text-center">
+                                <button type="button" class="btn btn-buy">Эта статья полезна</button>
+                            </div>
+                            <div class="text-end ms-3 text-center">
+                                <a href="{% url 'blog:blogposts' %}" class="btn-link btn-green">Назад</a>
+                            </div>
+                        </div>
+                        <div class="product-updated text-end">
+                            <small class="text-muted">Дата создания: {{ post.updated_at|date:"j b Y G:i" }}</small>
+                            <small class="text-muted">Просмотров: {{ post.number_of_views }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+{% endblock %}
