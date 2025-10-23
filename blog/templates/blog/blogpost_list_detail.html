@@ -10,7 +10,7 @@
         </div>
 
         <h2>{{ post.title }}</h2>
-        <p class="mt-4">Автор: {{ post.author.first_name }} {{ post.author.last_name }}</p>
+        <p class="mt-4">Автор: {{ post.author_name }}</p>
         <p>Количество статей автора: {{ author_posts_count }}</p>
         <p>Дата публикации: {{ post.created_at }}</p>
         <p>Последнее обновление: {{ post.updated_at }}</p>

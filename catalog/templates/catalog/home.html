@@ -26,10 +26,12 @@
                     {% else %}
                         <span class="text-muted">Ссылка недоступна</span>
                     {% endif %}
-                    <div class="btn-group">
-                        <a href="{% url 'catalog:product_update' pk=obj.pk %}" class="btn-link btn-blue mt-4">Редактировать</a>
-                        <a href="{% url 'catalog:product_delete' pk=obj.pk %}" class="btn-link btn-red mt-4">Удалить</a>
-                    </div>
+                    {% if user.is_authenticated %}
+                        <div class="btn-group">
+                            <a href="{% url 'catalog:product_update' pk=obj.pk %}" class="btn-link btn-blue mt-4">Редактировать</a>
+                            <a href="{% url 'catalog:product_delete' pk=obj.pk %}" class="btn-link btn-red mt-4">Удалить</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -39,6 +39,11 @@ class Blogpost(models.Model):
         return self.title
 
 
+    @property
+    def author_name(self):
+        return self.author.username or self.author.email
+
+
     class Meta:
         verbose_name = "блоговый пост"
         verbose_name_plural = "блоговые посты"

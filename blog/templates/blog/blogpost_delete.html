@@ -27,6 +27,9 @@
                         </form>
                     {% else %}
                         <p class="text-center mt-4 text-gray-500">Только автор статьи может удалить её</p>
+                        <div class="d-flex justify-content-center gap-3 mt-2 text-center ms-auto me-4">
+                            <a href="{% url 'blog:blogpost_list' %}" class="btn btn-secondary">Отмена</a>
+                        </div>
                     {% endif %}
                 </div>
             </div>
