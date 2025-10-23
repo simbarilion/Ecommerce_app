@@ -1,6 +1,7 @@
 import re
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
@@ -10,7 +11,7 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 
 from .forms import FeedbackForm, ProductForm
 
-from .models import Product, Contacts, Category
+from .models import Product, Contacts
 
 
 class ProductListView(ListView):
@@ -45,7 +46,7 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Представление для создания карточки товара"""
     model = Product
     template_name = "catalog/product_form.html"
@@ -56,7 +57,7 @@ class ProductCreateView(CreateView):
         return reverse_lazy("catalog:home")
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Представление для редактирования карточки товара"""
     model = Product
     template_name = "catalog/product_form.html"
@@ -67,7 +68,7 @@ class ProductUpdateView(UpdateView):
         return reverse_lazy("catalog:product_detail", kwargs={"pk": self.object.pk})
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """Представление для удаления карточки товара"""
     model = Product
     template_name = "catalog/product_delete.html"

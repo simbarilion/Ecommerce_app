@@ -42,17 +42,32 @@
             </ul>
         </nav>
 
-        <a href="{% url "users:login" %}" class="btn-login ms-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM1 14s1-1 7-1 7 1 7 1-1 1-7 1-7-1-7-1z"/>
-            </svg>
-            Вход
-        </a>
-        <a href="{% url "users:register" %}" class="btn-login ms-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM1 14s1-1 7-1 7 1 7 1-1 1-7 1-7-1-7-1z"/>
-            </svg>
-            Регистрация
-        </a>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'users:logout' %}" class="ms-auto">
+                {% csrf_token %}
+                <button type="submit" class="btn-login ms-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.146 11.354a.5.5 0 0 0 .708-.708L8.707 8.5H14a.5.5 0 0 0 0-1H8.707l2.147-2.146a.5.5 0 0 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3z"/>
+                        <path fill-rule="evenodd" d="M4.5 15A1.5 1.5 0 0 1 3 13.5v-11A1.5 1.5 0 0 1 4.5 1h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 0 4 2.5v11a.5.5 0 0 0 .5.5h5a.5.5 0 0 1 0 1h-5z"/>
+                    </svg>
+                    Выйти
+                </button>
+            </form>
+        {% else %}
+            <div class="ms-auto">
+                <a href="{% url "users:login" %}" class="btn-login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM1 14s1-1 7-1 7 1 7 1-1 1-7 1-7-1-7-1z"/>
+                    </svg>
+                    Вход
+                </a>
+                <a href="{% url "users:register" %}" class="btn-login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM1 14s1-1 7-1 7 1 7 1-1 1-7 1-7-1-7-1z"/>
+                    </svg>
+                    Регистрация
+                </a>
+            </div>
+        {% endif %}
     </div>
 </div>
