@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     "phonenumber_field",
 
     "catalog",
-    "blog",
     "users"
 ]
 
