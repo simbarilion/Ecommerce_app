@@ -42,11 +42,17 @@
             </ul>
         </nav>
 
-        <a href="#" class="btn-login ms-auto">
+        <a href="{% url "users:login" %}" class="btn-login ms-auto">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM1 14s1-1 7-1 7 1 7 1-1 1-7 1-7-1-7-1z"/>
             </svg>
-            Войти
+            Вход
+        </a>
+        <a href="{% url "users:register" %}" class="btn-login ms-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" class="nav-icon" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM1 14s1-1 7-1 7 1 7 1-1 1-7 1-7-1-7-1z"/>
+            </svg>
+            Регистрация
         </a>
     </div>
 </div>
