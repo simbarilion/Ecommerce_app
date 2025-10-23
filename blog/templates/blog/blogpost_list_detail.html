@@ -23,8 +23,10 @@
             <p><img src="{% static 'media/products/images/default.png' %}" alt="Нет изображения" style="width: 200px; height: auto;"></p>
         {% endif %}
         <div class="flex-grow-1 text-center">
-            <a href="{% url 'blog:blogpost_update' post.pk %}" class="btn btn-primary">Редактировать</a>
-            <a href="{% url 'blog:blogpost_delete' post.pk %}" class="btn btn-danger mx-3">Удалить</a>
+            <a href="{% if user.is_authenticated %}{% url 'blog:blogpost_update' post.pk %}{% else %}{% url 'users:login' %}{% endif %}"
+                class="btn btn-primary">Редактировать</a>
+            <a href="{% if user.is_authenticated %}{% url 'blog:blogpost_delete' post.pk %}{% else %}{% url 'users:login' %}{% endif %}"
+                class="btn btn-danger mx-3">Удалить</a>
             <a href="{% url 'blog:blogpost_list' %}" class="btn btn-secondary">Назад</a>
         </div>
 

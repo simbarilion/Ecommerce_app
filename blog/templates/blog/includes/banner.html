@@ -14,7 +14,10 @@
 
         <div class="col-lg-4 text-center">
             <p class="lead text-gray-600 mb-3">Создавайте собственные статьи и делитесь знаниями</p>
-            <a href="{% url 'blog:blogpost_list' %}" class="btn-link inline-block bg-blue-600 px-4 py-2 rounded-lg mt-2 mb-4">Создать статью</a>
+            <a href="{% if user.is_authenticated %}{% url 'blog:blogpost_list' %}{% else %}{% url 'users:login' %}{% endif %}"
+               class="btn-link inline-block bg-blue-600 px-4 py-2 rounded-lg mt-2 mb-4">
+               Создать статью
+            </a>
         </div>
 
     </div>

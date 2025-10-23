@@ -1,5 +1,6 @@
 import re
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
@@ -18,7 +19,7 @@ class BlogpostListView(ListView):
     limit = None
 
     def get_queryset(self):
-        if self.template_name == "blog/blogpost_list.html":  # шаблон редактора
+        if self.template_name == "blog/blogpost_list.html":
             queryset = Blogpost.objects.filter(status__in=["published", "moderation"]).order_by("-created_at")
         else:
             queryset = Blogpost.objects.filter(status="published").order_by("-created_at")
@@ -50,7 +51,7 @@ class BlogpostDetailView(DetailView):
         return obj
 
 
-class BlogpostCreateView(CreateView):
+class BlogpostCreateView(LoginRequiredMixin, CreateView):
     """Представление для создания статьи Блога"""
     model = Blogpost
     template_name = "blog/blogpost_form.html"
@@ -65,7 +66,7 @@ class BlogpostCreateView(CreateView):
         return reverse_lazy("blog:blogpost_list")
 
 
-class BlogpostUpdateView(UpdateView):
+class BlogpostUpdateView(LoginRequiredMixin, UpdateView):
     """Представление для редактирования статьи Блога"""
     model = Blogpost
     template_name = "blog/blogpost_form.html"
@@ -91,7 +92,7 @@ class BlogpostUpdateView(UpdateView):
     #     return super().form_valid(form)
 
 
-class BlogpostDeleteView(DeleteView):
+class BlogpostDeleteView(LoginRequiredMixin, DeleteView):
     """Представление для удаления статьи Блога"""
     model = Blogpost
     template_name = "blog/blogpost_delete.html"
