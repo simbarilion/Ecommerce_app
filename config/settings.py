@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
 
     "catalog",
-    "users"
+    "users",
+    "blog"
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ["bootstrap5"]
