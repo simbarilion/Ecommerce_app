@@ -27,7 +27,7 @@ class RegisterView(FormView):
 
     @staticmethod
     def send_welcome_email(user_email):
-        subject = "Добро пожаловать в наш сервис Skystore"
+        subject = "Добро пожаловать в Skystore"
         message = "Спасибо, что зарегистрировались в нашем сервисе!"
         from_email = os.getenv("EMAIL_HOST_USER")
         recipient_list = [user_email,]
