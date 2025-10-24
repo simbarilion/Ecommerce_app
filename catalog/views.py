@@ -1,6 +1,7 @@
 import re
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
@@ -10,7 +11,7 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 
 from .forms import FeedbackForm, ProductForm
 
-from .models import Product, Contacts, Category
+from .models import Product, Contacts
 
 
 class ProductListView(ListView):
@@ -19,6 +20,15 @@ class ProductListView(ListView):
     context_object_name = "products"
     paginate_by = 9
     template_name = "catalog/home.html"
+
+
+    def get_context_data(self, **kwargs):
+        """Добавляет список всех категорий в контекст"""
+        context = super().get_context_data(**kwargs)
+        context["current_category_id"] = self.request.GET.get("category_id")
+        context["search_type"] = "product"
+        return context
+
 
     def get_queryset(self):
         """Возвращает все товары или товары по категории, если передан параметр category_id"""
@@ -29,13 +39,6 @@ class ProductListView(ListView):
         return queryset
 
 
-    def get_context_data(self, **kwargs):
-        """Добавляет список всех категорий в контекст"""
-        context = super().get_context_data(**kwargs)
-        context["current_category_id"] = self.request.GET.get("category_id")
-        return context
-
-
 class ProductDetailView(DetailView):
     """Представление для отдельного товара"""
     model = Product
@@ -43,7 +46,7 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Представление для создания карточки товара"""
     model = Product
     template_name = "catalog/product_form.html"
@@ -51,10 +54,11 @@ class ProductCreateView(CreateView):
     context_object_name = "product"
 
     def get_success_url(self):
+        """При успешном создании карточки товара возвращает на страницу просмотра товара"""
         return reverse_lazy("catalog:home")
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Представление для редактирования карточки товара"""
     model = Product
     template_name = "catalog/product_form.html"
@@ -62,10 +66,11 @@ class ProductUpdateView(UpdateView):
     context_object_name = "product"
 
     def get_success_url(self):
+        """При успешном редактировании карточки товара возвращает на страницу просмотра товара"""
         return reverse_lazy("catalog:product_detail", kwargs={"pk": self.object.pk})
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """Представление для удаления карточки товара"""
     model = Product
     template_name = "catalog/product_delete.html"
@@ -80,21 +85,25 @@ class ContactsView(FormView):
     success_url = reverse_lazy("catalog:contacts")
 
     def get_context_data(self, **kwargs):
+        """Добавляет последнюю сохраненную контактную информацию в контекст"""
         context = super().get_context_data(**kwargs)
         context["contacts"] = Contacts.objects.last()
         return context
 
     def form_valid(self, form):
+        """Сохраняет данные формы в базу данных, добавляет 'флеш-сообщение'"""
         feedback = form.save()
         messages.success(self.request, f"Спасибо, {feedback.name}! Ваше сообщение получено")
         return super().form_valid(form)
 
     def form_invalid(self, form):
+        """Добавляет сообщение об ошибке, возвращает пользователя на страницу с формой и показывает ошибки валидации"""
         messages.error(self.request, "Пожалуйста, заполните все поля")
         return super().form_invalid(form)
 
 
 def product_search_view(request):
+    """Осуществляет поисковый запрос товаров"""
     query = request.GET.get("q", "").strip()
     products = []
 

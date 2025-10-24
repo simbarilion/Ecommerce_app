@@ -23,11 +23,17 @@
                         <button type="button" class="btn btn-buy">Купить</button>
                     </div>
                 </div>
-                <div class="d-flex justify-content-center gap-3 mt-2 text-center">
-                    <a href="{% url 'catalog:product_update' pk=product.pk %}" class="btn-link btn-blue mt-4">Редактировать</a>
-                    <a href="{% url 'catalog:product_delete' pk=product.pk %}" class="btn-link btn-red mt-4">Удалить</a>
-                    <a href="{% url 'catalog:home' %}" class="btn-link btn-green mt-4">Назад</a>
-                </div>
+                {% if user.is_authenticated %}
+                    <div class="d-flex justify-content-center gap-3 mt-2 text-center">
+                        <a href="{% url 'catalog:product_update' pk=product.pk %}" class="btn-link btn-blue mt-4">Редактировать</a>
+                        <a href="{% url 'catalog:product_delete' pk=product.pk %}" class="btn-link btn-red mt-4">Удалить</a>
+                        <a href="{% url 'catalog:home' %}" class="btn-link btn-green mt-4">Назад</a>
+                    </div>
+                {% else %}
+                    <div class="d-flex justify-content-center gap-3 mt-2 text-center ms-auto me-4">
+                        <a href="{% url 'catalog:home' %}" class="btn-link btn-green mt-4">Назад</a>
+                    </div>
+                {% endif %}
                 <div class="product-updated text-end">
                     <small class="text-muted">Последнее обновление: {{ product.updated_at|date:"j b Y G:i" }}</small>
                 </div>

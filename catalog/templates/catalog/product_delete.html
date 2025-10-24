@@ -16,13 +16,18 @@
                 <div class="card-body px-5 py-4">
                     <p class="text-center mt-3 mb-3">Вы уверены, что хотите удалить товар</p>
                     <p class="fw-semibold text-center mt-3 mb-5">"{{ product.name }}"?</p>
-                    <form method="post" class="d-flex align-items-center">
-                        {% csrf_token %}
-                        <div class="flex-grow-1 text-center">
-                            <button type="submit" class="btn btn-danger mx-3">Удалить</button>
-                            <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Отмена</a>
-                        </div>
-                    </form>
+                    {% if user.is_authenticated %}
+                        <form method="post" class="d-flex align-items-center">
+                            {% csrf_token %}
+                            <div class="flex-grow-1 text-center">
+                                <button type="submit" class="btn btn-danger mx-3">Удалить</button>
+                                <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Отмена</a>
+                            </div>
+                        </form>
+                    {% else %}
+                        <p class="text-center mt-4 text-gray-500">Только продавец может удалить товар</p>
+                        <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Отмена</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@
         </div>
 
         <h2>{{ post.title }}</h2>
-        <p class="mt-4">Автор: {{ post.author.first_name }} {{ post.author.last_name }}</p>
+        <p class="mt-4">Автор: {{ post.author_name }}</p>
         <p>Количество статей автора: {{ author_posts_count }}</p>
         <p>Дата публикации: {{ post.created_at }}</p>
         <p>Последнее обновление: {{ post.updated_at }}</p>
@@ -20,11 +20,13 @@
         {% if post.preview %}
             <p class="mb-5"><img src="{{ post.preview.url }}" alt="Превью статьи" style="width: 200px; height: auto;"></p>
         {% else %}
-            <p><img src="{% static 'images/../../../media/products/images/default.png' %}" alt="Нет изображения" style="width: 200px; height: auto;"></p>
+            <p><img src="{% static 'media/products/images/default.png' %}" alt="Нет изображения" style="width: 200px; height: auto;"></p>
         {% endif %}
         <div class="flex-grow-1 text-center">
-            <a href="{% url 'blog:blogpost_update' post.pk %}" class="btn btn-primary">Редактировать</a>
-            <a href="{% url 'blog:blogpost_delete' post.pk %}" class="btn btn-danger mx-3">Удалить</a>
+            <a href="{% if user.is_authenticated %}{% url 'blog:blogpost_update' post.pk %}{% else %}{% url 'users:login' %}{% endif %}"
+                class="btn btn-primary">Редактировать</a>
+            <a href="{% if user.is_authenticated %}{% url 'blog:blogpost_delete' post.pk %}{% else %}{% url 'users:login' %}{% endif %}"
+                class="btn btn-danger mx-3">Удалить</a>
             <a href="{% url 'blog:blogpost_list' %}" class="btn btn-secondary">Назад</a>
         </div>
 
