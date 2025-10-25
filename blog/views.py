@@ -63,6 +63,7 @@ class BlogpostCreateView(LoginRequiredMixin, CreateView):
     template_name = "blog/blogpost_form.html"
     form_class = BlogpostForm
 
+
     def form_valid(self, form):
         """Присваивает текущего авторизованного пользователя как автора статьи, устанавливает статус 'moderation'"""
         form.instance.author = self.request.user

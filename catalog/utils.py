@@ -6,6 +6,11 @@ from fuzzywuzzy import fuzz
 from django import forms
 
 
+def is_moderator(user):
+    """Проверяет, состоит ли пользователь в группе модераторов"""
+    return user.groups.filter(name="products_moderator").exists()
+
+
 class SpamValidationMixin:
     """Миксин для проверки текстовых полей на запрещённые слова."""
 
