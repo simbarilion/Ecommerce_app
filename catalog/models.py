@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from users.models import CustomUser
+
 
 class Category(models.Model):
     """Класс категории товаров"""
@@ -31,9 +33,20 @@ def get_default_category():
 
 class Product(models.Model):
     """Класс товаров"""
+    STATUS_CHOICES = [
+        ("moderation", "На модерации"),
+        ("published", "Опубликовано"),
+        ("archived", "В архиве"),
+    ]
+
     name = models.CharField(max_length=150,
                             unique=True,
                             verbose_name="Наименование товара")
+    owner = models.ForeignKey(CustomUser,
+                              on_delete=models.CASCADE,
+                              related_name="products",
+                              default="",
+                              verbose_name="Продавец")
     brief_description = models.TextField(max_length=100,
                                          null=True,
                                          blank=True,
@@ -57,6 +70,10 @@ class Product(models.Model):
                                       verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True,
                                       verbose_name="Дата последнего изменения")
+    status = models.CharField(max_length=20,
+                              choices=STATUS_CHOICES,
+                              default="moderation",
+                              verbose_name="Статус")
 
 
     def __str__(self):

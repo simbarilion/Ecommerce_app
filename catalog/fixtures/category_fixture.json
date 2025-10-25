@@ -1,0 +1,42 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Без категории",
+        "description": "Категория по умолчанию"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "name": "Frontend & UI",
+        "description": "интерфейсы, визуализация, компоненты"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+        "name": "Mobile & Templates",
+        "description": "мобильные готовые шаблоны"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+        "name": "Backend & Dev Tools",
+        "description": "сервер, плагины, утилиты для разработчиков"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 5,
+    "fields": {
+        "name": "AI, Security & Marketing",
+        "description": "ИИ, защита и продвижение"
+    }
+}
+]
