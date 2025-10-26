@@ -24,7 +24,7 @@
         {% endif %}
         <div class="flex-grow-1 text-center">
 
-            {% if perms.blog.can_publish_blogpost and perms.blog.can_unpublish_blogpost or user == obj.author %}
+            {% if user == post.author or perms.blog.can_publish_blogpost and perms.blog.can_unpublish_blogpost %}
                 <a href="{% url 'blog:blogpost_update' post.pk %}"
                 class="btn btn-primary">Редактировать</a>
                 <a href="{% url 'blog:blogpost_delete' post.pk %}"

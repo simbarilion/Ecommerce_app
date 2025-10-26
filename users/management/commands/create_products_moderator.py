@@ -24,9 +24,9 @@ class Command(BaseCommand):
                 group, _ = Group.objects.get_or_create(name="products_moderator")
                 user.groups.add(group)
 
-                self.stdout.write(self.style.SUCCESS(f"Пользователь {user.email} успешно создан."))
+                self.stdout.write(self.style.SUCCESS(f"Пользователь {user.email} успешно создан"))
             else:
-                self.stdout.write(self.style.WARNING(f"Пользователь уже существует."))
+                self.stdout.write(self.style.WARNING(f"Пользователь уже существует"))
         except IntegrityError as e:
             self.stderr.write(self.style.ERROR(f"Ошибка создания модератора товаров: {e}"))
         except Exception as e:

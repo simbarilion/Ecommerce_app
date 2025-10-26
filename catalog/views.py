@@ -92,6 +92,12 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     form_class = ProductForm
     context_object_name = "product"
 
+    def get_context_data(self, **kwargs):
+        """Определяет в контексте с объект товара"""
+        context = super().get_context_data(**kwargs)
+        context["obj"] = None
+        return context
+
     def form_valid(self, form):
         """Присваивает текущего авторизованного пользователя как владельца товара,
            устанавливает статус 'moderation'"""
@@ -116,6 +122,13 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = "catalog/product_form.html"
     context_object_name = "product"
+
+
+    def get_context_data(self, **kwargs):
+        """Возвращает контекст с объектом товара"""
+        context = super().get_context_data(**kwargs)
+        context["obj"] = self.object
+        return context
 
 
     def form_valid(self, form):

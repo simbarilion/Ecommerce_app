@@ -93,13 +93,17 @@ class BlogpostDetailView(DetailView):
         return context
 
 
-class BlogpostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class BlogpostCreateView(LoginRequiredMixin, CreateView):
     """Представление для создания статьи Блога"""
     model = Blogpost
     template_name = "blog/blogpost_form.html"
     form_class = BlogpostForm
-    permission_required = "blog.add_blogpost"
 
+    def get_context_data(self, **kwargs):
+        """Определяет контекст с объектом статьи"""
+        context = super().get_context_data(**kwargs)
+        context["obj"] = None
+        return context
 
     def form_valid(self, form):
         """Присваивает текущего авторизованного пользователя как автора статьи, устанавливает статус 'moderation'"""
@@ -124,6 +128,14 @@ class BlogpostUpdateView(LoginRequiredMixin, UpdateView):
     model = Blogpost
     template_name = "blog/blogpost_form.html"
     form_class = BlogpostForm
+
+
+    def get_context_data(self, **kwargs):
+        """Возвращает контекст с объектом статьи"""
+        context = super().get_context_data(**kwargs)
+        context["obj"] = self.object
+        return context
+
 
     def form_valid(self, form):
         """Устанавливает при редактировании статус статьи 'moderation'"""
