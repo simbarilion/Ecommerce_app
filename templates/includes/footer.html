@@ -17,8 +17,8 @@
             <h5><a class="text-muted" href="{% url 'blog:blog_main' %}">Блог</a></h5>
             <ul class="list-unstyled text-small">
                 <li><a class="text-muted" href="{% url 'blog:blogposts' %}">Статьи пользователей</a></li>
-                <li><a class="text-muted" href="{% url 'blog:blogpost_create' %}">Создать свою статью</a></li>
-                <li><a class="text-muted" href="{% url 'blog:blogpost_list' %}">Редактор статей</a></li>
+                <li><a class="text-muted" href="{% if user.is_authenticated %}{% url 'blog:blogpost_create' %}{% else %}{% url 'users:login' %}{% endif %}">Создать свою статью</a></li>
+                <li><a class="text-muted" href="{% if user.is_authenticated %}{% url 'blog:blogpost_list' %}{% else %}{% url 'users:login' %}{% endif %}">Редактор статей</a></li>
             </ul>
         </div>
         <div class="col-6 col-md">

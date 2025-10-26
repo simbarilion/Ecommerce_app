@@ -1,5 +1,4 @@
 import re
-from typing import Any
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -64,7 +63,7 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
 
     def get_object(self, queryset=None):
-        """Показывает товар, если он опубликован или если пользователь авторизован"""
+        """Показывает товар, если он опубликован или если пользователь имеет права на просмотр неопубликованных товаров"""
         obj = super().get_object(queryset)
         user = self.request.user
 
@@ -86,13 +85,12 @@ class ProductDetailView(DetailView):
         return obj
 
 
-class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Представление для создания карточки товара"""
     model = Product
     template_name = "catalog/product_form.html"
     form_class = ProductForm
     context_object_name = "product"
-    permission_required = "catalog.add_product"
 
     def form_valid(self, form):
         """Присваивает текущего авторизованного пользователя как владельца товара,
@@ -139,7 +137,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return self._cached_object
 
     def get_form_class(self):
-        """Выбирает форму в зависимости от пользователя"""
+        """Выбирает форму в зависимости от статуса пользователя"""
         user = self.request.user
         obj = self.get_object()
 
@@ -148,7 +146,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return ProductForm
 
     def handle_no_permission(self):
-        """Если пользователь не авторизован, возвращает HTTP-ответ об отстутсвии прав для редактирования товара"""
+        """Если пользователь не авторизован, перенаправляет на страницу авторизации"""
         if not self.request.user.is_authenticated:
             return redirect("users:login")
         raise PermissionDenied("У вас нет прав для редактирования товара")
@@ -158,17 +156,16 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy("catalog:product_detail", kwargs={"pk": self.object.pk})
 
 
-class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """Представление для удаления карточки товара"""
     model = Product
     template_name = "catalog/product_delete.html"
     context_object_name = "product"
     success_url = reverse_lazy("catalog:home")
-    permission_required = "catalog.delete_product"
 
 
     def get_object(self, queryset=None):
-        """Возвращает объект только если пользователь — владелец"""
+        """Возвращает объект только если пользователь — владелец или имеет права модератора"""
         obj = super().get_object(queryset)
         user = self.request.user
 
@@ -182,7 +179,7 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
             return redirect("users:login")
         raise PermissionDenied("У вас нет прав для удаления товара")
 
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         """Помечает товар как 'archived' вместо физического удаления"""
         obj = self.get_object()
         obj.status = "archived"

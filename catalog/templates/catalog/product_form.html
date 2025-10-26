@@ -13,7 +13,7 @@
                     <h4 class="my-0 fw-semibold">Форма карточки товара</h4>
                 </div>
                 <div class="card-body px-5 py-4">
-                    {% if perms.catalog.can_publish_product and perms.catalog.can_unpublish_product or user == obj.owner %}
+                    {% if user.is_authenticated %}
                         <form method="post" enctype="multipart/form-data" class="p-4 rounded shadow-sm bg-white">
                             {% csrf_token %}
                             {% if form.errors %}
@@ -79,7 +79,7 @@
                         </form>
                     {% else %}
                         <p class="text-center mt-4">
-                            Чтобы создать или редактировать статью, <a href="{% url 'users:login' %}" class="text-blue-600">войдите в аккаунт</a>.
+                            Чтобы создать или редактировать товар, <a href="{% url 'users:login' %}" class="text-blue-600">войдите в аккаунт</a>.
                         </p>
                     {% endif %}
                 </div>
