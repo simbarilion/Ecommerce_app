@@ -87,8 +87,8 @@ class ProductModeratorForm(forms.ModelForm):
     """Класс формы модератора для редактирования карточки товара"""
     class Meta:
         model = Product
-        fields = ["status"]
+        fields = ["category", "status"]
         widgets = {
-            "status": forms.Select(attrs={"class": "form-select"}),
             "category": forms.Select(attrs={"class": "form-select"}),
+            "status": forms.Select(attrs={"class": "form-select"}),
         }

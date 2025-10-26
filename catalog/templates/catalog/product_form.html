@@ -13,7 +13,7 @@
                     <h4 class="my-0 fw-semibold">Форма карточки товара</h4>
                 </div>
                 <div class="card-body px-5 py-4">
-                    {% if user.is_authenticated %}
+                    {% if perms.catalog.can_publish_product and perms.catalog.can_unpublish_product or user == obj.owner %}
                         <form method="post" enctype="multipart/form-data" class="p-4 rounded shadow-sm bg-white">
                             {% csrf_token %}
                             {% if form.errors %}
@@ -30,30 +30,41 @@
                                     </ul>
                                 </div>
                             {% endif %}
-                            <div class="mb-3">
-                                <label class="form-label">Наименование товара:</label>
-                                {{ form.name }}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Краткое описание товара:</label>
-                                {{ form.brief_description }}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Полное описание товара:</label>
-                                {{ form.description }}
-                            </div>
-                            <div class="mb-3">
-                                {{ form.image }}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Категория:</label>
-                                {{ form.category }}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Цена товара:</label>
-                                {{ form.price }}
-                                <div class="form-text">Введите цену в формате 00.00</div>
-                            </div>
+                            {% if user == obj.owner %}
+                                <div class="mb-3">
+                                    <label class="form-label">Наименование товара:</label>
+                                    {{ form.name }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Краткое описание товара:</label>
+                                    {{ form.brief_description }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Полное описание товара:</label>
+                                    {{ form.description }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.image }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Категория:</label>
+                                    {{ form.category }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Цена товара:</label>
+                                    {{ form.price }}
+                                    <div class="form-text">Введите цену в формате 00.00</div>
+                                </div>
+                            {% else %}
+                                <div class="mb-3">
+                                    <label class="form-label">Категория:</label>
+                                    {{ form.category }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Статус публикации:</label>
+                                    {{ form.status }}
+                                </div>
+                            {% endif %}
 
                             <div class="d-flex justify-content-center gap-3 mt-5 mb-3 text-center">
                                 <div class="flex-grow-1 text-center">

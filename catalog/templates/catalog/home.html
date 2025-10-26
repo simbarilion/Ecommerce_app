@@ -11,6 +11,20 @@
         {% for obj in products %}
         <div class="col">
             <div class="card mb-4 box-shadow text-center h-100">
+                {% if user == obj.owner or perms.catalog.can_publish_product and perms.catalog.can_unpublish_product %}
+                    <span class="badge position-absolute top-0 end-0 m-2
+                        {% if obj.status == "published" %}
+                            bg-success
+                        {% elif obj.status == "moderation" %}
+                            bg-primary
+                        {% elif obj.status == "archived" %}
+                            bg-secondary
+                        {% endif %}
+                    ">
+                        {{ obj.get_status_display }}
+                    </span>
+                {% endif %}
+
                 <img src="{{ obj.image.url }}" alt="{{ obj.name }}"
                      class="card-img-top img-fluid rounded-top">
                 <div class="card-header text-white text-center py-2 rounded-0">
@@ -26,7 +40,7 @@
                     {% else %}
                         <span class="text-muted">Ссылка недоступна</span>
                     {% endif %}
-                    {% if user.is_authenticated %}
+                    {% if perms.catalog.can_publish_product and perms.catalog.can_unpublish_product or user == obj.owner %}
                         <div class="btn-group">
                             <a href="{% url 'catalog:product_update' pk=obj.pk %}" class="btn-link btn-blue mt-4">Редактировать</a>
                             <a href="{% url 'catalog:product_delete' pk=obj.pk %}" class="btn-link btn-red mt-4">Удалить</a>
