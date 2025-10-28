@@ -33,9 +33,13 @@
                     {% for post in blogposts %}
                         <tr>
                             <td>
-                                <a href="{% if user.is_authenticated %}{% url 'blog:blogpost_list_detail' post.pk %}{% else %}{% url 'users:login' %}{% endif %}"
-                                    class="text-dark text-decoration-none fw-semibold">
-                                    <u>{{ post.title }}</u>
+                                <a href="{% if perms.blog.can_publish_blogpost and perms.blog.can_unpublish_blogpost or user == post.author %}
+                                            {% url 'blog:blogpost_list_detail' post.pk %}
+                                         {% else %}
+                                            {% url 'users:login' %}
+                                         {% endif %}"
+                                   class="text-dark text-decoration-none fw-semibold">
+                                   <u>{{ post.title }}</u>
                                 </a>
                             </td>
                             <td>{{ post.author_name }}</td>

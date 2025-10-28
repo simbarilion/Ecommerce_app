@@ -81,3 +81,14 @@ class ProductForm(SpamValidationMixin, forms.ModelForm):
             if image.size > max_size_mb * 1024 * 1024:
                 raise forms.ValidationError(f"Размер файла не должен превышать {max_size_mb} МБ")
         return image
+
+
+class ProductModeratorForm(forms.ModelForm):
+    """Класс формы модератора для редактирования карточки товара"""
+    class Meta:
+        model = Product
+        fields = ["category", "status"]
+        widgets = {
+            "category": forms.Select(attrs={"class": "form-select"}),
+            "status": forms.Select(attrs={"class": "form-select"}),
+        }

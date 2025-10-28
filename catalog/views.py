@@ -1,17 +1,20 @@
 import re
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 
-from .forms import FeedbackForm, ProductForm
+from .forms import FeedbackForm, ProductForm, ProductModeratorForm
 
 from .models import Product, Contacts
+from .utils import is_moderator
 
 
 class ProductListView(ListView):
@@ -31,11 +34,25 @@ class ProductListView(ListView):
 
 
     def get_queryset(self):
-        """Возвращает все товары или товары по категории, если передан параметр category_id"""
+        """Возвращает все опубликованные товары или товары по категории, если передан параметр category_id.
+           Если позьзователь авторизован, также возвращает товары на модерации"""
         queryset = super().get_queryset()
         category_id = self.request.GET.get("category_id")
         if category_id:
             queryset = queryset.filter(category_id=category_id)
+
+        user = self.request.user
+        if user.is_authenticated:
+            if is_moderator(user):
+                queryset = queryset.filter(status__in=["published", "moderation", "archived"])
+            else:
+                queryset = queryset.filter(
+                    Q(status="published") |
+                    Q(status="moderation", owner=user)
+                )
+        else:
+            queryset = queryset.filter(status="published")
+
         return queryset
 
 
@@ -45,6 +62,28 @@ class ProductDetailView(DetailView):
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
 
+    def get_object(self, queryset=None):
+        """Показывает товар, если он опубликован или если пользователь имеет права на просмотр неопубликованных товаров"""
+        obj = super().get_object(queryset)
+        user = self.request.user
+
+        if user.is_authenticated:
+            if is_moderator(user):
+                if obj.status not in ["published", "moderation", "archived"]:
+                    raise Http404("Товар недоступен")
+            else:
+                if obj.status == "moderation" and obj.owner != user:
+                    raise Http404("Товар недоступен")
+                if obj.status == "archived" or obj.status not in ["published", "moderation"]:
+                    raise Http404("Товар недоступен")
+                if obj.status not in ["published", "moderation", "archived"]:
+                    raise Http404("Товар недоступен")
+        else:
+            if obj.status != "published":
+                raise Http404("Товар недоступен")
+
+        return obj
+
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     """Представление для создания карточки товара"""
@@ -52,6 +91,26 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = "catalog/product_form.html"
     form_class = ProductForm
     context_object_name = "product"
+
+    def get_context_data(self, **kwargs):
+        """Определяет в контексте с объект товара"""
+        context = super().get_context_data(**kwargs)
+        context["obj"] = None
+        return context
+
+    def form_valid(self, form):
+        """Присваивает текущего авторизованного пользователя как владельца товара,
+           устанавливает статус 'moderation'"""
+        form.instance.owner = self.request.user
+        form.instance.status = "moderation"
+        return super().form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        """Запрещает модераторам создавать товары"""
+        user = request.user
+        if is_moderator(user):
+            raise PermissionDenied("Модераторам запрещено создавать товары")
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         """При успешном создании карточки товара возвращает на страницу просмотра товара"""
@@ -62,8 +121,48 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Представление для редактирования карточки товара"""
     model = Product
     template_name = "catalog/product_form.html"
-    form_class = ProductForm
     context_object_name = "product"
+
+
+    def get_context_data(self, **kwargs):
+        """Возвращает контекст с объектом товара"""
+        context = super().get_context_data(**kwargs)
+        context["obj"] = self.object
+        return context
+
+
+    def form_valid(self, form):
+        """Устанавливает при редактировании статус товара 'moderation'"""
+        user = self.request.user
+        obj = self.get_object()
+        if obj.owner == user:
+            form.instance.status = "moderation"
+        return super().form_valid(form)
+
+    def get_object(self, queryset=None):
+        """Возвращает объект только если пользователь — владелец"""
+        if not hasattr(self, "_cached_object"):
+            self._cached_object = super().get_object(queryset)
+            user = self.request.user
+
+            if self._cached_object.owner != user and not is_moderator(user):
+                raise PermissionDenied("Вы не можете редактировать чужой товар")
+        return self._cached_object
+
+    def get_form_class(self):
+        """Выбирает форму в зависимости от статуса пользователя"""
+        user = self.request.user
+        obj = self.get_object()
+
+        if is_moderator(user) and obj.owner != user:
+            return ProductModeratorForm
+        return ProductForm
+
+    def handle_no_permission(self):
+        """Если пользователь не авторизован, перенаправляет на страницу авторизации"""
+        if not self.request.user.is_authenticated:
+            return redirect("users:login")
+        raise PermissionDenied("У вас нет прав для редактирования товара")
 
     def get_success_url(self):
         """При успешном редактировании карточки товара возвращает на страницу просмотра товара"""
@@ -76,6 +175,29 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "catalog/product_delete.html"
     context_object_name = "product"
     success_url = reverse_lazy("catalog:home")
+
+
+    def get_object(self, queryset=None):
+        """Возвращает объект только если пользователь — владелец или имеет права модератора"""
+        obj = super().get_object(queryset)
+        user = self.request.user
+
+        if obj.owner != user and not is_moderator(user):
+            raise PermissionDenied("Вы не можете удалить чужой товар")
+        return obj
+
+    def handle_no_permission(self):
+        """Если пользователь не авторизован, возвращает HTTP-ответ об отстутсвии прав для удаления товара"""
+        if not self.request.user.is_authenticated:
+            return redirect("users:login")
+        raise PermissionDenied("У вас нет прав для удаления товара")
+
+    def post(self, request, *args, **kwargs):
+        """Помечает товар как 'archived' вместо физического удаления"""
+        obj = self.get_object()
+        obj.status = "archived"
+        obj.save()
+        return HttpResponseRedirect(self.success_url)
 
 
 class ContactsView(FormView):

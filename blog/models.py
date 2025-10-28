@@ -49,3 +49,7 @@ class Blogpost(models.Model):
         verbose_name = "блоговый пост"
         verbose_name_plural = "блоговые посты"
         ordering = ["created_at",]
+        permissions = [
+            ("can_publish_blogpost", "Can publish blogpost"),
+            ("can_unpublish_blogpost", "Can unpublish blogpost"),
+        ]

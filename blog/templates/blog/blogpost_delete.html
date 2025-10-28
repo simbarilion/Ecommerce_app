@@ -17,7 +17,7 @@
                 <div class="card-body px-5 py-4">
                     <p class="text-center mt-3 mb-3">Вы уверены, что хотите удалить статью</p>
                     <p class="fw-semibold text-center mt-3 mb-5">"{{ blogpost.title }}"?</p>
-                    {% if user.is_authenticated and user == blogpost.author %}
+                    {% if user == blogpost.author or perms.blog.can_publish_blogpost and perms.blog.can_unpublish_blogpost %}
                         <form method="post" class="d-flex align-items-center">
                             {% csrf_token %}
                             <div class="flex-grow-1 text-center">

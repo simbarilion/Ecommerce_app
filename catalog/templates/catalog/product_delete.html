@@ -16,7 +16,7 @@
                 <div class="card-body px-5 py-4">
                     <p class="text-center mt-3 mb-3">Вы уверены, что хотите удалить товар</p>
                     <p class="fw-semibold text-center mt-3 mb-5">"{{ product.name }}"?</p>
-                    {% if user.is_authenticated %}
+                    {% if user == product.owner or perms.catalog.can_publish_product and perms.catalog.can_unpublish_product %}
                         <form method="post" class="d-flex align-items-center">
                             {% csrf_token %}
                             <div class="flex-grow-1 text-center">

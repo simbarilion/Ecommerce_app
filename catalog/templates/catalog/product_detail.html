@@ -23,7 +23,7 @@
                         <button type="button" class="btn btn-buy">Купить</button>
                     </div>
                 </div>
-                {% if user.is_authenticated %}
+                {% if perms.catalog.can_publish_product and perms.catalog.can_unpublish_product or user == obj.owner %}
                     <div class="d-flex justify-content-center gap-3 mt-2 text-center">
                         <a href="{% url 'catalog:product_update' pk=product.pk %}" class="btn-link btn-blue mt-4">Редактировать</a>
                         <a href="{% url 'catalog:product_delete' pk=product.pk %}" class="btn-link btn-red mt-4">Удалить</a>
