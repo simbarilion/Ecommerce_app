@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import MessageFeedback, Product
-from .utils import SpamValidationMixin
+from .services.product_service import SpamChecker
 
 
 class FeedbackForm(forms.ModelForm):
@@ -21,7 +21,7 @@ class CustomClearableFileInput(forms.ClearableFileInput):
     template_name = "widgets/custom_file_input.html"
 
 
-class ProductForm(SpamValidationMixin, forms.ModelForm):
+class ProductForm(forms.ModelForm):
     """Класс формы для создания карточки товара"""
     class Meta:
         model = Product
@@ -40,27 +40,29 @@ class ProductForm(SpamValidationMixin, forms.ModelForm):
         """Инициализация атрибутов класса"""
         super().__init__(*args, **kwargs)
         self.fields['category'].empty_label = "Нет категории"
+        self.checker = SpamChecker()
+
+
+    def clean_text_field(self, field_name):
+        """Валидатор текстовых полей формы"""
+        value = self.cleaned_data.get(field_name)
+        self.checker.check_text(value)
+        return value
 
 
     def clean_name(self):
         """Метод валидации поля формы 'наименование товара' на спам и запрещенные слова"""
-        name = self.cleaned_data.get("name")
-        self._check_spam(name)
-        return name
+        return self.clean_text_field("name")
 
 
     def clean_brief_description(self):
         """Метод валидации поля формы 'краткое описание товара' на спам и запрещенные слова"""
-        brief_description = self.cleaned_data.get("brief_description")
-        self._check_spam(brief_description)
-        return brief_description
+        return self.clean_text_field("brief_description")
 
 
     def clean_description(self):
         """Метод валидации поля формы 'описание товара' на спам и запрещенные слова"""
-        description = self.cleaned_data.get("description")
-        self._check_spam(description)
-        return description
+        return self.clean_text_field("description")
 
 
     def clean_price(self):
@@ -74,10 +76,10 @@ class ProductForm(SpamValidationMixin, forms.ModelForm):
     def clean_image(self):
         """Метод валидации поля формы 'изображение' на формат и размер файла"""
         image = self.cleaned_data.get("image")
+        max_size_mb = 5
         if hasattr(image, "content_type"):
             if image.content_type not in ["image/jpeg", "image/png"]:
                 raise forms.ValidationError("Файл должен быть в формате JPEG или PNG")
-            max_size_mb = 5
             if image.size > max_size_mb * 1024 * 1024:
                 raise forms.ValidationError(f"Размер файла не должен превышать {max_size_mb} МБ")
         return image

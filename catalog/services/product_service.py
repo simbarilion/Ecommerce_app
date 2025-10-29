@@ -1,12 +1,18 @@
+import json
 import re
 
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q, QuerySet
 from django.http import Http404
+from fuzzywuzzy import fuzz
 
 from catalog.models import Product
-from catalog.utils import is_moderator
+
+
+def is_moderator(user):
+    """Проверяет, состоит ли пользователь в группе модераторов"""
+    return user.is_superuser or user.groups.filter(name="products_moderator").exists()
 
 
 def get_visible_products_for_user(user):
@@ -131,3 +137,47 @@ def search_products(query: str, cache_timeout: int = 60*5) -> QuerySet:
     cache.set(cache_key, ids, cache_timeout)
 
     return queryset
+
+
+class SpamChecker:
+    """Проверяет текстовые поля на запрещённые слова"""
+
+    THRESHOLD = 85
+    SPAM_WORDS_PATH = "catalog/data/spam_words.json"
+
+
+    def __init__(self):
+        self.spam_words = self._load_spam_words(self.SPAM_WORDS_PATH)
+        self.pattern = self._build_pattern(self.spam_words)
+
+
+    @staticmethod
+    def _load_spam_words(filepath: str) -> list:
+        """Загружает список запрещённых слов из JSON файла"""
+        try:
+            with open(filepath, encoding="utf-8") as f:
+                data = json.load(f)
+            return [word.lower() for word in data.get("spam_words", [])]
+        except FileNotFoundError:
+            return []
+
+
+    @staticmethod
+    def _build_pattern(words: list):
+        """Создаёт паттерн для поиска запрещённых слов"""
+        escaped = [re.escape(word) for word in words]
+        return re.compile(r'(' + "|".join(escaped) + r')\w*', re.IGNORECASE)
+
+
+    def check_text(self, text: str) -> None:
+        """Проверяет текст на спам и запрещённые слова"""
+        if not text:
+            return
+
+        text_lower = text.lower()
+        if self.pattern.search(text_lower):
+            raise ValueError("Текст содержит запрещённые слова")
+
+        for spam in self.spam_words:
+            if fuzz.partial_ratio(spam, text_lower) >= self.THRESHOLD:
+                raise ValueError(f"Запрещённые слова: '{spam}'")

@@ -1,10 +1,7 @@
-import re
-
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -16,10 +13,9 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 from .forms import FeedbackForm, ProductForm, ProductModeratorForm
 
 from .models import Product, Contacts
-from .services.product_service import get_products_by_category, can_user_view_product, check_user_can_create_product, \
-    check_user_can_edit_product, update_product_status_on_edit, check_user_can_delete_product, archive_product, \
-    search_products
-from .utils import is_moderator
+from .services.product_service import is_moderator, get_products_by_category, can_user_view_product, \
+    check_user_can_create_product, check_user_can_edit_product, update_product_status_on_edit, \
+    check_user_can_delete_product, archive_product, search_products
 
 
 class ProductListView(ListView):

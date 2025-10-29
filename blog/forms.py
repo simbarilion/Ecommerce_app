@@ -1,6 +1,6 @@
 from django import forms
 
-from catalog.utils import SpamValidationMixin
+from catalog.services.product_service import SpamChecker
 from .models import Blogpost
 
 
@@ -9,7 +9,7 @@ class CustomClearableFileInput(forms.ClearableFileInput):
     template_name = "widgets/custom_file_input.html"
 
 
-class BlogpostForm(SpamValidationMixin, forms.ModelForm):
+class BlogpostForm(forms.ModelForm):
     """Класс формы для создания карточки статьи"""
     class Meta:
         model = Blogpost
@@ -21,11 +21,22 @@ class BlogpostForm(SpamValidationMixin, forms.ModelForm):
         }
 
 
+    def __init__(self, *args, **kwargs):
+        """Инициализация атрибутов класса"""
+        super().__init__(*args, **kwargs)
+        self.checker = SpamChecker()
+
+
+    def clean_text_field(self, field_name):
+        """Валидатор текстовых полей формы"""
+        value = self.cleaned_data.get(field_name)
+        self.checker.check_text(value)
+        return value
+
+
     def clean_title(self):
         """Метод валидации поля формы 'заголовок' на спам и запрещенные слова"""
-        title = self.cleaned_data.get("title")
-        self._check_spam(title)
-        return title
+        return self.clean_text_field("title")
 
 
     def clean_image(self):
