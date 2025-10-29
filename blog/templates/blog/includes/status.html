@@ -1,0 +1,13 @@
+{% if user == obj.author or perms.blog.can_publish_blogpost and perms.blog.can_unpublish_blogpost %}
+    <span class="badge position-absolute top-0 end-0 m-2
+        {% if obj.status == "published" %}
+            bg-success
+        {% elif obj.status == "moderation" %}
+            bg-primary
+        {% elif obj.status == "archived" %}
+            bg-secondary
+        {% endif %}
+    ">
+        {{ obj.get_status_display }}
+    </span>
+{% endif %}
