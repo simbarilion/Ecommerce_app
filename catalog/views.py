@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -19,8 +21,8 @@ from .services.product_service import is_moderator, get_cached_products, can_use
     invalidate_product_cache
 
 
-class BaseProductListView(ListView):
-    """Базовое представление для списка товаров"""
+class BaseProductListView(ListView, ABC):
+    """Абстрактное базовое представление для списка товаров"""
     model = Product
     template_name = "catalog/home.html"
     context_object_name = "products"
@@ -34,8 +36,9 @@ class BaseProductListView(ListView):
         return context
 
 
+    @abstractmethod
     def get_queryset(self):
-        """Базовый метод для переопределения в дочерних классах"""
+        """Базовый метод получения товаров для переопределения в дочерних классах"""
         pass
 
 
@@ -43,7 +46,7 @@ class ProductListView(BaseProductListView):
     """Представление для отображения всех доступных товаров"""
 
     def get_queryset(self):
-        """Возвращает все товары с учётом прав пользователя"""
+        """Возвращает кэшированный список всех товаров с учётом прав пользователя"""
         return get_cached_products(self.request.user)
 
 
