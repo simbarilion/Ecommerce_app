@@ -10,6 +10,9 @@ from fuzzywuzzy import fuzz
 from catalog.models import Product
 
 
+CACHE_TIMEOUT = 60 * 15
+
+
 def is_moderator(user):
     """Проверяет, состоит ли пользователь в группе модераторов"""
     return user.is_superuser or user.groups.filter(name="products_moderator").exists()
@@ -30,27 +33,23 @@ def get_visible_products_for_user(user):
     return queryset.filter(status="published")
 
 
-def get_products_by_category(category_id, user):
-    """
-    Возвращает список товаров для указанной категории с учётом прав пользователя.
-    Если category_id не указан, возвращает все доступные пользователю товары.
-    """
+def get_cached_products(user, category_id=None, timeout=CACHE_TIMEOUT):
+    """Возвращает кэшированные товары с учётом прав пользователя"""
+    user_type = (
+        "moderator" if is_moderator(user)
+        else "seller" if user.is_authenticated
+        else "anon"
+    )
+    cache_key = f"products_user_{user_type}_cat_{category_id or 'all'}"
+    queryset = cache.get(cache_key)
+    if queryset is not None:
+        return queryset
+
     queryset = get_visible_products_for_user(user)
-    if category_id:
+    if category_id is not None:
         queryset = queryset.filter(category_id=category_id)
-    return queryset
-
-
-def get_cached_products_by_category(category_id, user, timeout=60*15):
-    """Возвращает кэшированные товары для категории с учётом пользователя"""
-    cache_key = f"products_user_{user.id if user.is_authenticated else 'anon'}_cat_{category_id or 'all'}"
-    cached_ids = cache.get(cache_key)
-    if cached_ids is not None:
-        return Product.objects.filter(id__in=cached_ids)
-
-    queryset = get_products_by_category(category_id, user)
-    ids = list(queryset.values_list("id", flat=True))
-    cache.set(cache_key, ids, timeout)
+    queryset = list(queryset.select_related("category", "owner"))
+    cache.set(cache_key, queryset, timeout)
     return queryset
 
 
@@ -111,7 +110,24 @@ def archive_product(product, user):
     product.save(update_fields=["status"])
 
 
-def search_products(query: str, cache_timeout: int = 60*5) -> QuerySet:
+def invalidate_product_cache(category_id=None):
+    """
+    Сбрасывает кэш всех списков товаров.
+    Если указана категория — очищает только кэш для этой категории
+    """
+    user_types = ["anon", "seller", "moderator"]
+    categories = [category_id or "all"]
+
+    if category_id is None:
+        categories = ["all"]
+
+    for user_type in user_types:
+        for cat in categories:
+            key = f"products_user_{user_type}_cat_{cat}"
+            cache.delete(key)
+
+
+def search_products(query: str, cache_timeout: int = CACHE_TIMEOUT) -> QuerySet:
     """
     Возвращает QuerySet товаров, соответствующих поисковому запросу.
     Разбивает строку на слова и ищет их в name, brief_description и description.

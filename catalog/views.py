@@ -13,13 +13,14 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 from .forms import FeedbackForm, ProductForm, ProductModeratorForm
 
 from .models import Product, Contacts
-from .services.product_service import is_moderator, get_products_by_category, can_user_view_product, \
+from .services.product_service import is_moderator, get_cached_products, can_user_view_product, \
     check_user_can_create_product, check_user_can_edit_product, update_product_status_on_edit, \
-    check_user_can_delete_product, archive_product, search_products
+    check_user_can_delete_product, archive_product, search_products, get_visible_products_for_user, \
+    invalidate_product_cache
 
 
-class ProductListView(ListView):
-    """Представление для домашней страницы и списка товаров"""
+class BaseProductListView(ListView):
+    """Базовое представление для списка товаров"""
     model = Product
     template_name = "catalog/home.html"
     context_object_name = "products"
@@ -27,17 +28,39 @@ class ProductListView(ListView):
 
 
     def get_context_data(self, **kwargs):
-        """Добавляет категорию товаров и поиск по товарам в контекст"""
+        """Добавляет поиск по товарам в контекст"""
         context = super().get_context_data(**kwargs)
-        context["current_category_id"] = self.request.GET.get("category_id")
         context["search_type"] = "product"
         return context
 
 
     def get_queryset(self):
-        """Возвращает все товары или товары отдельной категории, если передана категория, с учётом прав пользователя"""
-        category_id = self.request.GET.get("category_id")
-        return get_products_by_category(category_id, self.request.user)
+        """Базовый метод для переопределения в дочерних классах"""
+        pass
+
+
+class ProductListView(BaseProductListView):
+    """Представление для отображения всех доступных товаров"""
+
+    def get_queryset(self):
+        """Возвращает все товары с учётом прав пользователя"""
+        return get_cached_products(self.request.user)
+
+
+class CategoryProductListView(BaseProductListView):
+    """Представление для отображения всех доступных товаров выбранной категории"""
+
+    def get_context_data(self, **kwargs):
+        """Добавляет категорию товаров в контекст"""
+        context = super().get_context_data(**kwargs)
+        context["current_category_id"] = self.request.GET.get("category_id")
+        return context
+
+
+    def get_queryset(self):
+        """Возвращает товары выбранной категории с учётом прав пользователя"""
+        category_id = self.kwargs.get("category_id")
+        return get_cached_products(self.request.user, category_id)
 
 
 @method_decorator(cache_page(60 * 15), name="dispatch")
@@ -80,7 +103,10 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         """
         form.instance.owner = self.request.user
         form.instance.status = "moderation"
-        return super().form_valid(form)
+        response = super().form_valid(form)
+
+        invalidate_product_cache()
+        return response
 
 
     def dispatch(self, request, *args, **kwargs):
@@ -120,7 +146,10 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         """Устанавливает при редактировании статус товара 'moderation'"""
         product = self.get_object()
         update_product_status_on_edit(product, self.request.user, form)
-        return super().form_valid(form)
+        response = super().form_valid(form)
+
+        invalidate_product_cache(product.category_id)
+        return response
 
 
     def get_form_class(self):
@@ -174,6 +203,8 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         """Помечает товар как 'archived' вместо физического удаления"""
         product = self.get_object()
         archive_product(product, request.user)
+
+        invalidate_product_cache(product.category_id)
         return HttpResponseRedirect(self.success_url)
 
 
