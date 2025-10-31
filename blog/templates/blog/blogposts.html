@@ -14,6 +14,7 @@
                 {% for obj in blogposts %}
                 <div class="col">
                     <div class="card mb-4 box-shadow text-center h-100">
+                        {% include "blog/includes/status.html" %}
                         <img src="{{ obj.preview.url }}" alt="{{ obj.title }}"
                              class="card-img-top img-fluid rounded-top">
                         <div class="card-header text-white text-center py-2 rounded-0">

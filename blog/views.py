@@ -1,18 +1,19 @@
-import re
-
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-from django.db.models import Q
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from .forms import BlogpostForm, BlogpostContentManagerForm
 from .models import Blogpost
-from .utils import is_content_manager
+from .services.blogpost_service import is_content_manager, get_visible_blogposts_for_user, can_user_view_blogpost, \
+    check_user_can_create_blogpost, update_blogpost_status_on_edit, check_user_can_edit_blogpost, \
+    check_user_can_delete_blogpost, archive_blogpost, search_blogposts
 
 
 class BlogpostListView(ListView):
@@ -24,28 +25,6 @@ class BlogpostListView(ListView):
     limit = None
 
 
-    def get_queryset(self):
-        """Возвращает статьи блога в зависимости от статуса публикации и прав пользователя"""
-        user = self.request.user
-        queryset = Blogpost.objects.all().order_by("-created_at")
-
-        if self.template_name == "blog/main.html":
-            queryset = queryset.filter(status="published")
-        else:
-            if user.is_authenticated:
-                if is_content_manager(user):
-                    queryset = queryset.filter(status__in=["published", "moderation", "archived"])
-                else:
-                    queryset = queryset.filter(
-                        Q(status="published") |
-                        Q(status="moderation", author=user)
-                    )
-            else:
-                queryset = queryset.filter(status="published")
-
-        return queryset[:self.limit] if self.limit else queryset
-
-
     def get_context_data(self, **kwargs):
         """Добавляет количество публикаций и авторов в контекст, создает контекст для поискового запроса"""
         context = super().get_context_data(**kwargs)
@@ -55,36 +34,28 @@ class BlogpostListView(ListView):
         return context
 
 
+    def get_queryset(self):
+        """Возвращает статьи блога в зависимости от статуса публикации и прав пользователя"""
+        return get_visible_blogposts_for_user(
+            user=self.request.user,
+            template_name=self.template_name,
+            limit=self.limit
+        )
+
+
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class BlogpostDetailView(DetailView):
     """Представление для отображения статьи Блога"""
     model = Blogpost
     context_object_name = "post"
 
+
     def get_object(self, queryset=None):
         """Показывает статью, если она опубликован или если пользователь имеет права просмотр неопубликованных статей"""
-        obj = super().get_object(queryset)
-        user = self.request.user
+        post = super().get_object(queryset)
+        can_user_view_blogpost(self.request.user, post)
+        return post
 
-        if user.is_authenticated:
-            if is_content_manager(user):
-                if obj.status not in ["published", "moderation", "archived"]:
-                    raise Http404("Статья недоступна")
-            else:
-                if obj.status == "moderation" and obj.author != user:
-                    raise Http404("Статья недоступна")
-                if obj.status == "archived" or obj.status not in ["published", "moderation"]:
-                    raise Http404("Статья недоступна")
-                if obj.status not in ["published", "moderation", "archived"]:
-                    raise Http404("Статья недоступна")
-        else:
-            if obj.status != "published":
-                raise Http404("Статья недоступна")
-
-        if obj.status == "published":
-            obj.number_of_views += 1
-            obj.save()
-
-        return obj
 
     def get_context_data(self, **kwargs):
         """Добавляет количество публикаций автора в контекст"""
@@ -99,11 +70,13 @@ class BlogpostCreateView(LoginRequiredMixin, CreateView):
     template_name = "blog/blogpost_form.html"
     form_class = BlogpostForm
 
+
     def get_context_data(self, **kwargs):
         """Определяет контекст с объектом статьи"""
         context = super().get_context_data(**kwargs)
         context["obj"] = None
         return context
+
 
     def form_valid(self, form):
         """Присваивает текущего авторизованного пользователя как автора статьи, устанавливает статус 'moderation'"""
@@ -111,12 +84,12 @@ class BlogpostCreateView(LoginRequiredMixin, CreateView):
         form.instance.status = "moderation"
         return super().form_valid(form)
 
+
     def dispatch(self, request, *args, **kwargs):
         """Запрещает контент-менеджерам создавать статьи"""
-        user = request.user
-        if is_content_manager(user):
-            raise PermissionDenied("Контент-менеджерам запрещено создавать товары")
+        check_user_can_create_blogpost(request.user)
         return super().dispatch(request, *args, **kwargs)
+
 
     def get_success_url(self):
         """При успешном создании статьи возвращает на страницу редактора статей"""
@@ -139,21 +112,18 @@ class BlogpostUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         """Устанавливает при редактировании статус статьи 'moderation'"""
-        user = self.request.user
-        obj = self.get_object()
-        if obj.author == user:
-            form.instance.status = "moderation"
+        post = self.get_object()
+        update_blogpost_status_on_edit(post, self.request.user, form)
         return super().form_valid(form)
+
 
     def get_object(self, queryset=None):
         """Возвращает объект только если пользователь — автор статьи"""
         if not hasattr(self, "_cached_object"):
             self._cached_object = super().get_object(queryset)
-            user = self.request.user
-
-            if self._cached_object.author != user and not is_content_manager(user):
-                raise PermissionDenied("Вы не можете редактировать чужую статью")
+            check_user_can_edit_blogpost(self.request.user, self._cached_object)
         return self._cached_object
+
 
     def get_form_class(self):
         """Выбирает форму в зависимости от статуса пользователя"""
@@ -164,11 +134,13 @@ class BlogpostUpdateView(LoginRequiredMixin, UpdateView):
             return BlogpostContentManagerForm
         return BlogpostForm
 
+
     def handle_no_permission(self):
         """Если пользователь не авторизован, перенаправляет на страницу авторизации"""
         if not self.request.user.is_authenticated:
             return redirect("users:login")
         raise PermissionDenied("У вас нет прав для редактирования товара")
+
 
     def get_success_url(self):
         """При успешном редактировании статьи возвращает на страницу просмотра статьи"""
@@ -184,12 +156,10 @@ class BlogpostDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_object(self, queryset=None):
         """Возвращает объект только если пользователь — автор статьи или имеет права контент-менеджера"""
-        obj = super().get_object(queryset)
-        user = self.request.user
+        post = super().get_object(queryset)
+        check_user_can_delete_blogpost(self.request.user, post)
+        return post
 
-        if obj.author != user and not is_content_manager(user):
-            raise PermissionDenied("Вы не можете удалить чужую статью")
-        return obj
 
     def handle_no_permission(self):
         """Если пользователь не авторизован, перенаправляет на страницу авторизации"""
@@ -197,27 +167,18 @@ class BlogpostDeleteView(LoginRequiredMixin, DeleteView):
             return redirect("users:login")
         raise PermissionDenied("У вас нет прав для удаления статьи")
 
+
     def post(self, request, *args, **kwargs):
         """Помечает статью как 'archived' вместо физического удаления"""
-        obj = self.get_object()
-        obj.status = "archived"
-        obj.save()
+        post = self.get_object()
+        archive_blogpost(post, request.user)
         return HttpResponseRedirect(self.success_url)
 
 
 def blogpost_search_view(request):
     """Осуществляет поисковый запрос статей блога"""
     query = request.GET.get("q", "").strip()
-    blogposts = Blogpost.objects.none()
-
-    if query:
-        keywords = re.findall(r'\w+', query)
-
-        q_objects = Q()
-        for word in keywords:
-            q_objects |= (Q(title__icontains=word) | Q(content__icontains=word))
-
-        blogposts = Blogpost.objects.filter(q_objects, status="published").distinct()
+    blogposts = search_blogposts(query)
 
     paginator = Paginator(blogposts, 10)
     page_number = request.GET.get("page")
