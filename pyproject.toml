@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ecommerce-app"
 version = "0.1.0"
-description = "Study project for creating django web application"
+description = "An online store web application developed in Django using the MTV architectural pattern"
 authors = [
     "Nadezhda_Popova <nadezhdapopova13@yandex.ru>"
 ]
