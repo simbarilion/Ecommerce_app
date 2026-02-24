@@ -1,0 +1,210 @@
+[
+{
+    "model": "catalog.product",
+    "pk": 16,
+    "fields": {
+        "name": "React UI Components Kit",
+        "owner": 3,
+        "brief_description": "Набор готовых компонентов на React с TailwindCSS",
+        "description": "В комплект входит коллекция готовых React-компонентов с красивым дизайном на TailwindCSS. Это ускоряет разработку интерфейсов и позволяет сосредоточиться на логике, а не верстке. Компоненты легко настраиваются и адаптируются под любые проекты. Подходит как для стартапов, так и для корпоративных приложений\".",
+        "image": "products/images/React_UI_Kit_BbMp1Yp.png",
+        "category": 2,
+        "price": 2300.0,
+        "created_at": "2025-10-25T14:21:35.349Z",
+        "updated_at": "2025-10-25T14:21:35.349Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 17,
+    "fields": {
+        "name": "Dark Mode CSS Pack",
+        "owner": 7,
+        "brief_description": "Набор готовых CSS-стилей для тёмной темы сайта",
+        "description": "Набор стилей мгновенно превращает ваш сайт в стильный тёмный интерфейс. Он улучшает читаемость и снижает нагрузку на глаза пользователей. Все стили легко подключаются и совместимы с современными браузерами. Идеальное решение для проектов, где важен современный UI/UX\".",
+        "image": "products/images/Dark_Mode_CSS_4xgPMVX.jpg",
+        "category": 2,
+        "price": 599.0,
+        "created_at": "2025-10-25T14:22:50.924Z",
+        "updated_at": "2025-10-25T14:22:50.924Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 18,
+    "fields": {
+        "name": "Vue.js Admin Dashboard",
+        "owner": 10,
+        "brief_description": "Адаптивная админка на Vue.js с графиками и таблицами",
+        "description": "Адаптивная админ-панель с Vue.js включает графики, таблицы и виджеты. Она подходит для CRM, аналитики или внутренних сервисов. Дизайн современный и легко кастомизируется. Это готовое решение, которое ускорит запуск вашего проекта\".",
+        "image": "products/images/Vue_js_Admin_Dashboard_6ItrAzb.png",
+        "category": 2,
+        "price": 2899.0,
+        "created_at": "2025-10-25T14:24:23.479Z",
+        "updated_at": "2025-10-25T14:24:23.479Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 19,
+    "fields": {
+        "name": "Flutter E-commerce Template",
+        "owner": 2,
+        "brief_description": "Готовый шаблон интернет-магазина на Flutter",
+        "description": "Готовый шаблон интернет-магазина на Flutter позволяет быстро запустить мобильное приложение. В комплекте – корзина, каталог и оформление заказов. Все элементы адаптированы для Android и iOS. Отличный выбор для старта в мобильной коммерции\".",
+        "image": "products/images/Flutter_E_commerce_Template_qAAUFBZ.jpg",
+        "category": 3,
+        "price": 3999.0,
+        "created_at": "2025-10-25T14:25:50.038Z",
+        "updated_at": "2025-10-25T14:25:50.038Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 20,
+    "fields": {
+        "name": "Python API Boilerplate",
+        "owner": 9,
+        "brief_description": "Готовый шаблон для быстрого запуска REST API на FastAPI",
+        "description": "Готовый шаблон API на FastAPI поможет вам запустить проект за считанные минуты. В нем реализованы базовые настройки, структура и примеры маршрутов. Это идеальное решение для быстрого прототипирования или коммерческих проектов. Вы получите чистый код и удобную основу для дальнейшей разработки\".",
+        "image": "products/images/Python_API_Boilerplate_yuXsx4t.jpg",
+        "category": 4,
+        "price": 1499.0,
+        "created_at": "2025-10-25T14:26:54.667Z",
+        "updated_at": "2025-10-25T14:26:54.667Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 21,
+    "fields": {
+        "name": "JSON Formatter Pro",
+        "owner": 5,
+        "brief_description": "Плагин для форматирования и валидации JSON прямо в браузере",
+        "description": "Этот плагин мгновенно форматирует и проверяет JSON прямо в вашем браузере. Он помогает находить ошибки в структуре и делает данные читаемыми. Отлично подходит как для новичков, так и для опытных разработчиков. Экономьте время и работайте с JSON комфортно\".",
+        "image": "products/images/JSON_Formatter_Pro_gJ3GzxJ.png",
+        "category": 4,
+        "price": 899.0,
+        "created_at": "2025-10-25T14:27:52.923Z",
+        "updated_at": "2025-10-25T14:27:52.923Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 22,
+    "fields": {
+        "name": "SQL Query Optimizer",
+        "owner": 12,
+        "brief_description": "Плагин для анализа и оптимизации SQL-запросов",
+        "description": "Плагин анализирует ваши SQL-запросы и подсказывает, как сделать их быстрее. Он выявляет проблемные места и рекомендует индексы или изменения. Это экономит ресурсы сервера и ускоряет работу приложений. Подходит для разработчиков и администраторов баз данных\".",
+        "image": "products/images/SQL_Query_Optimizer_Kpds1km.png",
+        "category": 4,
+        "price": 1300.0,
+        "created_at": "2025-10-25T14:28:50.907Z",
+        "updated_at": "2025-10-25T14:28:50.907Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 23,
+    "fields": {
+        "name": "Chatbot Widget JS",
+        "owner": 11,
+        "brief_description": "Виджет чата для сайтов с готовыми API-интеграциями",
+        "description": "Готовый виджет чата легко встраивается в сайт и поддерживает API-интеграции. Ваши клиенты смогут задавать вопросы и получать быстрые ответы. Интерфейс современный и адаптивный. Подходит для интернет-магазинов, сервисов и корпоративных сайтов.",
+        "image": "products/images/Chatbot_Widget_JS_8npl3Sk.png",
+        "category": 2,
+        "price": 1799.0,
+        "created_at": "2025-10-25T14:30:41.088Z",
+        "updated_at": "2025-10-25T14:30:41.088Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 24,
+    "fields": {
+        "name": "AI Text Summarizer Plugin",
+        "owner": 8,
+        "brief_description": "Плагин для краткого резюмирования текста с помощью ИИ",
+        "description": "Плагин с ИИ автоматически сокращает длинные тексты и выделяет главное. Это удобно для новостей, отчетов и статей. Вы экономите время и получаете аккуратные резюме текста. Легко интегрируется в любые веб-приложения\".",
+        "image": "products/images/AI_Text_Summarizer_Plugin_JGte3Ot.jpg",
+        "category": 5,
+        "price": 1999.0,
+        "created_at": "2025-10-25T14:31:47.722Z",
+        "updated_at": "2025-10-25T14:31:47.722Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 25,
+    "fields": {
+        "name": "SEO Analyzer Script",
+        "owner": 4,
+        "brief_description": "Скрипт для анализа SEO сайта (ключевые слова, мета-теги)",
+        "description": "Скрипт анализирует ваш сайт на ключевые SEO-параметры. Он проверяет мета-теги, ключевые слова и структуру страниц. Это помогает повысить позиции в поисковой выдаче. Отличный инструмент для маркетологов и владельцев сайтов\".",
+        "image": "products/images/SEO_Analyzer_Script_6AsiIc1.jpg",
+        "category": 5,
+        "price": 1200.0,
+        "created_at": "2025-10-25T14:32:33.939Z",
+        "updated_at": "2025-10-25T14:32:33.939Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 26,
+    "fields": {
+        "name": "Data Visualization Kit (D3.js)",
+        "owner": 4,
+        "brief_description": "Набор интерактивных графиков на D3.js",
+        "description": "Набор интерактивных графиков на D3.js делает данные наглядными. Вы можете создавать диаграммы, карты и динамические визуализации. Это помогает лучше понять аналитику и презентовать её пользователям. Инструмент подходит для дашбордов и отчетов\".",
+        "image": "products/images/Data_Visualization_Kit.jpg",
+        "category": 2,
+        "price": 2499.0,
+        "created_at": "2025-10-25T14:45:06.518Z",
+        "updated_at": "2025-10-25T14:45:06.518Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 27,
+    "fields": {
+        "name": "Node.js Payment Gateway",
+        "owner": 6,
+        "brief_description": "Готовая интеграция Stripe/PayPal для Node.js проектов",
+        "description": "Готовая интеграция Stripe и PayPal для проектов на Node.js. Вы сможете быстро подключить онлайн-оплаты в свое приложение. Код написан с учетом безопасности и удобства. Поддерживает популярные платежные сценарии\".",
+        "image": "products/images/Node_js_Payment_Gateway_pmQjvnH.jpg",
+        "category": 4,
+        "price": 2499.0,
+        "created_at": "2025-10-25T14:46:29.976Z",
+        "updated_at": "2025-10-25T14:46:29.976Z",
+        "status": "moderation"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 28,
+    "fields": {
+        "name": "SaaS Billing System (Laravel)",
+        "owner": 6,
+        "brief_description": "Готовая система подписок и биллинга для SaaS",
+        "description": "Готовая система подписок и биллинга на Laravel экономит месяцы разработки. В ней реализованы тарифные планы, платежи и управление пользователями. Подходит для SaaS-проектов любого масштаба. Вы получаете надёжное решение для монетизации бизнеса\".",
+        "image": "products/images/SaaS_Billing_System_QrHramT.png",
+        "category": 4,
+        "price": 4800.0,
+        "created_at": "2025-10-25T14:47:31.358Z",
+        "updated_at": "2025-10-25T14:47:31.358Z",
+        "status": "moderation"
+    }
+}
+]

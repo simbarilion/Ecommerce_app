@@ -1,0 +1,24 @@
+<div class="glass-banner rounded-2xl shadow p-5 mb-5">
+    <div class="row align-items-center text-center text-lg-start">
+
+
+        <div class="col-lg-5 mb-3 mb-lg-0">
+            <h1 class="display-5 fw-normal mb-2">Блог — полезное и интересное</h1>
+            <p class="lead text-gray-600">Читайте статьи, делитесь опытом и вдохновляйтесь!</p>
+        </div>
+
+        <div class="col-lg-3 mb-3 mb-lg-0">
+            <h2 class="fw-semibold mb-1 text-success mb-4 fs-3">{{ total_posts }} статей</h2>
+            <h2 class="fw-semibold mb-1 text-success fs-3">{{ total_authors }} авторов</h2>
+        </div>
+
+        <div class="col-lg-4 text-center">
+            <p class="lead text-gray-600 mb-3">Создавайте собственные статьи и делитесь знаниями</p>
+            <a href="{% if user.is_authenticated %}{% url 'blog:blogpost_list' %}{% else %}{% url 'users:login' %}{% endif %}"
+               class="btn-link inline-block bg-blue-600 px-4 py-2 rounded-lg mt-2 mb-4">
+               Создать статью
+            </a>
+        </div>
+
+    </div>
+</div>

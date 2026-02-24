@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Статьи{% endblock %}
+
+{% block content %}
+
+    {% include "blog/includes/banner.html" %}
+
+    <section class="container mx-auto p-6">
+        {% include "includes/search_bar.html" %}
+
+        <div class="container my-5 blog-main-page">
+            <div class="row row-cols-1 row-cols-md-3 g-5">
+                {% for obj in blogposts %}
+                <div class="col">
+                    <div class="card mb-4 box-shadow text-center h-100">
+                        {% include "blog/includes/status.html" %}
+                        <img src="{{ obj.preview.url }}" alt="{{ obj.title }}"
+                             class="card-img-top img-fluid rounded-top">
+                        <div class="card-header text-white text-center py-2 rounded-0">
+                            <h4 class="my-0 font-weight-normal mb-2">{{ obj.title }}</h4>
+                            <p class="text-gray-600">Автор: {{ obj.author_name }}</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                                <li>{{ obj.content|truncatechars:100 }}</li>
+                            </ul>
+                            <a href="{% url 'blog:blogposts_detail' pk=obj.pk %}" class="btn-link">Читать</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </section>
+
+    {% if page_obj.has_other_pages %}
+        <div class="mt-auto">
+            {% include "includes/pagination.html" %}
+        </div>
+    {% endif %}
+
+{% endblock %}
