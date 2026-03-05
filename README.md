@@ -163,7 +163,7 @@ Bootstrap
 
 1. Клонируйте репозиторий проекта:
 ````
-git clone https://github.com/nadezhdapopova-spec/Ecommerce_app.git
+git clone https://github.com/simbarilion/Ecommerce_app.git
 
 cd Ecommerce_app
 ````
