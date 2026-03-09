@@ -219,3 +219,12 @@ python manage.py runserver
 ## Лицензия:
 
 Проект распространяется под [лицензией MIT](LICENSE)
+
+## Автор
+Надежда Попова
+
+Python Developer
+
+📧 nadezhdapopova13@yandex.ru
+
+🔗 GitHub: simbarilion
