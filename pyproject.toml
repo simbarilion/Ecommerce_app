@@ -1,5 +1,6 @@
 [tool.poetry]
 name = "ecommerce-app"
+package-mode = false
 version = "0.1.0"
 description = "An online store web application developed in Django using the MTV architectural pattern"
 authors = [
